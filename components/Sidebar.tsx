@@ -7,9 +7,11 @@ import { cn } from "@/lib/utils"; // Optional utility to combine class names
 
 const links = [
   { name: "Overview", href: "/dashboard" },
-  { name: "Products", href: "/dashboard/products" },
   { name: "Orders", href: "/dashboard/orders" },
+  { name: "Products", href: "/dashboard/products" },
   { name: "Customers", href: "/dashboard/customers" },
+  { name: "Settings", href: "/dashboard/settings" },
+  { name: "Analytics", href: "/dashboard/analytics" },
 ];
 
 export default function Sidebar() {
