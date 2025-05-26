@@ -2,7 +2,7 @@
 export default function DashboardHome() {
   return (
     <div>
-      <h1 className="text-2xl font-semibold">Dashboard Overview</h1>
+     <h1 className="text-gray-800 font-semibold text-xl">Dashboard Overview</h1>
     </div>
   );
 }
