@@ -1,5 +1,9 @@
 // components/Sidebar.tsx
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils"; // Optional utility to combine class names
 
 const links = [
   { name: "Overview", href: "/dashboard" },
@@ -9,19 +13,33 @@ const links = [
 ];
 
 export default function Sidebar() {
+  const pathname = usePathname();
+
   return (
-    <aside className="w-64 bg-white border-r p-4 hidden md:block">
-      <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
+    <aside className="w-64 bg-white border-r h-screen p-6 hidden md:flex flex-col">
+      <h2 className="text-2xl font-bold text-gray-800 mb-10 tracking-tight">
+        Admin Panel
+      </h2>
+
       <nav className="space-y-2">
-        {links.map(link => (
-          <Link
-            key={link.name}
-            href={link.href}
-            className="block p-2 rounded hover:bg-gray-100"
-          >
-            {link.name}
-          </Link>
-        ))}
+        {links.map((link) => {
+          const isActive = pathname === link.href;
+
+          return (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={cn(
+                "flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors",
+                isActive
+                  ? "bg-gray-100 text-blue-600 border-l-4 border-blue-500"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+              )}
+            >
+              {link.name}
+            </Link>
+          );
+        })}
       </nav>
     </aside>
   );
