@@ -1,4 +1,3 @@
-// components/Topbar.tsx
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -13,7 +12,7 @@ const getPageTitle = (pathname: string) => {
 
 export default function Topbar() {
   const pathname = usePathname();
-  const title = getPageTitle(pathname);
+  const title = getPageTitle(pathname || "");  // <-- Here is the fix
 
   return (
     <header className="flex justify-between items-center px-6 py-4 border-b bg-white">
