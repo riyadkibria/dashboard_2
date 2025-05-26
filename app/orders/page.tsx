@@ -1,30 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getUserOrders } from '@/pages/api/getOrders';
-
-type Order = {
-  id: string;
-  name: string;
-  productName: string;
-  productPrice: number;
-  address: string;
-  mobile: string;
-  createdAt: string; // or Date if you're converting it
-};
+import { getUserOrders, Order } from '@/pages/api/getOrders';
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([]); // ✅ specify the type here
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    const userId = 'your-user-id-here'; // Replace with actual user ID
-    getUserOrders(userId).then(setOrders);
+    const userId = 'your-user-id-here';
+    getUserOrders(userId).then((data) => {
+      setOrders(data);
+    });
   }, []);
 
   return (
     <div>
       <h2>User Orders</h2>
-      {orders.map(order => (
+      {orders.map((order) => (
         <div key={order.id}>
           <p><strong>Name:</strong> {order.name}</p>
           <p><strong>Product:</strong> {order.productName} (${order.productPrice})</p>
