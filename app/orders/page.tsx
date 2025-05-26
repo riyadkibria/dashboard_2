@@ -1,13 +1,23 @@
-'use client'; // 👈 must be the very first line
+'use client';
 
 import { useEffect, useState } from 'react';
-import { getUserOrders } from '@/pages/api/getOrders'; // or adjust based on location
+import { getUserOrders } from '@/pages/api/getOrders';
+
+type Order = {
+  id: string;
+  name: string;
+  productName: string;
+  productPrice: number;
+  address: string;
+  mobile: string;
+  createdAt: string; // or Date if you're converting it
+};
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]); // ✅ specify the type here
 
   useEffect(() => {
-    const userId = 'your-user-id-here'; // replace with actual user ID
+    const userId = 'your-user-id-here'; // Replace with actual user ID
     getUserOrders(userId).then(setOrders);
   }, []);
 
