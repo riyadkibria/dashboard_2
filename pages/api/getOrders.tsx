@@ -35,4 +35,3 @@ export async function getUserOrders(userId: string): Promise<Order[]> {
     return [];
   }
 }
-
