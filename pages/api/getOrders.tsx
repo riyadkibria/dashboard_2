@@ -8,17 +8,36 @@ export interface Order {
   productPrice: string;
   address: string;
   mobile: string;
-  createdAt: number; // stored as milliseconds since epoch
+  createdAt: number;
 }
 
 export async function getUserOrders(userId: string): Promise<Order[]> {
   try {
-    // Corrected template string with backticks for dynamic path
-    const ordersRef = collection(db, `users/${userId}/orders`);
+    if (!userId) {
+      console.warn('⚠️ userId is missing or undefined.');
+      return [];
+    }
+
+    const ordersPath = `users/${userId}/orders`;
+    console.log(`📁 Fetching orders from path: ${ordersPath}`);
+
+    const ordersRef = collection(db, ordersPath);
     const snapshot = await getDocs(ordersRef);
 
-    return snapshot.docs.map((doc) => {
+    if (snapshot.empty) {
+      console.warn(`⚠️ No orders found for user: ${userId}`);
+      return [];
+    }
+
+    const orders: Order[] = snapshot.docs.map((doc) => {
       const data = doc.data();
+
+      if (!data) {
+        console.warn(`⚠️ No data found in document: ${doc.id}`);
+        return null;
+      }
+
+      console.log(`📄 Order fetched: ${doc.id}`, data);
 
       return {
         id: doc.id,
@@ -27,11 +46,13 @@ export async function getUserOrders(userId: string): Promise<Order[]> {
         productPrice: typeof data.productPrice === 'string' ? data.productPrice : '',
         address: typeof data.address === 'string' ? data.address : '',
         mobile: typeof data.mobile === 'string' ? data.mobile : '',
-        createdAt: data.createdAt?.toMillis?.() ?? Date.now(), // fallback if no timestamp
+        createdAt: data.createdAt?.toMillis?.() ?? Date.now(),
       };
-    });
-  } catch (error) {
-    console.error('❌ Error fetching user orders:', error);
+    }).filter((o): o is Order => o !== null); // filter out nulls
+
+    return orders;
+  } catch (error: any) {
+    console.error('❌ Error fetching user orders:', error.message || error);
     return [];
   }
 }
