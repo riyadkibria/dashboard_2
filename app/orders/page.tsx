@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getUserOrders, Order } from '@/pages/api/getOrders';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/firebase'; // adjust path as needed
+import { auth } from '@/lib//firebase'; // adjust path as needed
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
