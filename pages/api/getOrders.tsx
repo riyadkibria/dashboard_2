@@ -9,11 +9,11 @@ export interface Order {
   productPrice: string;
   address: string;
   mobile: string;
-  createdAt: number; // Firestore timestamp converted to milliseconds
+  createdAt: number;
 }
 
 export async function getUserOrders(userId: string): Promise<Order[]> {
-  const ordersRef = collection(db, 'users', userId, 'orders');
+  const ordersRef = collection(db, `users/${userId}/orders`);
   const snapshot = await getDocs(ordersRef);
 
   return snapshot.docs.map((doc) => {
@@ -25,7 +25,7 @@ export async function getUserOrders(userId: string): Promise<Order[]> {
       productPrice: data.productPrice || '',
       address: data.address || '',
       mobile: data.mobile || '',
-      createdAt: data.createdAt?.toMillis?.() || Date.now(), // convert Firestore timestamp
+      createdAt: data.createdAt?.toMillis?.() || Date.now(),
     };
   });
 }
