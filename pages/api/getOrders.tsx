@@ -1,48 +1,31 @@
-// pages/api/getOrders.ts
+// pages/api/getNames.ts
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
-export interface Order {
+export interface NameDoc {
   id: string;
-  name: string;
-  productName: string;
-  productPrice: string;
-  address: string;
-  mobile: string;
-  createdAt: number;
+  // Add fields here based on your data schema, e.g.:
+  name?: string;
+  [key: string]: any;
 }
 
-export async function getUserOrders(userId: string): Promise<Order[]> {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<NameDoc[] | { error: string }>
+) {
   try {
-    const ordersRef = collection(db, `users/${userId}/orders`);
-    const ordersSnapshot = await getDocs(ordersRef);
+    const namesRef = collection(db, 'Names');
+    const snapshot = await getDocs(namesRef);
 
-    const allOrders: Order[] = [];
+    const allNames: NameDoc[] = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
-    for (const orderDoc of ordersSnapshot.docs) {
-      const subOrdersRef = collection(
-        db,
-        `users/${userId}/orders/${orderDoc.id}/orderDocs` // replace 'orderDocs' with actual subcollection name if different
-      );
-      const subOrdersSnapshot = await getDocs(subOrdersRef);
-
-      subOrdersSnapshot.forEach((doc) => {
-        const data = doc.data();
-        allOrders.push({
-          id: doc.id,
-          name: typeof data.name === 'string' ? data.name : '',
-          productName: typeof data.productName === 'string' ? data.productName : '',
-          productPrice: typeof data.productPrice === 'string' ? data.productPrice : '',
-          address: typeof data.address === 'string' ? data.address : '',
-          mobile: typeof data.mobile === 'string' ? data.mobile : '',
-          createdAt: data.createdAt?.toMillis?.() ?? Date.now(),
-        });
-      });
-    }
-
-    return allOrders;
+    res.status(200).json(allNames);
   } catch (error) {
-    console.error('❌ Error fetching user orders:', error);
-    return [];
+    console.error('❌ Error fetching names:', error);
+    res.status(500).json({ error: 'Failed to fetch names' });
   }
 }
