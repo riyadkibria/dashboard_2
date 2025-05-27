@@ -1,30 +1,27 @@
-// file: /pages/api/getOrders.ts
+// pages/api/getOrders.ts (or wherever you keep API functions)
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
-export type Order = {
+export interface Order {
   id: string;
   name: string;
   productName: string;
   productPrice: number;
   address: string;
   mobile: string;
-  createdAt: string;
-};
+  createdAt: string; // or Timestamp, adjust accordingly
+}
 
-export const getUserOrders = async (userId: string): Promise<Order[]> => {
-  try {
-    const ordersRef = collection(db, 'users', userId, 'orders');
-    const snapshot = await getDocs(ordersRef);
+export async function getUserOrders(userId: string): Promise<Order[]> {
+  if (!userId) return [];
 
-    const orders = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Order[];
+  const ordersRef = collection(db, 'users', userId, 'orders');
+  const querySnapshot = await getDocs(ordersRef);
 
-    return orders;
-  } catch (error) {
-    console.error('Error fetching orders:', error);
-    return [];
-  }
-};
+  const orders: Order[] = querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...(doc.data() as Omit<Order, 'id'>),
+  }));
+
+  return orders;
+}
