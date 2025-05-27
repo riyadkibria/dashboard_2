@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getUserOrders, Order } from '@/pages/api/getOrders';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/lib//firebase'; // adjust path as needed
+import { auth } from '@/lib/firebase'; // fixed double slash
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -17,7 +17,6 @@ export default function OrdersPage() {
           setLoading(false);
         });
       } else {
-        // This case normally won't happen if it's a secured dashboard
         setLoading(false);
         console.warn('No user found');
       }
@@ -49,4 +48,3 @@ export default function OrdersPage() {
     </div>
   );
 }
-
