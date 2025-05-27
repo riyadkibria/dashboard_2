@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getUserOrders, Order } from '@/pages/api/getOrders';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/lib/firebase'; // fixed double slash
+import { auth } from '@/lib/firebase';
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -26,24 +26,46 @@ export default function OrdersPage() {
   }, []);
 
   return (
-    <div>
-      <h2>User Orders</h2>
+    <div className="p-6">
+      <h2 className="text-xl font-bold mb-4">Your Orders</h2>
+
       {loading ? (
         <p>Loading orders...</p>
       ) : orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
-        orders.map((order) => (
-          <div key={order.id}>
-            <p><strong>Order ID:</strong> {order.id}</p>
-            <p><strong>Name:</strong> {order.name}</p>
-            <p><strong>Product:</strong> {order.productName} (${order.productPrice})</p>
-            <p><strong>Address:</strong> {order.address}</p>
-            <p><strong>Mobile:</strong> {order.mobile}</p>
-            <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
-            <hr />
-          </div>
-        ))
+        <div className="overflow-x-auto">
+          <table className="min-w-full border border-gray-300">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="p-2 border">Order ID</th>
+                <th className="p-2 border">Name</th>
+                <th className="p-2 border">Product Name</th>
+                <th className="p-2 border">Product Price</th>
+                <th className="p-2 border">Address</th>
+                <th className="p-2 border">Mobile</th>
+                <th className="p-2 border">Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order.id} className="border-t">
+                  <td className="p-2 border font-mono text-xs">{order.id}</td>
+                  <td className="p-2 border">{order.name}</td>
+                  <td className="p-2 border whitespace-pre-wrap">{order.productName}</td>
+                  <td className="p-2 border">{order.productPrice}</td>
+                  <td className="p-2 border">{order.address}</td>
+                  <td className="p-2 border">{order.mobile}</td>
+                  <td className="p-2 border">
+                    {order.createdAt
+                      ? new Date(order.createdAt).toLocaleString()
+                      : 'N/A'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
