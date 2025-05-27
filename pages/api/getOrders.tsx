@@ -1,4 +1,4 @@
-// pages/api/getOrders.ts (or wherever you keep API functions)
+// pages/api/getOrders.ts
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -6,22 +6,26 @@ export interface Order {
   id: string;
   name: string;
   productName: string;
-  productPrice: number;
+  productPrice: string;
   address: string;
   mobile: string;
-  createdAt: string; // or Timestamp, adjust accordingly
+  createdAt: number; // Firestore timestamp converted to milliseconds
 }
 
 export async function getUserOrders(userId: string): Promise<Order[]> {
-  if (!userId) return [];
-
   const ordersRef = collection(db, 'users', userId, 'orders');
-  const querySnapshot = await getDocs(ordersRef);
+  const snapshot = await getDocs(ordersRef);
 
-  const orders: Order[] = querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...(doc.data() as Omit<Order, 'id'>),
-  }));
-
-  return orders;
+  return snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      name: data.name || '',
+      productName: data.productName || '',
+      productPrice: data.productPrice || '',
+      address: data.address || '',
+      mobile: data.mobile || '',
+      createdAt: data.createdAt?.toMillis?.() || Date.now(), // convert Firestore timestamp
+    };
+  });
 }
