@@ -1,33 +1,23 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getUserOrders, Order } from '@/pages/api/getOrders';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { getAllOrders, Order } from '@/pages/api/getOrders'; // Make sure `getAllOrders` is exported
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        getUserOrders(user.uid).then((data) => {
-          setOrders(data);
-          setLoading(false);
-        });
-      } else {
-        setLoading(false);
-        console.warn('No user found');
-      }
+    getAllOrders().then((data) => {
+      setOrders(data);
+      setLoading(false);
     });
-
-    return () => unsubscribe();
   }, []);
 
   return (
     <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">Your Orders</h2>
+      <h2 className="text-xl font-bold mb-4">All Orders</h2>
 
       {loading ? (
         <p>Loading orders...</p>
@@ -52,7 +42,7 @@ export default function OrdersPage() {
                 <tr key={order.id} className="border-t">
                   <td className="p-2 border font-mono text-xs">{order.id}</td>
                   <td className="p-2 border">{order.name}</td>
-                  <td className="p-2 border whitespace-pre-wrap">{order.productName}</td>
+                  <td className="p-2 border">{order.productName}</td>
                   <td className="p-2 border">{order.productPrice}</td>
                   <td className="p-2 border">{order.address}</td>
                   <td className="p-2 border">{order.mobile}</td>
