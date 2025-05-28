@@ -14,7 +14,6 @@ export interface Order {
 
 export async function getAllOrders(): Promise<Order[]> {
   try {
-    // This will search all `/orders` subcollections regardless of user
     const ordersRef = collectionGroup(db, 'orders');
     const snapshot = await getDocs(ordersRef);
 
@@ -38,8 +37,12 @@ export async function getAllOrders(): Promise<Order[]> {
     });
 
     return orders;
-  } catch (error: any) {
-    console.error('❌ Error fetching all orders:', error.message || error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('❌ Error fetching all orders:', error.message);
+    } else {
+      console.error('❌ Unknown error:', error);
+    }
     return [];
   }
 }
