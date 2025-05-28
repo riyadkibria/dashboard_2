@@ -1,4 +1,5 @@
-import { collection, getDocs } from 'firebase/firestore';
+
+import { collectionGroup, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 export interface Order {
@@ -11,33 +12,19 @@ export interface Order {
   createdAt: number;
 }
 
-export async function getUserOrders(userId: string): Promise<Order[]> {
+export async function getAllOrders(): Promise<Order[]> {
   try {
-    if (!userId) {
-      console.warn('⚠️ userId is missing or undefined.');
-      return [];
-    }
-
-    const ordersPath = `users/${userId}/orders`;
-    console.log(`📁 Fetching orders from path: ${ordersPath}`);
-
-    const ordersRef = collection(db, ordersPath);
+    // This will search all `/orders` subcollections regardless of user
+    const ordersRef = collectionGroup(db, 'orders');
     const snapshot = await getDocs(ordersRef);
 
     if (snapshot.empty) {
-      console.warn(`⚠️ No orders found for user: ${userId}`);
+      console.warn('⚠️ No orders found.');
       return [];
     }
 
     const orders: Order[] = snapshot.docs.map((doc) => {
       const data = doc.data();
-
-      if (!data) {
-        console.warn(`⚠️ No data found in document: ${doc.id}`);
-        return null;
-      }
-
-      console.log(`📄 Order fetched: ${doc.id}`, data);
 
       return {
         id: doc.id,
@@ -48,11 +35,11 @@ export async function getUserOrders(userId: string): Promise<Order[]> {
         mobile: typeof data.mobile === 'string' ? data.mobile : '',
         createdAt: data.createdAt?.toMillis?.() ?? Date.now(),
       };
-    }).filter((o): o is Order => o !== null); // filter out nulls
+    });
 
     return orders;
   } catch (error: any) {
-    console.error('❌ Error fetching user orders:', error.message || error);
+    console.error('❌ Error fetching all orders:', error.message || error);
     return [];
   }
 }
