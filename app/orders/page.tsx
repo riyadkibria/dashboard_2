@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { collectionGroup, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import Sidebar from '@/components/Sidebar'; // ✅ Imported
 
 interface Order {
   id: string;
@@ -53,45 +54,53 @@ export default function OrdersPage() {
   }, []);
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1 style={{ fontSize: '24px', marginBottom: '1rem' }}>All User Orders</h1>
+    <div style={{ display: 'flex' }}>
+      <Sidebar /> {/* ✅ Sidebar used here */}
 
-      {loading ? (
-        <p>Loading orders...</p>
-      ) : orders.length === 0 ? (
-        <p>No orders found.</p>
-      ) : (
-        <div style={{ overflowX: 'auto' }}>
-          <table border={1} cellPadding={10} style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                <th>User ID</th>
-                <th>Order ID</th>
-                <th>Name</th>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Address</th>
-                <th>Mobile</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((o) => (
-                <tr key={o.id}>
-                  <td>{o.userId}</td>
-                  <td>{o.id}</td>
-                  <td>{o.name}</td>
-                  <td>{o.productName}</td>
-                  <td>{o.productPrice}</td>
-                  <td>{o.address}</td>
-                  <td>{o.mobile}</td>
-                  <td>{new Date(o.createdAt).toLocaleString()}</td>
+      <div style={{ padding: '2rem', flex: 1 }}>
+        <h1 style={{ fontSize: '24px', marginBottom: '1rem' }}>All User Orders</h1>
+
+        {loading ? (
+          <p>Loading orders...</p>
+        ) : orders.length === 0 ? (
+          <p>No orders found.</p>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <table
+              border={1}
+              cellPadding={10}
+              style={{ width: '100%', borderCollapse: 'collapse' }}
+            >
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Order ID</th>
+                  <th>Name</th>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Address</th>
+                  <th>Mobile</th>
+                  <th>Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              <tbody>
+                {orders.map((o) => (
+                  <tr key={o.id}>
+                    <td>{o.userId}</td>
+                    <td>{o.id}</td>
+                    <td>{o.name}</td>
+                    <td>{o.productName}</td>
+                    <td>{o.productPrice}</td>
+                    <td>{o.address}</td>
+                    <td>{o.mobile}</td>
+                    <td>{new Date(o.createdAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
