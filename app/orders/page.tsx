@@ -54,10 +54,29 @@ export default function OrdersPage() {
   }, []);
 
   return (
-    <div style={{ display: 'flex' }}>
-      <Sidebar /> {/* ✅ Sidebar used here */}
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+      {/* Fixed Sidebar */}
+      <div style={{
+        width: '250px',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        backgroundColor: '#f5f5f5',
+        borderRight: '1px solid #ddd',
+        overflowY: 'auto'
+      }}>
+        <Sidebar />
+      </div>
 
-      <div style={{ padding: '2rem', flex: 1 }}>
+      {/* Scrollable content area */}
+      <div style={{
+        marginLeft: '250px',
+        padding: '2rem',
+        height: '100vh',
+        overflowY: 'auto',
+        flex: 1
+      }}>
         <h1 style={{ fontSize: '24px', marginBottom: '1rem' }}>All User Orders</h1>
 
         {loading ? (
@@ -71,7 +90,7 @@ export default function OrdersPage() {
               cellPadding={10}
               style={{ width: '100%', borderCollapse: 'collapse' }}
             >
-              <thead>
+              <thead style={{ backgroundColor: '#f0f0f0' }}>
                 <tr>
                   <th>User ID</th>
                   <th>Order ID</th>
