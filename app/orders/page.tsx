@@ -71,20 +71,18 @@ export default function OrdersPage() {
         <Sidebar />
       </div>
 
-      {/* Main content */}
+      {/* Main Content */}
       <div
         style={{
           marginLeft: '250px',
-          padding: '2rem',
+          padding: '1.5rem',
           flex: 1,
           height: '100vh',
           overflowY: 'auto',
-          backgroundColor: '#f9fafb',
+          backgroundColor: '#f3f4f6',
         }}
       >
-        <h1 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '1.5rem' }}>
-          All User Orders
-        </h1>
+        <h1 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '1rem' }}>All User Orders</h1>
 
         {loading ? (
           <p>Loading orders...</p>
@@ -94,22 +92,39 @@ export default function OrdersPage() {
           <div
             style={{
               overflowX: 'auto',
-              backgroundColor: '#ffffff',
+              backgroundColor: '#fff',
               borderRadius: '8px',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+              padding: '1rem',
             }}
           >
-            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '900px' }}>
+            <table
+              style={{
+                width: '100%',
+                borderCollapse: 'collapse',
+                minWidth: '1000px',
+                fontSize: '12px',
+              }}
+            >
               <thead>
-                <tr style={{ backgroundColor: '#f3f4f6', textAlign: 'left' }}>
-                  {['User ID', 'Order ID', 'Name', 'Product', 'Price', 'Address', 'Mobile', 'Date'].map((header) => (
+                <tr style={{ backgroundColor: '#f9fafb', textAlign: 'left' }}>
+                  {[
+                    'User ID',
+                    'Order ID',
+                    'Name',
+                    'Products',
+                    'Price',
+                    'Address',
+                    'Mobile',
+                    'Date',
+                  ].map((header) => (
                     <th
                       key={header}
                       style={{
-                        padding: '12px 16px',
-                        fontSize: '14px',
+                        padding: '10px 14px',
                         fontWeight: 600,
                         borderBottom: '1px solid #e5e7eb',
+                        whiteSpace: 'nowrap',
                       }}
                     >
                       {header}
@@ -129,11 +144,11 @@ export default function OrdersPage() {
                     <td style={cellStyle}>{o.id}</td>
                     <td style={cellStyle}>{o.name}</td>
 
-                    {/* STACKED product names */}
-                    <td style={cellStyle}>
+                    {/* Bigger column for product names stacked vertically */}
+                    <td style={{ ...cellStyle, width: '200px' }}>
                       <ul style={{ paddingLeft: '1rem', margin: 0 }}>
                         {o.productName.split(',').map((product, idx) => (
-                          <li key={idx} style={{ listStyleType: 'disc' }}>
+                          <li key={idx} style={{ listStyleType: 'disc', marginBottom: '2px' }}>
                             {product.trim()}
                           </li>
                         ))}
@@ -156,9 +171,9 @@ export default function OrdersPage() {
 }
 
 const cellStyle: React.CSSProperties = {
-  padding: '12px 16px',
-  fontSize: '14px',
-  color: '#111827',
+  padding: '10px 14px',
   borderBottom: '1px solid #e5e7eb',
   verticalAlign: 'top',
+  color: '#1f2937',
+  fontSize: '12px',
 };
