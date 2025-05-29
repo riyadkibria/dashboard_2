@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { collectionGroup, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import Sidebar from '';
+import Sidebar from "@/components/Sidebar";
 
 interface Order {
   id: string;
