@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { collectionGroup, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import Sidebar from '@/components/Sidebar'; // ✅ Imported
+import Sidebar from '@/components/Sidebar';
 
 interface Order {
   id: string;
@@ -71,7 +71,7 @@ export default function OrdersPage() {
         <Sidebar />
       </div>
 
-      {/* Content */}
+      {/* Main content */}
       <div
         style={{
           marginLeft: '250px',
@@ -91,7 +91,14 @@ export default function OrdersPage() {
         ) : orders.length === 0 ? (
           <p>No orders found.</p>
         ) : (
-          <div style={{ overflowX: 'auto', backgroundColor: '#ffffff', borderRadius: '8px', boxShadow: '0 2px 6px rgba(0,0,0,0.05)' }}>
+          <div
+            style={{
+              overflowX: 'auto',
+              backgroundColor: '#ffffff',
+              borderRadius: '8px',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+            }}
+          >
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '900px' }}>
               <thead>
                 <tr style={{ backgroundColor: '#f3f4f6', textAlign: 'left' }}>
@@ -116,13 +123,23 @@ export default function OrdersPage() {
                     key={o.id}
                     style={{
                       backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb',
-                      transition: 'background-color 0.2s',
                     }}
                   >
                     <td style={cellStyle}>{o.userId}</td>
                     <td style={cellStyle}>{o.id}</td>
                     <td style={cellStyle}>{o.name}</td>
-                    <td style={cellStyle}>{o.productName}</td>
+
+                    {/* STACKED product names */}
+                    <td style={cellStyle}>
+                      <ul style={{ paddingLeft: '1rem', margin: 0 }}>
+                        {o.productName.split(',').map((product, idx) => (
+                          <li key={idx} style={{ listStyleType: 'disc' }}>
+                            {product.trim()}
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
+
                     <td style={cellStyle}>{o.productPrice}</td>
                     <td style={cellStyle}>{o.address}</td>
                     <td style={cellStyle}>{o.mobile}</td>
@@ -143,5 +160,5 @@ const cellStyle: React.CSSProperties = {
   fontSize: '14px',
   color: '#111827',
   borderBottom: '1px solid #e5e7eb',
-  whiteSpace: 'nowrap',
+  verticalAlign: 'top',
 };
