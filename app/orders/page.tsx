@@ -24,7 +24,6 @@ export default function OrdersPage() {
     async function fetchOrders() {
       try {
         const snapshot = await getDocs(collectionGroup(db, 'orders'));
-
         const fetchedOrders: Order[] = snapshot.docs.map((doc) => {
           const data = doc.data();
           const pathSegments = doc.ref.path.split('/');
@@ -55,7 +54,7 @@ export default function OrdersPage() {
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-      {/* Fixed Sidebar */}
+      {/* Sidebar */}
       <div
         style={{
           width: '250px',
@@ -80,24 +79,24 @@ export default function OrdersPage() {
           height: '100vh',
           overflowY: 'auto',
           backgroundColor: '#f9fafb',
-          color: '#000',
-          fontFamily: 'Inter, sans-serif',
         }}
       >
-        <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '1.5rem' }}>All User Orders</h1>
+        <h1 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '1.5rem', color: '#111' }}>
+          All User Orders
+        </h1>
 
         {loading ? (
-          <p>Loading orders...</p>
+          <p style={{ color: '#111' }}>Loading orders...</p>
         ) : orders.length === 0 ? (
-          <p>No orders found.</p>
+          <p style={{ color: '#111' }}>No orders found.</p>
         ) : (
           <div
             style={{
               overflowX: 'auto',
-              backgroundColor: '#ffffff',
+              backgroundColor: '#fff',
               borderRadius: '10px',
               boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
-              padding: '1.5rem',
+              padding: '1rem',
             }}
           >
             <table
@@ -105,35 +104,19 @@ export default function OrdersPage() {
                 width: '100%',
                 borderCollapse: 'collapse',
                 minWidth: '1000px',
-                fontSize: '14px',
-                color: '#000',
+                fontSize: '13px',
               }}
             >
               <thead>
-                <tr style={{ backgroundColor: '#f1f5f9', textAlign: 'left' }}>
-                  {[
-                    'User ID',
-                    'Order ID',
-                    'Name',
-                    'Products',
-                    'Price',
-                    'Address',
-                    'Mobile',
-                    'Date',
-                  ].map((header) => (
-                    <th
-                      key={header}
-                      style={{
-                        padding: '12px 16px',
-                        fontWeight: 600,
-                        borderBottom: '2px solid #e5e7eb',
-                        whiteSpace: 'nowrap',
-                        color: '#111827',
-                      }}
-                    >
-                      {header}
-                    </th>
-                  ))}
+                <tr style={{ backgroundColor: '#f3f4f6', textAlign: 'left', color: '#111' }}>
+                  <th style={{ ...headerStyle, width: '100px' }}>User ID</th>
+                  <th style={{ ...headerStyle, width: '100px' }}>Order ID</th>
+                  <th style={{ ...headerStyle, width: '160px' }}>Name</th>
+                  <th style={{ ...headerStyle, width: '220px' }}>Products</th>
+                  <th style={{ ...headerStyle, width: '140px' }}>Price</th>
+                  <th style={{ ...headerStyle, width: '200px' }}>Address</th>
+                  <th style={headerStyle}>Mobile</th>
+                  <th style={headerStyle}>Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -141,25 +124,22 @@ export default function OrdersPage() {
                   <tr
                     key={o.id}
                     style={{
-                      backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb',
-                      transition: 'background 0.3s',
+                      backgroundColor: index % 2 === 0 ? '#fff' : '#f3f4f6',
+                      color: '#000',
                     }}
                   >
                     <td style={cellStyle}>{o.userId}</td>
                     <td style={cellStyle}>{o.id}</td>
                     <td style={cellStyle}>{o.name}</td>
-
-                    {/* Product names listed vertically */}
-                    <td style={{ ...cellStyle, width: '220px' }}>
-                      <ul style={{ paddingLeft: '1rem', margin: 0 }}>
+                    <td style={{ ...cellStyle, paddingLeft: '1rem' }}>
+                      <ul style={{ margin: 0, padding: 0, listStyleType: 'disc' }}>
                         {o.productName.split(',').map((product, idx) => (
-                          <li key={idx} style={{ marginBottom: '2px', color: '#000' }}>
+                          <li key={idx} style={{ marginBottom: '2px' }}>
                             {product.trim()}
                           </li>
                         ))}
                       </ul>
                     </td>
-
                     <td style={cellStyle}>{o.productPrice}</td>
                     <td style={cellStyle}>{o.address}</td>
                     <td style={cellStyle}>{o.mobile}</td>
@@ -175,11 +155,18 @@ export default function OrdersPage() {
   );
 }
 
+const headerStyle: React.CSSProperties = {
+  padding: '12px 16px',
+  fontWeight: 600,
+  borderBottom: '1px solid #e5e7eb',
+  whiteSpace: 'nowrap',
+  fontSize: '13px',
+};
+
 const cellStyle: React.CSSProperties = {
   padding: '12px 16px',
   borderBottom: '1px solid #e5e7eb',
   verticalAlign: 'top',
   color: '#000',
-  fontSize: '14px',
-  lineHeight: 1.4,
+  fontSize: '13px',
 };
