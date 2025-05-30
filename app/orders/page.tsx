@@ -108,14 +108,14 @@ export default function OrdersPage() {
             >
               <thead>
                 <tr style={{ backgroundColor: '#f3f4f6', textAlign: 'left', color: '#000' }}>
-                  <th style={{ ...headerStyle, width: '80px' }}>User ID</th>
-                  <th style={{ ...headerStyle, width: '100px' }}>Order ID</th>
-                  <th style={{ ...headerStyle, width: '150px' }}>Name</th>
-                  <th style={{ ...headerStyle, width: '250px' }}>Products</th>
-                  <th style={{ ...headerStyle, width: '150px' }}>Price</th>
-                  <th style={{ ...headerStyle, width: '200px' }}>Address</th>
-                  <th style={{ ...headerStyle, width: '120px' }}>Mobile</th>
-                  <th style={{ ...headerStyle, width: '180px' }}>Date</th>
+                  <th style={{ ...headerStyle, width: '10%' }}>User ID</th>
+                  <th style={{ ...headerStyle, width: '10%' }}>Order ID</th>
+                  <th style={{ ...headerStyle, width: '20%' }}>Name</th>
+                  <th style={{ ...headerStyle, width: '20%' }}>Products</th>
+                  <th style={{ ...headerStyle, width: '10%' }}>Price</th>
+                  <th style={{ ...headerStyle, width: '10%' }}>Address</th>
+                  <th style={{ ...headerStyle, width: '10%' }}>Mobile</th>
+                  <th style={{ ...headerStyle, width: '10%' }}>Date</th>
                 </tr>
               </thead>
               <tbody>
