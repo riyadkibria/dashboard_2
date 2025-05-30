@@ -111,12 +111,10 @@ export default function OrdersPage() {
             >
               <thead>
                 <tr style={{ backgroundColor: '#f9fafb', textAlign: 'left' }}>
-                  <th style={{ ...headerStyle, width: '8%' }}>User ID</th>
-                  <th style={{ ...headerStyle, width: '10%' }}>Order ID</th>
-                  <th style={{ ...headerStyle, width: '12%' }}>Name</th>
-                  <th style={{ ...headerStyle, width: '25%' }}>Products</th>
-                  <th style={{ ...headerStyle, width: '12%' }}>Price</th>
-                  <th style={{ ...headerStyle, width: '18%' }}>Address</th>
+                  <th style={{ ...headerStyle, width: '15%' }}>Name</th>
+                  <th style={{ ...headerStyle, width: '30%' }}>Products</th>
+                  <th style={{ ...headerStyle, width: '10%' }}>Price</th>
+                  <th style={{ ...headerStyle, width: '25%' }}>Address</th>
                   <th style={{ ...headerStyle, width: '10%' }}>Mobile</th>
                   <th style={{ ...headerStyle, width: '15%' }}>Date</th>
                 </tr>
@@ -129,10 +127,8 @@ export default function OrdersPage() {
                       backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb',
                     }}
                   >
-                    <td style={{ ...cellStyle, width: '8%' }}>{o.userId}</td>
-                    <td style={{ ...cellStyle, width: '10%' }}>{o.id}</td>
-                    <td style={{ ...cellStyle, width: '12%' }}>{o.name}</td>
-                    <td style={{ ...cellStyle, width: '25%' }}>
+                    <td style={{ ...cellStyle, width: '15%' }}>{o.name}</td>
+                    <td style={{ ...cellStyle, width: '30%' }}>
                       <ul style={{ paddingLeft: '1rem', margin: 0, wordWrap: 'break-word' }}>
                         {o.productName.split(',').map((product, idx) => (
                           <li key={idx} style={{ listStyleType: 'disc', marginBottom: '2px' }}>
@@ -141,8 +137,8 @@ export default function OrdersPage() {
                         ))}
                       </ul>
                     </td>
-                    <td style={{ ...cellStyle, width: '12%' }}>{o.productPrice}</td>
-                    <td style={{ ...cellStyle, width: '18%' }}>{o.address}</td>
+                    <td style={{ ...cellStyle, width: '10%' }}>{o.productPrice}</td>
+                    <td style={{ ...cellStyle, width: '25%' }}>{o.address}</td>
                     <td style={{ ...cellStyle, width: '10%' }}>{o.mobile}</td>
                     <td style={{ ...cellStyle, width: '15%' }}>
                       {new Date(o.createdAt).toLocaleString()}
