@@ -75,14 +75,16 @@ export default function OrdersPage() {
       <div
         style={{
           marginLeft: '250px',
-          padding: '1.5rem',
+          padding: '2rem',
           flex: 1,
           height: '100vh',
           overflowY: 'auto',
-          backgroundColor: '#f3f4f6',
+          backgroundColor: '#f9fafb',
+          color: '#000',
+          fontFamily: 'Inter, sans-serif',
         }}
       >
-        <h1 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '1rem' }}>All User Orders</h1>
+        <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '1.5rem' }}>All User Orders</h1>
 
         {loading ? (
           <p>Loading orders...</p>
@@ -92,10 +94,10 @@ export default function OrdersPage() {
           <div
             style={{
               overflowX: 'auto',
-              backgroundColor: '#fff',
-              borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-              padding: '1rem',
+              backgroundColor: '#ffffff',
+              borderRadius: '10px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+              padding: '1.5rem',
             }}
           >
             <table
@@ -103,11 +105,12 @@ export default function OrdersPage() {
                 width: '100%',
                 borderCollapse: 'collapse',
                 minWidth: '1000px',
-                fontSize: '12px',
+                fontSize: '14px',
+                color: '#000',
               }}
             >
               <thead>
-                <tr style={{ backgroundColor: '#f9fafb', textAlign: 'left' }}>
+                <tr style={{ backgroundColor: '#f1f5f9', textAlign: 'left' }}>
                   {[
                     'User ID',
                     'Order ID',
@@ -121,10 +124,11 @@ export default function OrdersPage() {
                     <th
                       key={header}
                       style={{
-                        padding: '10px 14px',
+                        padding: '12px 16px',
                         fontWeight: 600,
-                        borderBottom: '1px solid #e5e7eb',
+                        borderBottom: '2px solid #e5e7eb',
                         whiteSpace: 'nowrap',
+                        color: '#111827',
                       }}
                     >
                       {header}
@@ -138,17 +142,18 @@ export default function OrdersPage() {
                     key={o.id}
                     style={{
                       backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb',
+                      transition: 'background 0.3s',
                     }}
                   >
                     <td style={cellStyle}>{o.userId}</td>
                     <td style={cellStyle}>{o.id}</td>
                     <td style={cellStyle}>{o.name}</td>
 
-                    {/* Bigger column for product names stacked vertically */}
-                    <td style={{ ...cellStyle, width: '200px' }}>
+                    {/* Product names listed vertically */}
+                    <td style={{ ...cellStyle, width: '220px' }}>
                       <ul style={{ paddingLeft: '1rem', margin: 0 }}>
                         {o.productName.split(',').map((product, idx) => (
-                          <li key={idx} style={{ listStyleType: 'disc', marginBottom: '2px' }}>
+                          <li key={idx} style={{ marginBottom: '2px', color: '#000' }}>
                             {product.trim()}
                           </li>
                         ))}
@@ -171,9 +176,10 @@ export default function OrdersPage() {
 }
 
 const cellStyle: React.CSSProperties = {
-  padding: '10px 14px',
+  padding: '12px 16px',
   borderBottom: '1px solid #e5e7eb',
   verticalAlign: 'top',
-  color: '#1f2937',
-  fontSize: '12px',
+  color: '#000',
+  fontSize: '14px',
+  lineHeight: 1.4,
 };
