@@ -43,7 +43,7 @@ export default function OrdersPage() {
 
         setOrders(fetchedOrders);
       } catch (error) {
-        console.error('❌ Error fetching orders:', error);
+        console.error('Error fetching orders:', error);
       } finally {
         setLoading(false);
       }
@@ -81,14 +81,14 @@ export default function OrdersPage() {
           backgroundColor: '#f9fafb',
         }}
       >
-        <h1 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '1.5rem', color: '#111' }}>
+        <h1 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '1.5rem', color: '#000' }}>
           All User Orders
         </h1>
 
         {loading ? (
-          <p style={{ color: '#111' }}>Loading orders...</p>
+          <p style={{ color: '#000' }}>Loading orders...</p>
         ) : orders.length === 0 ? (
-          <p style={{ color: '#111' }}>No orders found.</p>
+          <p style={{ color: '#000' }}>No orders found.</p>
         ) : (
           <div
             style={{
@@ -103,20 +103,19 @@ export default function OrdersPage() {
               style={{
                 width: '100%',
                 borderCollapse: 'collapse',
-                minWidth: '1000px',
                 fontSize: '13px',
               }}
             >
               <thead>
-                <tr style={{ backgroundColor: '#f3f4f6', textAlign: 'left', color: '#111' }}>
-                  <th style={{ ...headerStyle, width: '100px' }}>User ID</th>
+                <tr style={{ backgroundColor: '#f3f4f6', textAlign: 'left', color: '#000' }}>
+                  <th style={{ ...headerStyle, width: '80px' }}>User ID</th>
                   <th style={{ ...headerStyle, width: '100px' }}>Order ID</th>
-                  <th style={{ ...headerStyle, width: '160px' }}>Name</th>
-                  <th style={{ ...headerStyle, width: '220px' }}>Products</th>
-                  <th style={{ ...headerStyle, width: '140px' }}>Price</th>
+                  <th style={{ ...headerStyle, width: '150px' }}>Name</th>
+                  <th style={{ ...headerStyle, width: '250px' }}>Products</th>
+                  <th style={{ ...headerStyle, width: '150px' }}>Price</th>
                   <th style={{ ...headerStyle, width: '200px' }}>Address</th>
-                  <th style={headerStyle}>Mobile</th>
-                  <th style={headerStyle}>Date</th>
+                  <th style={{ ...headerStyle, width: '120px' }}>Mobile</th>
+                  <th style={{ ...headerStyle, width: '180px' }}>Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -124,19 +123,17 @@ export default function OrdersPage() {
                   <tr
                     key={o.id}
                     style={{
-                      backgroundColor: index % 2 === 0 ? '#fff' : '#f3f4f6',
+                      backgroundColor: index % 2 === 0 ? '#fff' : '#f9fafb',
                       color: '#000',
                     }}
                   >
                     <td style={cellStyle}>{o.userId}</td>
                     <td style={cellStyle}>{o.id}</td>
                     <td style={cellStyle}>{o.name}</td>
-                    <td style={{ ...cellStyle, paddingLeft: '1rem' }}>
-                      <ul style={{ margin: 0, padding: 0, listStyleType: 'disc' }}>
-                        {o.productName.split(',').map((product, idx) => (
-                          <li key={idx} style={{ marginBottom: '2px' }}>
-                            {product.trim()}
-                          </li>
+                    <td style={{ ...cellStyle }}>
+                      <ul style={{ margin: 0, paddingLeft: '1rem' }}>
+                        {o.productName.split(',').map((p, i) => (
+                          <li key={i}>{p.trim()}</li>
                         ))}
                       </ul>
                     </td>
