@@ -19,6 +19,7 @@ interface Order {
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false); // <-- Added state here
 
   useEffect(() => {
     async function fetchOrders() {
@@ -58,7 +59,7 @@ export default function OrdersPage() {
       {/* Fixed Sidebar */}
       <div
         style={{
-          width: '250px',
+          width: isCollapsed ? '80px' : '250px', // adjust width based on collapse state
           height: '100vh',
           position: 'fixed',
           top: 0,
@@ -66,20 +67,23 @@ export default function OrdersPage() {
           backgroundColor: '#111827',
           color: '#fff',
           borderRight: '1px solid #1f2937',
+          transition: 'width 0.3s ease',
         }}
       >
-        <Sidebar />
+        {/* Pass props to Sidebar */}
+        <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       </div>
 
       {/* Main Content */}
       <div
         style={{
-          marginLeft: '250px',
+          marginLeft: isCollapsed ? '80px' : '250px', // shift main content accordingly
           padding: '1.5rem',
           flex: 1,
           height: '100vh',
           overflowY: 'auto',
           backgroundColor: '#f3f4f6',
+          transition: 'margin-left 0.3s ease',
         }}
       >
         <h1 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '1rem', color: '#000' }}>
@@ -171,4 +175,5 @@ const cellStyle: React.CSSProperties = {
   wordWrap: 'break-word',
   overflowWrap: 'break-word',
 };
+
 
