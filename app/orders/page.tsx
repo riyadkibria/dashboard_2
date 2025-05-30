@@ -24,6 +24,7 @@ export default function OrdersPage() {
     async function fetchOrders() {
       try {
         const snapshot = await getDocs(collectionGroup(db, 'orders'));
+
         const fetchedOrders: Order[] = snapshot.docs.map((doc) => {
           const data = doc.data();
           const pathSegments = doc.ref.path.split('/');
@@ -43,7 +44,7 @@ export default function OrdersPage() {
 
         setOrders(fetchedOrders);
       } catch (error) {
-        console.error('Error fetching orders:', error);
+        console.error('❌ Error fetching orders:', error);
       } finally {
         setLoading(false);
       }
@@ -54,7 +55,7 @@ export default function OrdersPage() {
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-      {/* Sidebar */}
+      {/* Fixed Sidebar */}
       <div
         style={{
           width: '250px',
@@ -74,48 +75,50 @@ export default function OrdersPage() {
       <div
         style={{
           marginLeft: '250px',
-          padding: '2rem',
+          padding: '1.5rem',
           flex: 1,
           height: '100vh',
           overflowY: 'auto',
-          backgroundColor: '#f9fafb',
+          backgroundColor: '#f3f4f6',
         }}
       >
-        <h1 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '1.5rem', color: '#000' }}>
+        <h1 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '1rem', color: '#000' }}>
           All User Orders
         </h1>
 
         {loading ? (
-          <p style={{ color: '#000' }}>Loading orders...</p>
+          <p>Loading orders...</p>
         ) : orders.length === 0 ? (
-          <p style={{ color: '#000' }}>No orders found.</p>
+          <p>No orders found.</p>
         ) : (
           <div
             style={{
               overflowX: 'auto',
               backgroundColor: '#fff',
-              borderRadius: '10px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
+              borderRadius: '8px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
               padding: '1rem',
             }}
           >
             <table
               style={{
                 width: '100%',
+                tableLayout: 'fixed',
                 borderCollapse: 'collapse',
-                fontSize: '13px',
+                fontSize: '12px',
+                color: '#000',
               }}
             >
               <thead>
-                <tr style={{ backgroundColor: '#f3f4f6', textAlign: 'left', color: '#000' }}>
-                  <th style={{ ...headerStyle, width: '0%' }}>User ID</th>
+                <tr style={{ backgroundColor: '#f9fafb', textAlign: 'left' }}>
+                  <th style={{ ...headerStyle, width: '8%' }}>User ID</th>
                   <th style={{ ...headerStyle, width: '10%' }}>Order ID</th>
-                  <th style={{ ...headerStyle, width: '20%' }}>Name</th>
-                  <th style={{ ...headerStyle, width: '20%' }}>Products</th>
-                  <th style={{ ...headerStyle, width: '10%' }}>Price</th>
-                  <th style={{ ...headerStyle, width: '10%' }}>Address</th>
+                  <th style={{ ...headerStyle, width: '12%' }}>Name</th>
+                  <th style={{ ...headerStyle, width: '25%' }}>Products</th>
+                  <th style={{ ...headerStyle, width: '12%' }}>Price</th>
+                  <th style={{ ...headerStyle, width: '18%' }}>Address</th>
                   <th style={{ ...headerStyle, width: '10%' }}>Mobile</th>
-                  <th style={{ ...headerStyle, width: '10%' }}>Date</th>
+                  <th style={{ ...headerStyle, width: '15%' }}>Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -123,24 +126,27 @@ export default function OrdersPage() {
                   <tr
                     key={o.id}
                     style={{
-                      backgroundColor: index % 2 === 0 ? '#fff' : '#f9fafb',
-                      color: '#000',
+                      backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb',
                     }}
                   >
-                    <td style={cellStyle}>{o.userId}</td>
-                    <td style={cellStyle}>{o.id}</td>
-                    <td style={cellStyle}>{o.name}</td>
-                    <td style={{ ...cellStyle }}>
-                      <ul style={{ margin: 0, paddingLeft: '1rem' }}>
-                        {o.productName.split(',').map((p, i) => (
-                          <li key={i}>{p.trim()}</li>
+                    <td style={{ ...cellStyle, width: '8%' }}>{o.userId}</td>
+                    <td style={{ ...cellStyle, width: '10%' }}>{o.id}</td>
+                    <td style={{ ...cellStyle, width: '12%' }}>{o.name}</td>
+                    <td style={{ ...cellStyle, width: '25%' }}>
+                      <ul style={{ paddingLeft: '1rem', margin: 0, wordWrap: 'break-word' }}>
+                        {o.productName.split(',').map((product, idx) => (
+                          <li key={idx} style={{ listStyleType: 'disc', marginBottom: '2px' }}>
+                            {product.trim()}
+                          </li>
                         ))}
                       </ul>
                     </td>
-                    <td style={cellStyle}>{o.productPrice}</td>
-                    <td style={cellStyle}>{o.address}</td>
-                    <td style={cellStyle}>{o.mobile}</td>
-                    <td style={cellStyle}>{new Date(o.createdAt).toLocaleString()}</td>
+                    <td style={{ ...cellStyle, width: '12%' }}>{o.productPrice}</td>
+                    <td style={{ ...cellStyle, width: '18%' }}>{o.address}</td>
+                    <td style={{ ...cellStyle, width: '10%' }}>{o.mobile}</td>
+                    <td style={{ ...cellStyle, width: '15%' }}>
+                      {new Date(o.createdAt).toLocaleString()}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -153,17 +159,19 @@ export default function OrdersPage() {
 }
 
 const headerStyle: React.CSSProperties = {
-  padding: '12px 16px',
+  padding: '10px 14px',
   fontWeight: 600,
   borderBottom: '1px solid #e5e7eb',
   whiteSpace: 'nowrap',
-  fontSize: '13px',
+  color: '#000',
 };
 
 const cellStyle: React.CSSProperties = {
-  padding: '12px 16px',
+  padding: '10px 14px',
   borderBottom: '1px solid #e5e7eb',
   verticalAlign: 'top',
+  fontSize: '12px',
   color: '#000',
-  fontSize: '13px',
+  wordWrap: 'break-word',
+  overflowWrap: 'break-word',
 };
