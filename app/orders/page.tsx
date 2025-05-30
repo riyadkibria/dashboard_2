@@ -108,7 +108,7 @@ export default function OrdersPage() {
             >
               <thead>
                 <tr style={{ backgroundColor: '#f3f4f6', textAlign: 'left', color: '#000' }}>
-                  <th style={{ ...headerStyle, width: '10%' }}>User ID</th>
+                  <th style={{ ...headerStyle, width: '0%' }}>User ID</th>
                   <th style={{ ...headerStyle, width: '10%' }}>Order ID</th>
                   <th style={{ ...headerStyle, width: '20%' }}>Name</th>
                   <th style={{ ...headerStyle, width: '20%' }}>Products</th>
