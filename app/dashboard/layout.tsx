@@ -2,6 +2,7 @@
 "use client";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
+import { useState } from "react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
