@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { collectionGroup, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Sidebar from '@/components/Sidebar';
+import { FaShoppingBag, FaTag, FaPhone } from 'react-icons/fa'; // react-icons needed
 
 interface Order {
   id: string;
@@ -19,7 +20,7 @@ interface Order {
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isCollapsed, setIsCollapsed] = useState(false); // <-- Added state here
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     async function fetchOrders() {
@@ -59,7 +60,7 @@ export default function OrdersPage() {
       {/* Fixed Sidebar */}
       <div
         style={{
-          width: isCollapsed ? '80px' : '250px', // adjust width based on collapse state
+          width: isCollapsed ? '80px' : '250px',
           height: '100vh',
           position: 'fixed',
           top: 0,
@@ -70,14 +71,13 @@ export default function OrdersPage() {
           transition: 'width 0.3s ease',
         }}
       >
-        {/* Pass props to Sidebar */}
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       </div>
 
       {/* Main Content */}
       <div
         style={{
-          marginLeft: isCollapsed ? '80px' : '250px', // shift main content accordingly
+          marginLeft: isCollapsed ? '80px' : '250px',
           padding: '1.5rem',
           flex: 1,
           height: '100vh',
@@ -132,18 +132,54 @@ export default function OrdersPage() {
                     }}
                   >
                     <td style={{ ...cellStyle, width: '14%' }}>{o.name}</td>
+
                     <td style={{ ...cellStyle, width: '28%' }}>
-                      <ul style={{ paddingLeft: '1rem', margin: 0, wordWrap: 'break-word' }}>
+                      <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
                         {o.productName.split(',').map((product, idx) => (
-                          <li key={idx} style={{ listStyleType: 'disc', marginBottom: '2px' }}>
-                            {product.trim()}
+                          <li
+                            key={idx}
+                            style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}
+                          >
+                            <FaShoppingBag
+                              style={{ marginRight: '6px', color: '#4A90E2', minWidth: '16px' }}
+                            />
+                            <span>{product.trim()}</span>
                           </li>
                         ))}
                       </ul>
                     </td>
-                    <td style={{ ...cellStyle, width: '20%' }}>{o.productPrice}</td>
+
+                    <td style={{ ...cellStyle, width: '20%' }}>
+                      <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
+                        {o.productPrice.split(',').map((price, idx) => (
+                          <li
+                            key={idx}
+                            style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}
+                          >
+                            <FaTag
+                              style={{ marginRight: '6px', color: '#E94E77', minWidth: '16px' }}
+                            />
+                            <span>{price.trim()}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
+
                     <td style={{ ...cellStyle, width: '18%' }}>{o.address}</td>
-                    <td style={{ ...cellStyle, width: '10%' }}>{o.mobile}</td>
+
+                    <td
+                      style={{
+                        ...cellStyle,
+                        width: '10%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                      }}
+                    >
+                      <FaPhone style={{ color: '#34D399' }} />
+                      {o.mobile}
+                    </td>
+
                     <td style={{ ...cellStyle, width: '10%' }}>
                       {new Date(o.createdAt).toLocaleString()}
                     </td>
@@ -175,5 +211,3 @@ const cellStyle: React.CSSProperties = {
   wordWrap: 'break-word',
   overflowWrap: 'break-word',
 };
-
-
