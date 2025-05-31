@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -13,6 +14,7 @@ import {
   Settings,
   BarChart,
 } from "lucide-react";
+import { useState } from "react";
 
 const links = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
@@ -23,14 +25,9 @@ const links = [
   { name: "Analytics", href: "/dashboard/analytics", icon: BarChart },
 ];
 
-export default function Sidebar({
-  isCollapsed,
-  setIsCollapsed,
-}: {
-  isCollapsed: boolean;
-  setIsCollapsed: (value: boolean) => void;
-}) {
+export default function Sidebar() {
   const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(true); // collapsed by default
 
   return (
     <aside
@@ -39,7 +36,7 @@ export default function Sidebar({
         isCollapsed ? "w-16" : "w-64"
       )}
     >
-      {/* Top section with title and toggle button */}
+      {/* Top section */}
       <div
         className={cn(
           "flex items-center justify-between py-6",
@@ -61,7 +58,7 @@ export default function Sidebar({
         </button>
       </div>
 
-      {/* Navigation links */}
+      {/* Navigation */}
       <nav className="flex flex-col space-y-2 px-2">
         {links.map((link) => {
           const isActive = pathname === link.href;
