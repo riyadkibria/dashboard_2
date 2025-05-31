@@ -39,7 +39,7 @@ export default function Sidebar({
         isCollapsed ? "w-16" : "w-64"
       )}
     >
-      {/* Top bar */}
+      {/* Top section with title and toggle button */}
       <div
         className={cn(
           "flex items-center justify-between py-6",
@@ -51,13 +51,17 @@ export default function Sidebar({
         )}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-1 rounded hover:bg-gray-200 transition"
+          className="p-1 rounded hover:bg-gray-100 transition"
         >
-          {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+          {isCollapsed ? (
+            <ChevronRight size={20} className="text-gray-600 hover:text-blue-600" />
+          ) : (
+            <ChevronLeft size={20} className="text-gray-600 hover:text-blue-600" />
+          )}
         </button>
       </div>
 
-      {/* Navigation */}
+      {/* Navigation links */}
       <nav className="flex flex-col space-y-2 px-2">
         {links.map((link) => {
           const isActive = pathname === link.href;
@@ -83,4 +87,5 @@ export default function Sidebar({
     </aside>
   );
 }
+
 
