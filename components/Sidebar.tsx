@@ -30,15 +30,25 @@ export default function Sidebar({
         isCollapsed ? "w-16" : "w-64"
       )}
     >
-      <div className="flex items-center justify-between px-4 py-6">
+      {/* Top Section */}
+      <div
+        className={cn(
+          "flex items-center justify-between py-6",
+          isCollapsed ? "px-2 justify-center" : "px-4"
+        )}
+      >
         {!isCollapsed && (
           <h2 className="text-xl font-bold text-gray-800">Admin</h2>
         )}
-        <button onClick={() => setIsCollapsed(!isCollapsed)}>
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="p-1 rounded hover:bg-gray-200 transition"
+        >
           {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
         </button>
       </div>
 
+      {/* Navigation Links */}
       <nav className="flex flex-col space-y-2 px-2">
         {links.map((link) => {
           const isActive = pathname === link.href;
@@ -54,7 +64,9 @@ export default function Sidebar({
               )}
             >
               {!isCollapsed && link.name}
-              {isCollapsed && <div className="w-2 h-2 bg-gray-400 rounded-full"></div>}
+              {isCollapsed && (
+                <div className="w-2 h-2 bg-gray-400 rounded-full" />
+              )}
             </Link>
           );
         })}
