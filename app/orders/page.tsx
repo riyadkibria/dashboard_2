@@ -26,7 +26,6 @@ export default function OrdersPage() {
     async function fetchOrders() {
       try {
         const snapshot = await getDocs(collectionGroup(db, 'orders'));
-
         const fetchedOrders: Order[] = snapshot.docs.map((doc) => {
           const data = doc.data();
           const pathSegments = doc.ref.path.split('/');
@@ -133,6 +132,7 @@ export default function OrdersPage() {
                   >
                     <td style={{ ...cellStyle, width: '14%' }}>{o.name}</td>
 
+                    {/* Products stacked */}
                     <td style={{ ...cellStyle, width: '28%' }}>
                       <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
                         {o.productName.split(',').map((product, idx) => (
@@ -142,9 +142,6 @@ export default function OrdersPage() {
                               display: 'flex',
                               alignItems: 'center',
                               marginBottom: '4px',
-                              whiteSpace: 'nowrap',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
                             }}
                           >
                             <FaShoppingBag
@@ -156,29 +153,24 @@ export default function OrdersPage() {
                       </ul>
                     </td>
 
+                    {/* Prices stacked */}
                     <td style={{ ...cellStyle, width: '20%' }}>
                       <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
-                        {o.productPrice.split(',').map((priceStr, idx) => {
-                          const price = priceStr.trim();
-                          return (
-                            <li
-                              key={idx}
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                marginBottom: '4px',
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                              }}
-                            >
-                              <FaTag
-                                style={{ marginRight: '6px', color: '#E94E77', minWidth: '16px' }}
-                              />
-                              <span>{price}</span>
-                            </li>
-                          );
-                        })}
+                        {o.productPrice.split(',').map((priceStr, idx) => (
+                          <li
+                            key={idx}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '4px',
+                            }}
+                          >
+                            <FaTag
+                              style={{ marginRight: '6px', color: '#E94E77', minWidth: '16px' }}
+                            />
+                            <span>{priceStr.trim()}</span>
+                          </li>
+                        ))}
                       </ul>
                     </td>
 
@@ -215,7 +207,6 @@ const headerStyle: React.CSSProperties = {
   padding: '10px 14px',
   fontWeight: 600,
   borderBottom: '1px solid #e5e7eb',
-  whiteSpace: 'nowrap',
   color: '#000',
 };
 
