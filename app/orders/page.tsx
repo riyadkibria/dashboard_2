@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { collectionGroup, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Sidebar from '@/components/Sidebar';
-import { FaShoppingBag, FaTag, FaPhone } from 'react-icons/fa'; // react-icons needed
+import { FaShoppingBag, FaTag, FaPhone } from 'react-icons/fa';
 
 interface Order {
   id: string;
@@ -57,7 +57,7 @@ export default function OrdersPage() {
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-      {/* Fixed Sidebar */}
+      {/* Sidebar */}
       <div
         style={{
           width: isCollapsed ? '80px' : '250px',
@@ -138,7 +138,14 @@ export default function OrdersPage() {
                         {o.productName.split(',').map((product, idx) => (
                           <li
                             key={idx}
-                            style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '4px',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
                           >
                             <FaShoppingBag
                               style={{ marginRight: '6px', color: '#4A90E2', minWidth: '16px' }}
@@ -151,17 +158,27 @@ export default function OrdersPage() {
 
                     <td style={{ ...cellStyle, width: '20%' }}>
                       <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
-                        {o.productPrice.split(',').map((price, idx) => (
-                          <li
-                            key={idx}
-                            style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}
-                          >
-                            <FaTag
-                              style={{ marginRight: '6px', color: '#E94E77', minWidth: '16px' }}
-                            />
-                            <span>{price.trim()}</span>
-                          </li>
-                        ))}
+                        {o.productPrice.split(',').map((priceStr, idx) => {
+                          const price = priceStr.trim();
+                          return (
+                            <li
+                              key={idx}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                marginBottom: '4px',
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                              }}
+                            >
+                              <FaTag
+                                style={{ marginRight: '6px', color: '#E94E77', minWidth: '16px' }}
+                              />
+                              <span>{price}</span>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </td>
 
