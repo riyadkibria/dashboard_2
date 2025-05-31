@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collectionGroup, getDocs } from 'firebase/firestore';
+import { collectionGroup, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Sidebar from '@/components/Sidebar';
-import { FaShoppingBag, FaTag, FaPhone } from 'react-icons/fa';
+import { FaShoppingBag, FaTag, FaPhone, FaTrash } from 'react-icons/fa';
 
 interface Order {
   id: string;
@@ -53,6 +53,18 @@ export default function OrdersPage() {
 
     fetchOrders();
   }, []);
+
+  // 🔥 Remove order from Firestore and state
+  const handleDelete = async (order: Order) => {
+    try {
+      const orderRef = doc(db, `users/${order.userId}/orders/${order.id}`);
+      await deleteDoc(orderRef);
+
+      setOrders((prevOrders) => prevOrders.filter((o) => o.id !== order.id));
+    } catch (error) {
+      console.error('❌ Error deleting order:', error);
+    }
+  };
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
@@ -114,12 +126,13 @@ export default function OrdersPage() {
             >
               <thead>
                 <tr style={{ backgroundColor: '#f9fafb', textAlign: 'left' }}>
-                  <th style={{ ...headerStyle, width: '14%' }}>Name</th>
-                  <th style={{ ...headerStyle, width: '28%' }}>Products</th>
-                  <th style={{ ...headerStyle, width: '20%' }}>Price</th>
+                  <th style={{ ...headerStyle, width: '12%' }}>Name</th>
+                  <th style={{ ...headerStyle, width: '24%' }}>Products</th>
+                  <th style={{ ...headerStyle, width: '18%' }}>Price</th>
                   <th style={{ ...headerStyle, width: '18%' }}>Address</th>
                   <th style={{ ...headerStyle, width: '10%' }}>Mobile</th>
                   <th style={{ ...headerStyle, width: '10%' }}>Date</th>
+                  <th style={{ ...headerStyle, width: '8%' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,10 +143,10 @@ export default function OrdersPage() {
                       backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb',
                     }}
                   >
-                    <td style={{ ...cellStyle, width: '14%' }}>{o.name}</td>
+                    <td style={cellStyle}>{o.name}</td>
 
                     {/* Products stacked */}
-                    <td style={{ ...cellStyle, width: '28%' }}>
+                    <td style={cellStyle}>
                       <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
                         {o.productName.split(',').map((product, idx) => (
                           <li
@@ -154,7 +167,7 @@ export default function OrdersPage() {
                     </td>
 
                     {/* Prices stacked */}
-                    <td style={{ ...cellStyle, width: '20%' }}>
+                    <td style={cellStyle}>
                       <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
                         {o.productPrice.split(',').map((priceStr, idx) => (
                           <li
@@ -174,12 +187,11 @@ export default function OrdersPage() {
                       </ul>
                     </td>
 
-                    <td style={{ ...cellStyle, width: '18%' }}>{o.address}</td>
+                    <td style={cellStyle}>{o.address}</td>
 
                     <td
                       style={{
                         ...cellStyle,
-                        width: '10%',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '6px',
@@ -189,8 +201,29 @@ export default function OrdersPage() {
                       {o.mobile}
                     </td>
 
-                    <td style={{ ...cellStyle, width: '10%' }}>
+                    <td style={cellStyle}>
                       {new Date(o.createdAt).toLocaleString()}
+                    </td>
+
+                    {/* 🗑️ Remove button */}
+                    <td style={cellStyle}>
+                      <button
+                        onClick={() => handleDelete(o)}
+                        style={{
+                          backgroundColor: '#F87171',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '4px',
+                          padding: '6px 10px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontSize: '12px',
+                        }}
+                      >
+                        <FaTrash /> Remove
+                      </button>
                     </td>
                   </tr>
                 ))}
