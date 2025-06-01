@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collectionGroup, getDocs } from 'firebase/firestore';
+import { collectionGroup, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Sidebar from '@/components/Sidebar';
-import { FaShoppingBag, FaTag, FaPhone } from 'react-icons/fa';
+import { FaShoppingBag, FaTag, FaPhone, FaTrash } from 'react-icons/fa';
 
 interface Order {
   id: string;
@@ -15,6 +15,7 @@ interface Order {
   address: string;
   mobile: string;
   createdAt: number;
+  path: string;
 }
 
 export default function OrdersPage() {
@@ -34,6 +35,7 @@ export default function OrdersPage() {
           return {
             id: doc.id,
             userId,
+            path: doc.ref.path,
             name: typeof data.name === 'string' ? data.name : '',
             productName: typeof data.productName === 'string' ? data.productName : '',
             productPrice: typeof data.productPrice === 'string' ? data.productPrice : '',
@@ -53,6 +55,15 @@ export default function OrdersPage() {
 
     fetchOrders();
   }, []);
+
+  async function handleDelete(path: string) {
+    try {
+      await deleteDoc(doc(db, path));
+      setOrders((prev) => prev.filter((o) => o.path !== path));
+    } catch (error) {
+      console.error('❌ Error deleting order:', error);
+    }
+  }
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
@@ -120,6 +131,7 @@ export default function OrdersPage() {
                   <th style={{ ...headerStyle, width: '18%' }}>Address</th>
                   <th style={{ ...headerStyle, width: '10%' }}>Mobile</th>
                   <th style={{ ...headerStyle, width: '10%' }}>Date</th>
+                  <th style={{ ...headerStyle, width: '4%' }}></th>
                 </tr>
               </thead>
               <tbody>
@@ -131,40 +143,42 @@ export default function OrdersPage() {
                       borderBottom: '1px solid #e5e7eb',
                     }}
                   >
-                    <td style={{ ...cellStyle }}>{o.name}</td>
+                    <td style={cellStyle}>{o.name}</td>
 
-                    {/* Products stacked */}
+                    {/* Product names */}
                     <td style={cellStyle}>
                       <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
-                        {o.productName.split(',').map((product) => {
-                          const trimmed = product.trim();
-                          return (
-                            <li
-                              key={trimmed}
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                marginBottom: '4px',
-                              }}
-                            >
-                              <FaShoppingBag
-                                style={{ marginRight: '6px', color: '#4A90E2', minWidth: '16px' }}
-                              />
-                              <span>{trimmed}</span>
-                            </li>
-                          );
-                        })}
+                        {o.productName.split(',').map((product, idx) => (
+                          <li
+                            key={idx}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '4px',
+                            }}
+                          >
+                            <FaShoppingBag
+                              style={{ marginRight: '6px', color: '#4A90E2', minWidth: '16px' }}
+                            />
+                            <span>{product.trim()}</span>
+                          </li>
+                        ))}
                       </ul>
                     </td>
 
-                    {/* Prices stacked */}
+                    {/* Product prices in ৳price x qty = total format */}
                     <td style={cellStyle}>
                       <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
-                        {o.productPrice.split(',').map((priceStr) => {
-                          const trimmed = priceStr.trim();
+                        {o.productPrice.split(',').map((entry, idx) => {
+                          const trimmed = entry.trim();
+                          const [priceStr, qtyStr] = trimmed.split('x');
+                          const price = parseFloat(priceStr);
+                          const qty = parseInt(qtyStr);
+                          const total = price * qty;
+
                           return (
                             <li
-                              key={trimmed}
+                              key={idx}
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -174,7 +188,9 @@ export default function OrdersPage() {
                               <FaTag
                                 style={{ marginRight: '6px', color: '#E94E77', minWidth: '16px' }}
                               />
-                              <span>{trimmed}</span>
+                              <span>
+                                ৳{price} x {qty} = ৳{total}
+                              </span>
                             </li>
                           );
                         })}
@@ -190,6 +206,18 @@ export default function OrdersPage() {
 
                     <td style={cellStyle}>
                       {new Date(o.createdAt).toLocaleString()}
+                    </td>
+
+                    {/* Delete icon */}
+                    <td style={{ ...cellStyle, textAlign: 'center' }}>
+                      <FaTrash
+                        style={{
+                          cursor: 'pointer',
+                          color: '#EF4444',
+                        }}
+                        title="Delete Order"
+                        onClick={() => handleDelete(o.path)}
+                      />
                     </td>
                   </tr>
                 ))}
@@ -218,6 +246,7 @@ const cellStyle: React.CSSProperties = {
   wordWrap: 'break-word',
   overflowWrap: 'break-word',
 };
+
 
 
 
