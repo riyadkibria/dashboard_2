@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -56,7 +55,7 @@ export default function OrdersPage() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', fontFamily: 'Segoe UI, sans-serif' }}>
       {/* Sidebar */}
       <div
         style={{
@@ -78,43 +77,43 @@ export default function OrdersPage() {
       <div
         style={{
           marginLeft: isCollapsed ? '80px' : '250px',
-          padding: '1.5rem',
+          padding: '2rem',
           flex: 1,
           height: '100vh',
           overflowY: 'auto',
-          backgroundColor: '#f3f4f6',
+          backgroundColor: '#f9fafb',
           transition: 'margin-left 0.3s ease',
         }}
       >
-        <h1 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '1rem', color: '#000' }}>
-          All User Orders
+        <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>
+          🛒 All User Orders
         </h1>
 
         {loading ? (
-          <p>Loading orders...</p>
+          <p style={{ fontSize: '14px' }}>Loading orders...</p>
         ) : orders.length === 0 ? (
-          <p>No orders found.</p>
+          <p style={{ fontSize: '14px' }}>No orders found.</p>
         ) : (
           <div
             style={{
               overflowX: 'auto',
-              backgroundColor: '#fff',
-              borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-              padding: '1rem',
+              backgroundColor: '#ffffff',
+              borderRadius: '10px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+              padding: '1.5rem',
             }}
           >
             <table
               style={{
                 width: '100%',
-                tableLayout: 'fixed',
                 borderCollapse: 'collapse',
-                fontSize: '12px',
-                color: '#000',
+                fontSize: '14px',
+                color: '#111827',
+                minWidth: '800px',
               }}
             >
               <thead>
-                <tr style={{ backgroundColor: '#f9fafb', textAlign: 'left' }}>
+                <tr style={{ backgroundColor: '#f1f5f9', textAlign: 'left' }}>
                   <th style={{ ...headerStyle, width: '14%' }}>Name</th>
                   <th style={{ ...headerStyle, width: '28%' }}>Products</th>
                   <th style={{ ...headerStyle, width: '20%' }}>Price</th>
@@ -129,68 +128,51 @@ export default function OrdersPage() {
                     key={o.id}
                     style={{
                       backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb',
+                      transition: 'background 0.2s ease',
+                      cursor: 'default',
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget.style.backgroundColor = '#e5e7eb');
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor =
+                        index % 2 === 0 ? '#ffffff' : '#f9fafb';
                     }}
                   >
-                    <td style={{ ...cellStyle, width: '14%' }}>{o.name}</td>
+                    <td style={cellStyle}>{o.name}</td>
 
-                    {/* Products stacked */}
-                    <td style={{ ...cellStyle, width: '28%' }}>
-                      <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
+                    {/* Products */}
+                    <td style={cellStyle}>
+                      <ul style={listStyle}>
                         {o.productName.split(',').map((product, idx) => (
-                          <li
-                            key={idx}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              marginBottom: '4px',
-                            }}
-                          >
-                            <FaShoppingBag
-                              style={{ marginRight: '6px', color: '#4A90E2', minWidth: '16px' }}
-                            />
+                          <li key={idx} style={listItemStyle}>
+                            <FaShoppingBag style={iconStyle('#3B82F6')} />
                             <span>{product.trim()}</span>
                           </li>
                         ))}
                       </ul>
                     </td>
 
-                    {/* Prices stacked */}
-                    <td style={{ ...cellStyle, width: '20%' }}>
-                      <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
-                        {o.productPrice.split(',').map((priceStr, idx) => (
-                          <li
-                            key={idx}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              marginBottom: '4px',
-                            }}
-                          >
-                            <FaTag
-                              style={{ marginRight: '6px', color: '#E94E77', minWidth: '16px' }}
-                            />
-                            <span>{priceStr.trim()}</span>
+                    {/* Prices */}
+                    <td style={cellStyle}>
+                      <ul style={listStyle}>
+                        {o.productPrice.split(',').map((price, idx) => (
+                          <li key={idx} style={listItemStyle}>
+                            <FaTag style={iconStyle('#EF4444')} />
+                            <span>{price.trim()}</span>
                           </li>
                         ))}
                       </ul>
                     </td>
 
-                    <td style={{ ...cellStyle, width: '18%' }}>{o.address}</td>
+                    <td style={cellStyle}>{o.address}</td>
 
-                    <td
-                      style={{
-                        ...cellStyle,
-                        width: '10%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                      }}
-                    >
-                      <FaPhone style={{ color: '#34D399' }} />
+                    <td style={{ ...cellStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <FaPhone style={{ color: '#10B981' }} />
                       {o.mobile}
                     </td>
 
-                    <td style={{ ...cellStyle, width: '10%' }}>
+                    <td style={cellStyle}>
                       {new Date(o.createdAt).toLocaleString()}
                     </td>
                   </tr>
@@ -204,19 +186,37 @@ export default function OrdersPage() {
   );
 }
 
+// Styles
 const headerStyle: React.CSSProperties = {
-  padding: '10px 14px',
-  fontWeight: 600,
-  borderBottom: '1px solid #e5e7eb',
-  color: '#000',
+  padding: '12px 16px',
+  fontWeight: 700,
+  borderBottom: '2px solid #e5e7eb',
+  fontSize: '13px',
+  color: '#374151',
 };
 
 const cellStyle: React.CSSProperties = {
-  padding: '10px 14px',
+  padding: '12px 16px',
   borderBottom: '1px solid #e5e7eb',
   verticalAlign: 'top',
-  fontSize: '12px',
-  color: '#000',
   wordWrap: 'break-word',
-  overflowWrap: 'break-word',
+  color: '#1f2937',
 };
+
+const listStyle: React.CSSProperties = {
+  padding: 0,
+  margin: 0,
+  listStyleType: 'none',
+};
+
+const listItemStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  marginBottom: '6px',
+};
+
+const iconStyle = (color: string): React.CSSProperties => ({
+  marginRight: '8px',
+  color,
+  minWidth: '16px',
+});
