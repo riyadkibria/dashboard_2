@@ -55,7 +55,7 @@ export default function OrdersPage() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', fontFamily: 'Segoe UI, sans-serif' }}>
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}>
       {/* Sidebar */}
       <div
         style={{
@@ -68,6 +68,9 @@ export default function OrdersPage() {
           color: '#fff',
           borderRight: '1px solid #1f2937',
           transition: 'width 0.3s ease',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -85,41 +88,42 @@ export default function OrdersPage() {
           transition: 'margin-left 0.3s ease',
         }}
       >
-        <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>
-          🛒 All User Orders
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1.5rem', color: '#111827' }}>
+          All User Orders
         </h1>
 
         {loading ? (
-          <p style={{ fontSize: '14px' }}>Loading orders...</p>
+          <p style={{ color: '#6b7280' }}>Loading orders...</p>
         ) : orders.length === 0 ? (
-          <p style={{ fontSize: '14px' }}>No orders found.</p>
+          <p style={{ color: '#6b7280' }}>No orders found.</p>
         ) : (
           <div
             style={{
               overflowX: 'auto',
               backgroundColor: '#ffffff',
-              borderRadius: '10px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+              borderRadius: '12px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
               padding: '1.5rem',
             }}
           >
             <table
               style={{
                 width: '100%',
-                borderCollapse: 'collapse',
+                borderCollapse: 'separate',
+                borderSpacing: '0 8px',
                 fontSize: '14px',
-                color: '#111827',
-                minWidth: '800px',
+                color: '#374151',
+                minWidth: '700px',
               }}
             >
               <thead>
-                <tr style={{ backgroundColor: '#f1f5f9', textAlign: 'left' }}>
-                  <th style={{ ...headerStyle, width: '14%' }}>Name</th>
-                  <th style={{ ...headerStyle, width: '28%' }}>Products</th>
-                  <th style={{ ...headerStyle, width: '20%' }}>Price</th>
-                  <th style={{ ...headerStyle, width: '18%' }}>Address</th>
-                  <th style={{ ...headerStyle, width: '10%' }}>Mobile</th>
-                  <th style={{ ...headerStyle, width: '10%' }}>Date</th>
+                <tr>
+                  <th style={headerStyle}>Name</th>
+                  <th style={headerStyle}>Products</th>
+                  <th style={headerStyle}>Price</th>
+                  <th style={headerStyle}>Address</th>
+                  <th style={headerStyle}>Mobile</th>
+                  <th style={headerStyle}>Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -127,39 +131,50 @@ export default function OrdersPage() {
                   <tr
                     key={o.id}
                     style={{
-                      backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb',
-                      transition: 'background 0.2s ease',
-                      cursor: 'default',
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget.style.backgroundColor = '#e5e7eb');
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor =
-                        index % 2 === 0 ? '#ffffff' : '#f9fafb';
+                      backgroundColor: index % 2 === 0 ? '#f3f4f6' : '#ffffff',
+                      borderRadius: '10px',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                     }}
                   >
-                    <td style={cellStyle}>{o.name}</td>
+                    <td style={{ ...cellStyle, borderRadius: '10px 0 0 10px' }}>{o.name}</td>
 
-                    {/* Products */}
+                    {/* Products stacked */}
                     <td style={cellStyle}>
-                      <ul style={listStyle}>
+                      <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
                         {o.productName.split(',').map((product, idx) => (
-                          <li key={idx} style={listItemStyle}>
-                            <FaShoppingBag style={iconStyle('#3B82F6')} />
+                          <li
+                            key={idx}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '6px',
+                            }}
+                          >
+                            <FaShoppingBag
+                              style={{ marginRight: '8px', color: '#2563eb', minWidth: '18px' }}
+                            />
                             <span>{product.trim()}</span>
                           </li>
                         ))}
                       </ul>
                     </td>
 
-                    {/* Prices */}
+                    {/* Prices stacked */}
                     <td style={cellStyle}>
-                      <ul style={listStyle}>
-                        {o.productPrice.split(',').map((price, idx) => (
-                          <li key={idx} style={listItemStyle}>
-                            <FaTag style={iconStyle('#EF4444')} />
-                            <span>{price.trim()}</span>
+                      <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
+                        {o.productPrice.split(',').map((priceStr, idx) => (
+                          <li
+                            key={idx}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              marginBottom: '6px',
+                            }}
+                          >
+                            <FaTag
+                              style={{ marginRight: '8px', color: '#db2777', minWidth: '18px' }}
+                            />
+                            <span>{priceStr.trim()}</span>
                           </li>
                         ))}
                       </ul>
@@ -167,12 +182,22 @@ export default function OrdersPage() {
 
                     <td style={cellStyle}>{o.address}</td>
 
-                    <td style={{ ...cellStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <FaPhone style={{ color: '#10B981' }} />
-                      {o.mobile}
+                    <td
+                      style={{
+                        ...cellStyle,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        textDecoration: 'none', // No underline
+                        color: '#111827',
+                        fontWeight: 600,
+                      }}
+                    >
+                      <FaPhone style={{ color: '#10b981', minWidth: '18px' }} />
+                      <span>{o.mobile}</span>
                     </td>
 
-                    <td style={cellStyle}>
+                    <td style={{ ...cellStyle, borderRadius: '0 10px 10px 0' }}>
                       {new Date(o.createdAt).toLocaleString()}
                     </td>
                   </tr>
@@ -186,37 +211,22 @@ export default function OrdersPage() {
   );
 }
 
-// Styles
 const headerStyle: React.CSSProperties = {
   padding: '12px 16px',
   fontWeight: 700,
-  borderBottom: '2px solid #e5e7eb',
-  fontSize: '13px',
-  color: '#374151',
+  color: '#6b7280',
+  textTransform: 'uppercase',
+  fontSize: '12px',
+  letterSpacing: '0.05em',
+  userSelect: 'none',
+  textAlign: 'left',
 };
 
 const cellStyle: React.CSSProperties = {
-  padding: '12px 16px',
-  borderBottom: '1px solid #e5e7eb',
+  padding: '14px 16px',
   verticalAlign: 'top',
+  fontSize: '14px',
   wordWrap: 'break-word',
-  color: '#1f2937',
+  overflowWrap: 'break-word',
+  color: '#374151',
 };
-
-const listStyle: React.CSSProperties = {
-  padding: 0,
-  margin: 0,
-  listStyleType: 'none',
-};
-
-const listItemStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: '6px',
-};
-
-const iconStyle = (color: string): React.CSSProperties => ({
-  marginRight: '8px',
-  color,
-  minWidth: '16px',
-});
