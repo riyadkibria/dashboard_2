@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -77,23 +78,16 @@ export default function OrdersPage() {
       <div
         style={{
           marginLeft: isCollapsed ? '80px' : '250px',
-          padding: '2rem',
+          padding: '1.5rem',
           flex: 1,
           height: '100vh',
           overflowY: 'auto',
-          backgroundColor: '#f9fafb',
+          backgroundColor: '#f3f4f6',
           transition: 'margin-left 0.3s ease',
         }}
       >
-        <h1
-          style={{
-            fontSize: '22px',
-            fontWeight: 700,
-            marginBottom: '1.5rem',
-            color: '#1f2937',
-          }}
-        >
-          📦 All User Orders
+        <h1 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '1rem', color: '#000' }}>
+          All User Orders
         </h1>
 
         {loading ? (
@@ -104,80 +98,99 @@ export default function OrdersPage() {
           <div
             style={{
               overflowX: 'auto',
-              backgroundColor: '#ffffff',
-              borderRadius: '12px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-              padding: '1.5rem',
+              backgroundColor: '#fff',
+              borderRadius: '8px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+              padding: '1rem',
             }}
           >
             <table
               style={{
                 width: '100%',
-                borderCollapse: 'separate',
-                borderSpacing: '0 12px',
+                tableLayout: 'fixed',
+                borderCollapse: 'collapse',
                 fontSize: '13px',
+                color: '#000',
               }}
             >
               <thead>
-                <tr style={{ textAlign: 'left', color: '#374151' }}>
-                  <th style={headerStyle}>Name</th>
-                  <th style={headerStyle}>Products</th>
-                  <th style={headerStyle}>Price</th>
-                  <th style={headerStyle}>Address</th>
-                  <th style={headerStyle}>Mobile</th>
-                  <th style={headerStyle}>Date</th>
+                <tr style={{ backgroundColor: '#f9fafb', textAlign: 'left' }}>
+                  <th style={{ ...headerStyle, width: '14%' }}>Name</th>
+                  <th style={{ ...headerStyle, width: '28%' }}>Products</th>
+                  <th style={{ ...headerStyle, width: '20%' }}>Price</th>
+                  <th style={{ ...headerStyle, width: '18%' }}>Address</th>
+                  <th style={{ ...headerStyle, width: '10%' }}>Mobile</th>
+                  <th style={{ ...headerStyle, width: '10%' }}>Date</th>
                 </tr>
               </thead>
               <tbody>
-                {orders.map((o, index) => (
+                {orders.map((o) => (
                   <tr
                     key={o.id}
                     style={{
-                      backgroundColor: '#fff',
-                      borderRadius: '8px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-                      transition: 'background 0.2s ease',
+                      backgroundColor: '#ffffff',
+                      borderBottom: '1px solid #e5e7eb',
                     }}
                   >
-                    <td style={cellStyle}>{o.name}</td>
+                    <td style={{ ...cellStyle }}>{o.name}</td>
 
+                    {/* Products stacked */}
                     <td style={cellStyle}>
-                      <ul style={listStyle}>
-                        {o.productName.split(',').map((product, idx) => (
-                          <li key={idx} style={listItemStyle}>
-                            <FaShoppingBag style={iconStyle('#3B82F6')} />
-                            <span>{product.trim()}</span>
-                          </li>
-                        ))}
+                      <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
+                        {o.productName.split(',').map((product) => {
+                          const trimmed = product.trim();
+                          return (
+                            <li
+                              key={trimmed}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                marginBottom: '4px',
+                              }}
+                            >
+                              <FaShoppingBag
+                                style={{ marginRight: '6px', color: '#4A90E2', minWidth: '16px' }}
+                              />
+                              <span>{trimmed}</span>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </td>
 
+                    {/* Prices stacked */}
                     <td style={cellStyle}>
-                      <ul style={listStyle}>
-                        {o.productPrice.split(',').map((priceStr, idx) => (
-                          <li key={idx} style={listItemStyle}>
-                            <FaTag style={iconStyle('#F59E0B')} />
-                            <span>{priceStr.trim()}</span>
-                          </li>
-                        ))}
+                      <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
+                        {o.productPrice.split(',').map((priceStr) => {
+                          const trimmed = priceStr.trim();
+                          return (
+                            <li
+                              key={trimmed}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                marginBottom: '4px',
+                              }}
+                            >
+                              <FaTag
+                                style={{ marginRight: '6px', color: '#E94E77', minWidth: '16px' }}
+                              />
+                              <span>{trimmed}</span>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </td>
 
                     <td style={cellStyle}>{o.address}</td>
 
-                    <td style={cellStyle}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <FaPhone style={iconStyle('#10B981')} />
-                        <span>{o.mobile}</span>
-                      </div>
+                    <td style={{ ...cellStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <FaPhone style={{ color: '#34D399' }} />
+                      {o.mobile}
                     </td>
 
                     <td style={cellStyle}>
-                      {new Date(o.createdAt).toLocaleDateString()}{' '}
-                      <br />
-                      <span style={{ color: '#6b7280', fontSize: '11px' }}>
-                        {new Date(o.createdAt).toLocaleTimeString()}
-                      </span>
+                      {new Date(o.createdAt).toLocaleString()}
                     </td>
                   </tr>
                 ))}
@@ -191,38 +204,19 @@ export default function OrdersPage() {
 }
 
 const headerStyle: React.CSSProperties = {
-  padding: '12px 16px',
-  fontWeight: 700,
-  fontSize: '13px',
+  padding: '12px 14px',
+  fontWeight: 600,
   borderBottom: '1px solid #e5e7eb',
-  textTransform: 'uppercase',
-  letterSpacing: '0.03em',
+  color: '#000',
+  backgroundColor: '#f3f4f6',
 };
 
 const cellStyle: React.CSSProperties = {
-  padding: '14px 16px',
-  borderBottom: '1px solid #f3f4f6',
+  padding: '12px 14px',
   verticalAlign: 'top',
-  color: '#1f2937',
-  backgroundColor: '#ffffff',
   fontSize: '13px',
+  color: '#000',
+  wordWrap: 'break-word',
+  overflowWrap: 'break-word',
 };
-
-const listStyle: React.CSSProperties = {
-  paddingLeft: 0,
-  margin: 0,
-  listStyleType: 'none',
-};
-
-const listItemStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: '6px',
-  gap: '6px',
-};
-
-const iconStyle = (color: string): React.CSSProperties => ({
-  color,
-  minWidth: '16px',
-});
 
