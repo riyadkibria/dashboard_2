@@ -36,12 +36,12 @@ export default function OrdersPage() {
             id: doc.id,
             userId,
             path: doc.ref.path,
-            name: typeof data.name === 'string' ? data.name : '',
-            productName: typeof data.productName === 'string' ? data.productName : '',
-            productPrice: typeof data.productPrice === 'string' ? data.productPrice : '',
-            address: typeof data.address === 'string' ? data.address : '',
-            mobile: typeof data.mobile === 'string' ? data.mobile : '',
-            createdAt: data.createdAt?.toMillis?.() ?? Date.now(),
+            name: data?.name ?? '',
+            productName: data?.productName ?? '',
+            productPrice: data?.productPrice ?? '',
+            address: data?.address ?? '',
+            mobile: data?.mobile ?? '',
+            createdAt: data?.createdAt?.toMillis?.() ?? Date.now(),
           };
         });
 
@@ -57,6 +57,9 @@ export default function OrdersPage() {
   }, []);
 
   async function handleDelete(path: string) {
+    const confirmDelete = window.confirm('Are you sure you want to delete this order?');
+    if (!confirmDelete) return;
+
     try {
       await deleteDoc(doc(db, path));
       setOrders((prev) => prev.filter((o) => o.path !== path));
@@ -170,10 +173,9 @@ export default function OrdersPage() {
                     <td style={cellStyle}>
                       <ul style={{ paddingLeft: 0, margin: 0, listStyleType: 'none' }}>
                         {o.productPrice.split(',').map((entry, idx) => {
-                          const trimmed = entry.trim();
-                          const [priceStr, qtyStr] = trimmed.split('x');
-                          const price = parseFloat(priceStr);
-                          const qty = parseInt(qtyStr);
+                          const [priceStr, qtyStr] = entry.trim().split('x');
+                          const price = parseFloat(priceStr || '0');
+                          const qty = parseInt(qtyStr || '0');
                           const total = price * qty;
 
                           return (
@@ -246,7 +248,3 @@ const cellStyle: React.CSSProperties = {
   wordWrap: 'break-word',
   overflowWrap: 'break-word',
 };
-
-
-
-
