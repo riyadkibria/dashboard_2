@@ -4,17 +4,22 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const usersCollection = collection(db, 'users');
-    const usersSnapshot = await getDocs(usersCollection);
+    // Access /users collection
+    const usersSnapshot = await getDocs(collection(db, 'users'));
 
-    // Get all UIDs (document IDs)
-    const uids = usersSnapshot.docs.map(doc => doc.id);
+    // Log to verify in server
+    console.log("Fetched user docs:", usersSnapshot.size);
 
-    const totalCustomers = uids.length;
+    // Get user IDs
+    const userIds = usersSnapshot.docs.map(doc => doc.id);
+    console.log("User IDs found:", userIds);
+
+    const totalCustomers = userIds.length;
 
     return NextResponse.json({ totalCustomers });
   } catch (error) {
-    console.error('Error fetching customers:', error);
-    return NextResponse.json({ totalCustomers: 0 });
+    console.error('Error fetching total customers:', error);
+    return NextResponse.json({ totalCustomers: 0 }, { status: 500 });
   }
 }
+
