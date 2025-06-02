@@ -8,7 +8,6 @@ type Order = {
   createdAt: string | null;
   customerName?: string;
   totalPrice?: number;
-  [key: string]: any; // extra order fields
 };
 
 export default function DashboardHome() {
