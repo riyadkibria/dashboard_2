@@ -13,14 +13,11 @@ export default function DashboardHome() {
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
-    // Example: Fetch from API or localStorage
     async function fetchOrders() {
-      // Replace this with your real fetch
       const response = await fetch('/api/orders');
       const data = await response.json();
       setOrders(data);
 
-      // Sum all prices
       const total = data.reduce((sum: number, order: Order) => sum + order.price, 0);
       setTotalPrice(total);
     }
@@ -31,6 +28,10 @@ export default function DashboardHome() {
   return (
     <div className="p-6">
       <h1 className="text-gray-800 font-semibold text-xl mb-4">Dashboard Overview</h1>
+
+      {/* Use orders here to fix ESLint error */}
+      <p className="text-sm text-gray-500 mb-4">Total Orders: {orders.length}</p>
+
       <div className="bg-white shadow rounded-lg p-4 w-full max-w-sm">
         <h2 className="text-gray-600 text-md">Total Sales</h2>
         <p className="text-2xl font-bold text-green-600">${totalPrice.toFixed(2)}</p>
@@ -38,3 +39,4 @@ export default function DashboardHome() {
     </div>
   );
 }
+
