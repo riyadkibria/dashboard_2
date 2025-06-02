@@ -3,7 +3,6 @@
 
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import Topbar from "@/components/Topbar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false); // sidebar starts expanded
@@ -15,7 +14,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Main content area */}
       <div className="flex flex-col flex-1">
-        <Topbar />
         <main className="flex-1 bg-gray-100 p-4 overflow-y-auto">
           {children}
         </main>
