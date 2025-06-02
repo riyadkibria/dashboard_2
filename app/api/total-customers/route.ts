@@ -4,8 +4,13 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const usersSnapshot = await getDocs(collection(db, 'users'));
-    const totalCustomers = usersSnapshot.size;
+    const usersCollection = collection(db, 'users');
+    const usersSnapshot = await getDocs(usersCollection);
+
+    // Get all UIDs (document IDs)
+    const uids = usersSnapshot.docs.map(doc => doc.id);
+
+    const totalCustomers = uids.length;
 
     return NextResponse.json({ totalCustomers });
   } catch (error) {
