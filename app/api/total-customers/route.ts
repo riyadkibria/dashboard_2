@@ -1,4 +1,3 @@
-// app/api/total-customers/route.ts
 import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { NextResponse } from 'next/server';
