@@ -10,45 +10,50 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    // 1. Query across all 'orders' subcollections
+    // 1. Reference all 'orders' subcollections across users
     const ordersGroupRef = collectionGroup(db, 'orders');
 
-    // 2. Query: order by 'createdAt' descending, limit 5
+    // 2. Query: order by Firestore Timestamp
     const q = query(ordersGroupRef, orderBy('createdAt', 'desc'), limit(5));
 
-    // 3. Fetch documents
+    // 3. Fetch results
     const querySnapshot = await getDocs(q);
 
-    // 4. Log how many documents were fetched
     console.log('Found orders:', querySnapshot.size);
 
-    // 5. Extract and return data
+    // 4. Extract and format data
     const latestOrders = querySnapshot.docs.map((doc) => {
       const data = doc.data();
       const userId = doc.ref.parent.parent?.id || null;
 
-      console.log(`Order ID: ${doc.id}, User ID: ${userId}, createdAt: ${data.createdAt}`);
+      const formattedDate = data.createdAt?.toDate().toLocaleString('en-US', {
+        timeZone: 'Asia/Dhaka', // Or your preferred timezone
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+      });
+
+      console.log(`Order ID: ${doc.id}, User ID: ${userId}, createdAt: ${formattedDate}`);
 
       return {
         id: doc.id,
         ...data,
-        createdAt: data.createdAt?.toDate().toISOString() || null,
+        createdAt: formattedDate || null,
         userId,
       };
     });
 
     if (latestOrders.length === 0) {
-      console.warn('⚠️ No recent orders found. Make sure createdAt exists and is a Firestore Timestamp.');
+      console.warn('⚠️ No recent orders found. Ensure createdAt is a Firestore Timestamp.');
     }
 
     return NextResponse.json({ latestOrders });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error('🔥 Error fetching latest orders:', error.message);
-    } else {
-      console.error('🔥 Unknown error occurred while fetching orders:', error);
-    }
-
+    console.error('🔥 Error fetching orders:', error instanceof Error ? error.message : error);
     return NextResponse.json({ latestOrders: [] }, { status: 500 });
   }
 }
