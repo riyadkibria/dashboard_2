@@ -5,7 +5,8 @@ import { ShoppingCart, DollarSign, Users } from 'lucide-react';
 
 type Order = {
   id: string;
-  createdAt: string | null;
+  createdAtISO: string | null;
+  createdAtFormatted?: string;
   customerName?: string;
   totalPrice?: number;
 };
@@ -33,7 +34,13 @@ export default function DashboardHome() {
         setTotalSales(salesData.totalSales ?? 0);
         setOrderCount(salesData.orderCount ?? 0);
         setCustomerCount(customerData.totalCustomers ?? 0);
-        setLatestOrders(ordersData.latestOrders || []);
+
+        // Optional safety: sort in case backend didn’t
+        const sortedOrders: Order[] = (ordersData.latestOrders || []).sort((a: Order, b: Order) =>
+          b.createdAtISO?.localeCompare(a.createdAtISO || '') || 0
+        );
+
+        setLatestOrders(sortedOrders);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
       } finally {
@@ -85,9 +92,18 @@ export default function DashboardHome() {
                   <p className="font-medium text-gray-900">Order ID: {order.id}</p>
                   <p className="text-sm text-gray-500">
                     Date:{' '}
-                    {order.createdAt
-                      ? new Date(order.createdAt).toLocaleString()
-                      : 'Unknown date'}
+                    {order.createdAtFormatted ||
+                      (order.createdAtISO
+                        ? new Date(order.createdAtISO).toLocaleString('en-US', {
+                            timeZone: 'Asia/Dhaka',
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true,
+                          })
+                        : 'Unknown date')}
                   </p>
                   <p className="text-sm text-gray-500">
                     Customer: {order.customerName || 'N/A'}
@@ -133,4 +149,5 @@ function Card({
     </div>
   );
 }
+
 
