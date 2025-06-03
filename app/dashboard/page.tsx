@@ -21,19 +21,18 @@ export default function DashboardHome() {
     async function fetchData() {
       try {
         const [salesRes, customersRes, latestOrdersRes] = await Promise.all([
-          fetch('/api/total-sales'),
-          fetch('/api/total-customers'),
-          fetch('/api/latest-orders'),
+          fetch('/api/total-sales', { cache: 'no-store' }),
+          fetch('/api/total-customers', { cache: 'no-store' }),
+          fetch('/api/latest-orders', { cache: 'no-store' }),
         ]);
 
         const salesData = await salesRes.json();
         const customerData = await customersRes.json();
         const ordersData = await latestOrdersRes.json();
 
-        setTotalSales(salesData.totalSales);
-        setOrderCount(salesData.orderCount);
-        setCustomerCount(customerData.totalCustomers);
-
+        setTotalSales(salesData.totalSales ?? 0);
+        setOrderCount(salesData.orderCount ?? 0);
+        setCustomerCount(customerData.totalCustomers ?? 0);
         setLatestOrders(ordersData.latestOrders || []);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -51,41 +50,23 @@ export default function DashboardHome() {
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl w-full mb-12">
         {/* Total Orders */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex items-center space-x-4 hover:shadow-md transition">
-          <div className="bg-indigo-100 text-indigo-600 p-3 rounded-full">
-            <ShoppingCart className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Total Orders</p>
-            <p className="text-3xl font-bold text-gray-800">{orderCount}</p>
-          </div>
-        </div>
+        <Card icon={<ShoppingCart />} title="Total Orders" value={orderCount} bg="indigo" />
 
         {/* Total Sales */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex items-center space-x-4 hover:shadow-md transition">
-          <div className="bg-green-100 text-green-600 p-3 rounded-full">
-            <DollarSign className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Total Sales</p>
-            <p className="text-3xl font-bold text-gray-800">
-              {totalSales !== null ? `৳${totalSales.toLocaleString()}` : 'Loading...'}
-            </p>
-          </div>
-        </div>
+        <Card
+          icon={<DollarSign />}
+          title="Total Sales"
+          value={totalSales !== null ? `৳${totalSales.toLocaleString()}` : 'Loading...'}
+          bg="green"
+        />
 
         {/* Total Customers */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex items-center space-x-4 hover:shadow-md transition">
-          <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
-            <Users className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Total Customers</p>
-            <p className="text-3xl font-bold text-gray-800">
-              {customerCount !== null ? customerCount : 'Loading...'}
-            </p>
-          </div>
-        </div>
+        <Card
+          icon={<Users />}
+          title="Total Customers"
+          value={customerCount !== null ? customerCount : 'Loading...'}
+          bg="blue"
+        />
       </div>
 
       {/* Latest Orders Section */}
@@ -103,15 +84,18 @@ export default function DashboardHome() {
                 <div>
                   <p className="font-medium text-gray-900">Order ID: {order.id}</p>
                   <p className="text-sm text-gray-500">
-                    Date: {order.createdAt ? new Date(order.createdAt).toLocaleString() : 'N/A'}
+                    Date:{' '}
+                    {order.createdAt
+                      ? new Date(order.createdAt).toLocaleString()
+                      : 'Unknown date'}
                   </p>
-                  {order.customerName && (
-                    <p className="text-sm text-gray-500">Customer: {order.customerName}</p>
-                  )}
+                  <p className="text-sm text-gray-500">
+                    Customer: {order.customerName || 'N/A'}
+                  </p>
                 </div>
-                {order.totalPrice !== undefined && (
-                  <p className="font-semibold text-green-600">৳{order.totalPrice.toLocaleString()}</p>
-                )}
+                <p className="font-semibold text-green-600">
+                  ৳{order.totalPrice?.toLocaleString() || '0'}
+                </p>
               </li>
             ))}
           </ul>
@@ -120,3 +104,33 @@ export default function DashboardHome() {
     </div>
   );
 }
+
+// Reusable Card component
+function Card({
+  icon,
+  title,
+  value,
+  bg,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  value: string | number;
+  bg: 'indigo' | 'green' | 'blue';
+}) {
+  const bgColor = {
+    indigo: 'bg-indigo-100 text-indigo-600',
+    green: 'bg-green-100 text-green-600',
+    blue: 'bg-blue-100 text-blue-600',
+  }[bg];
+
+  return (
+    <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex items-center space-x-4 hover:shadow-md transition">
+      <div className={`${bgColor} p-3 rounded-full`}>{icon}</div>
+      <div>
+        <p className="text-sm text-gray-500">{title}</p>
+        <p className="text-3xl font-bold text-gray-800">{value}</p>
+      </div>
+    </div>
+  );
+}
+
