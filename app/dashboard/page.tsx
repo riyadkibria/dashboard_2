@@ -6,7 +6,6 @@ import { ShoppingCart, DollarSign, Users } from 'lucide-react';
 type Order = {
   id: string;
   createdAtISO: string | null;
-  createdAtFormatted?: string;
   customerName?: string;
   totalPrice?: number;
 };
@@ -35,9 +34,8 @@ export default function DashboardHome() {
         setOrderCount(salesData.orderCount ?? 0);
         setCustomerCount(customerData.totalCustomers ?? 0);
 
-        // Optional safety: sort in case backend didn’t
-        const sortedOrders: Order[] = (ordersData.latestOrders || []).sort((a: Order, b: Order) =>
-          b.createdAtISO?.localeCompare(a.createdAtISO || '') || 0
+        const sortedOrders: Order[] = (ordersData.latestOrders || []).sort((a, b) =>
+          (b.createdAtISO || '').localeCompare(a.createdAtISO || '')
         );
 
         setLatestOrders(sortedOrders);
@@ -56,18 +54,13 @@ export default function DashboardHome() {
       <h1 className="text-gray-800 font-semibold text-2xl mb-8">Dashboard Overview</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl w-full mb-12">
-        {/* Total Orders */}
         <Card icon={<ShoppingCart />} title="Total Orders" value={orderCount} bg="indigo" />
-
-        {/* Total Sales */}
         <Card
           icon={<DollarSign />}
           title="Total Sales"
           value={totalSales !== null ? `৳${totalSales.toLocaleString()}` : 'Loading...'}
           bg="green"
         />
-
-        {/* Total Customers */}
         <Card
           icon={<Users />}
           title="Total Customers"
@@ -76,7 +69,6 @@ export default function DashboardHome() {
         />
       </div>
 
-      {/* Latest Orders Section */}
       <div className="max-w-5xl w-full bg-white rounded-2xl shadow-sm p-6">
         <h2 className="text-xl font-semibold mb-4">Latest 5 Orders</h2>
 
@@ -92,18 +84,17 @@ export default function DashboardHome() {
                   <p className="font-medium text-gray-900">Order ID: {order.id}</p>
                   <p className="text-sm text-gray-500">
                     Date:{' '}
-                    {order.createdAtFormatted ||
-                      (order.createdAtISO
-                        ? new Date(order.createdAtISO).toLocaleString('en-US', {
-                            timeZone: 'Asia/Dhaka',
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: true,
-                          })
-                        : 'Unknown date')}
+                    {order.createdAtISO
+                      ? new Date(order.createdAtISO).toLocaleString('en-US', {
+                          timeZone: 'Asia/Dhaka',
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12: true,
+                        })
+                      : 'Unknown date'}
                   </p>
                   <p className="text-sm text-gray-500">
                     Customer: {order.customerName || 'N/A'}
@@ -121,7 +112,6 @@ export default function DashboardHome() {
   );
 }
 
-// Reusable Card component
 function Card({
   icon,
   title,
@@ -149,5 +139,3 @@ function Card({
     </div>
   );
 }
-
-
