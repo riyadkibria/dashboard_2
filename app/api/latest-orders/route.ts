@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../firebase"; // Adjust path if needed
 
-// Updated type to support both Name and "Customer-Name"
+// Type supporting both "Name" and "Customer-Name" fields
 type Order = {
   Name?: string;
   ["Customer-Name"]?: string;
@@ -42,6 +42,7 @@ const RecentData = () => {
     <div className="p-4">
       <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
       <ul className="space-y-3">
+        {recentOrders.length === 0 && <li>No recent orders found.</li>}
         {recentOrders.map((order, index) => (
           <li key={index} className="bg-gray-100 p-3 rounded shadow">
             <p><strong>Name:</strong> {order.Name || order["Customer-Name"] || "N/A"}</p>
