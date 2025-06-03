@@ -10,24 +10,24 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
+    // Get all documents from all 'orders' subcollections
     const ordersGroupRef = collectionGroup(db, 'orders');
 
-    // Query sorted by Firestore Timestamp descending
+    // Query the documents ordered by 'createdAt' in descending order
     const q = query(ordersGroupRef, orderBy('createdAt', 'desc'), limit(5));
 
     const querySnapshot = await getDocs(q);
 
-    console.log('Found orders:', querySnapshot.size);
+    console.log('✅ Found orders:', querySnapshot.size);
 
     const latestOrders = querySnapshot.docs.map((doc) => {
       const data = doc.data();
-      const userId = doc.ref.parent.parent?.id || null;
+      const userId = doc.ref.parent.parent?.id || 'unknown';
 
-      const createdAtTimestamp = data.createdAt;
+      const createdAt = data.createdAt;
 
-      // Format human-readable date string
-      const createdAtFormatted = createdAtTimestamp
-        ? createdAtTimestamp.toDate().toLocaleString('en-US', {
+      const createdAtFormatted = createdAt?.toDate?.()
+        ? createdAt.toDate().toLocaleString('en-US', {
             timeZone: 'Asia/Dhaka',
             year: 'numeric',
             month: 'long',
@@ -39,22 +39,21 @@ export async function GET() {
           })
         : null;
 
-      // Also return ISO string for sorting on client if needed
-      const createdAtISO = createdAtTimestamp
-        ? createdAtTimestamp.toDate().toISOString()
+      const createdAtISO = createdAt?.toDate?.()
+        ? createdAt.toDate().toISOString()
         : null;
 
       return {
         id: doc.id,
-        ...data,
+        userId,
         createdAtFormatted,
         createdAtISO,
-        userId,
+        ...data,
       };
     });
 
     if (latestOrders.length === 0) {
-      console.warn('⚠️ No recent orders found. Ensure createdAt is saved as Firestore Timestamp.');
+      console.warn('⚠️ No recent orders found. Make sure each document has a Firestore Timestamp field called createdAt.');
     }
 
     return NextResponse.json({ latestOrders });
@@ -63,4 +62,5 @@ export async function GET() {
     return NextResponse.json({ latestOrders: [] }, { status: 500 });
   }
 }
+
 
