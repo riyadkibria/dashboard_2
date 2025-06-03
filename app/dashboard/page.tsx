@@ -38,8 +38,6 @@ export default function DashboardHome() {
         setTotalSales(salesData.totalSales ?? 0);
         setOrderCount(salesData.orderCount ?? 0);
         setCustomerCount(customerData.totalCustomers ?? 0);
-
-        // Orders already sorted by createdAt descending from API
         setLatestOrders(ordersData.latestOrders || []);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -56,18 +54,13 @@ export default function DashboardHome() {
       <h1 className="text-gray-800 font-semibold text-2xl mb-8">Dashboard Overview</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl w-full mb-12">
-        {/* Total Orders */}
         <Card icon={<ShoppingCart />} title="Total Orders" value={orderCount} bg="indigo" />
-
-        {/* Total Sales */}
         <Card
           icon={<DollarSign />}
           title="Total Sales"
           value={totalSales !== null ? `৳${totalSales.toLocaleString()}` : 'Loading...'}
           bg="green"
         />
-
-        {/* Total Customers */}
         <Card
           icon={<Users />}
           title="Total Customers"
@@ -77,38 +70,28 @@ export default function DashboardHome() {
       </div>
 
       {/* Latest Orders Section */}
-      <div className="max-w-5xl w-full bg-white rounded-2xl shadow-sm p-6">
-        <h2 className="text-xl font-semibold mb-4">Latest 5 Orders</h2>
+      <div className="max-w-5xl w-full bg-blue-50 rounded-2xl p-6 shadow-inner">
+        <h2 className="text-xl font-semibold text-blue-900 mb-4">Latest 5 Orders</h2>
 
         {loadingOrders ? (
-          <p>Loading latest orders...</p>
+          <p className="text-gray-500">Loading latest orders...</p>
         ) : latestOrders.length === 0 ? (
-          <p>No recent orders found.</p>
+          <p className="text-gray-500">No recent orders found.</p>
         ) : (
-          <ul className="divide-y divide-gray-200">
+          <ul className="space-y-4">
             {latestOrders.map((order) => (
-              <li key={order.id} className="py-4 flex flex-col md:flex-row justify-between items-start md:items-center">
+              <li
+                key={order.id}
+                className="bg-white p-4 rounded-xl shadow border border-gray-200 hover:shadow-md transition"
+              >
                 <div className="space-y-1">
-                  <p className="font-medium text-gray-900">Order ID: {order.id}</p>
-                  <p className="text-sm text-gray-500">
-                    Date:{' '}
-                    {order.createdAtFormatted || 'Unknown date'}
-                  </p>
-                  <p className="text-sm text-gray-700">
-                    <span className="font-semibold">Name:</span> {order.name || 'N/A'}
-                  </p>
-                  <p className="text-sm text-gray-700">
-                    <span className="font-semibold">Mobile:</span> {order.mobile || 'N/A'}
-                  </p>
-                  <p className="text-sm text-gray-700">
-                    <span className="font-semibold">Address:</span> {order.address || 'N/A'}
-                  </p>
-                  <p className="text-sm text-gray-700">
-                    <span className="font-semibold">Product:</span> {order.productName || 'N/A'}
-                  </p>
-                  <p className="text-sm text-green-600 font-semibold">
-                    {order.productPrice || '৳0'}
-                  </p>
+                  <p className="text-sm text-gray-500">Order ID: <span className="text-gray-700">{order.id}</span></p>
+                  <p className="text-sm text-gray-500">Date: <span className="text-gray-700">{order.createdAtFormatted || 'Unknown date'}</span></p>
+                  <p className="text-sm text-gray-500">Name: <span className="text-gray-700">{order.name || 'N/A'}</span></p>
+                  <p className="text-sm text-gray-500">Mobile: <span className="text-gray-700">{order.mobile || 'N/A'}</span></p>
+                  <p className="text-sm text-gray-500">Address: <span className="text-gray-700">{order.address || 'N/A'}</span></p>
+                  <p className="text-sm text-gray-500">Product: <span className="text-gray-700">{order.productName || 'N/A'}</span></p>
+                  <p className="text-sm font-bold text-green-600">{order.productPrice || '৳0'}</p>
                 </div>
               </li>
             ))}
@@ -119,7 +102,6 @@ export default function DashboardHome() {
   );
 }
 
-// Reusable Card component
 function Card({
   icon,
   title,
