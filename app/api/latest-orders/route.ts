@@ -10,26 +10,25 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    // 1. Reference all 'orders' subcollections across all users
     const ordersGroupRef = collectionGroup(db, 'orders');
 
-    // 2. Create a query ordering by 'createdAt' Timestamp descending, limit 5
+    // Query sorted by Firestore Timestamp descending
     const q = query(ordersGroupRef, orderBy('createdAt', 'desc'), limit(5));
 
-    // 3. Execute the query
     const querySnapshot = await getDocs(q);
 
     console.log('Found orders:', querySnapshot.size);
 
-    // 4. Extract data and format 'createdAt' as a readable string (without altering stored data)
     const latestOrders = querySnapshot.docs.map((doc) => {
       const data = doc.data();
       const userId = doc.ref.parent.parent?.id || null;
 
-      // Format timestamp to human-readable string, fallback null if missing
-      const formattedDate = data.createdAt
-        ? data.createdAt.toDate().toLocaleString('en-US', {
-            timeZone: 'Asia/Dhaka', // Adjust to your timezone
+      const createdAtTimestamp = data.createdAt;
+
+      // Format human-readable date string
+      const createdAtFormatted = createdAtTimestamp
+        ? createdAtTimestamp.toDate().toLocaleString('en-US', {
+            timeZone: 'Asia/Dhaka',
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -40,12 +39,16 @@ export async function GET() {
           })
         : null;
 
-      console.log(`Order ID: ${doc.id}, User ID: ${userId}, createdAt: ${formattedDate}`);
+      // Also return ISO string for sorting on client if needed
+      const createdAtISO = createdAtTimestamp
+        ? createdAtTimestamp.toDate().toISOString()
+        : null;
 
       return {
         id: doc.id,
         ...data,
-        createdAt: formattedDate,
+        createdAtFormatted,
+        createdAtISO,
         userId,
       };
     });
@@ -60,3 +63,4 @@ export async function GET() {
     return NextResponse.json({ latestOrders: [] }, { status: 500 });
   }
 }
+
