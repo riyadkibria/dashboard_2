@@ -37,14 +37,18 @@ export async function GET() {
       };
     });
 
-    // 6. Handle case when no documents were found
     if (latestOrders.length === 0) {
-      console.warn('No recent orders found. Make sure createdAt exists and is a Firestore Timestamp.');
+      console.warn('⚠️ No recent orders found. Make sure createdAt exists and is a Firestore Timestamp.');
     }
 
     return NextResponse.json({ latestOrders });
-  } catch (error: any) {
-    console.error('🔥 Error fetching latest orders:', error.message || error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('🔥 Error fetching latest orders:', error.message);
+    } else {
+      console.error('🔥 Unknown error occurred while fetching orders:', error);
+    }
+
     return NextResponse.json({ latestOrders: [] }, { status: 500 });
   }
 }
