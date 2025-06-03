@@ -1,23 +1,34 @@
 import { db } from '@/lib/firebase';
-import { collectionGroup, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import {
+  collectionGroup,
+  query,
+  orderBy,
+  limit,
+  getDocs,
+} from 'firebase/firestore';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    // Collection group query on all 'orders' subcollections
+    // Reference to all 'orders' subcollections under any user
     const ordersGroupRef = collectionGroup(db, 'orders');
 
-    // Query: order by createdAt descending, limit 5
+    // Create a query: order by 'createdAt' descending and limit to 5
     const q = query(ordersGroupRef, orderBy('createdAt', 'desc'), limit(5));
 
+    // Execute the query
     const querySnapshot = await getDocs(q);
 
-    const latestOrders = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt?.toDate().toISOString() || null,
-      userId: doc.ref.parent.parent?.id || null, // extract userId from the path
-    }));
+    // Format the results
+    const latestOrders = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt?.toDate().toISOString() || null,
+        userId: doc.ref.parent.parent?.id || null, // Get userId from the path
+      };
+    });
 
     return NextResponse.json({ latestOrders });
   } catch (error) {
@@ -25,4 +36,5 @@ export async function GET() {
     return NextResponse.json({ latestOrders: [] }, { status: 500 });
   }
 }
+
 
