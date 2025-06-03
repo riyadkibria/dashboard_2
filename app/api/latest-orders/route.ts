@@ -1,60 +1,65 @@
-import { db } from '@/lib/firebase';
-import {
-  collectionGroup,
-  query,
-  orderBy,
-  limit,
-  getDocs,
-} from 'firebase/firestore';
-import { NextResponse } from 'next/server';
+"use client";
 
-export async function GET() {
-  try {
-    const ordersGroupRef = collectionGroup(db, 'orders');
+import { useEffect, useState } from "react";
+import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
-    const q = query(ordersGroupRef, orderBy('createdAt', 'desc'), limit(5));
+// Updated type to support both Name and "Customer-Name"
+type Order = {
+  Name?: string;
+  ["Customer-Name"]?: string;
+  Mobile?: string;
+  Address?: string;
+  Quantity?: number;
+  ["Product-Price"]?: number;
+  Time?: { seconds: number; nanoseconds: number };
+};
 
-    const querySnapshot = await getDocs(q);
+const RecentData = () => {
+  const [recentOrders, setRecentOrders] = useState<Order[]>([]);
 
-    const latestOrders = querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      const userId = doc.ref.parent.parent?.id || 'unknown';
+  useEffect(() => {
+    const fetchRecentOrders = async () => {
+      try {
+        const q = query(
+          collection(db, "user_request"),
+          orderBy("Time", "desc"),
+          limit(5)
+        );
 
-      const createdAt = data.createdAt;
+        const querySnapshot = await getDocs(q);
+        const data: Order[] = querySnapshot.docs.map((doc) => doc.data() as Order);
+        setRecentOrders(data);
+      } catch (err) {
+        console.error("Error fetching recent orders:", err);
+      }
+    };
 
-      const createdAtFormatted = createdAt?.toDate?.()
-        ? createdAt.toDate().toLocaleString('en-US', {
-            timeZone: 'Asia/Dhaka',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true,
-          })
-        : null;
+    fetchRecentOrders();
+  }, []);
 
-      const createdAtISO = createdAt?.toDate?.()
-        ? createdAt.toDate().toISOString()
-        : null;
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-semibold mb-4">Recent Orders</h2>
+      <ul className="space-y-3">
+        {recentOrders.map((order, index) => (
+          <li key={index} className="bg-gray-100 p-3 rounded shadow">
+            <p><strong>Name:</strong> {order.Name || order["Customer-Name"] || "N/A"}</p>
+            <p><strong>Mobile:</strong> {order.Mobile || "N/A"}</p>
+            <p><strong>Address:</strong> {order.Address || "N/A"}</p>
+            <p><strong>Price:</strong> {order["Product-Price"] ?? "N/A"}</p>
+            <p><strong>Qty:</strong> {order.Quantity ?? "N/A"}</p>
+            <p>
+              <strong>Time:</strong>{" "}
+              {order.Time?.seconds
+                ? new Date(order.Time.seconds * 1000).toLocaleString()
+                : "N/A"}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
-      return {
-        id: doc.id,
-        userId,
-        createdAtFormatted,
-        createdAtISO,
-        name: data.name || null,
-        mobile: data.mobile || null,
-        address: data.address || null,
-        productName: data.productName || null,
-        productPrice: data.productPrice || null,
-      };
-    });
-
-    return NextResponse.json({ latestOrders });
-  } catch (error) {
-    console.error('Error fetching latest orders:', error);
-    return NextResponse.json({ latestOrders: [] }, { status: 500 });
-  }
-}
+export default RecentData;
