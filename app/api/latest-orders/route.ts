@@ -43,24 +43,30 @@ export async function GET() {
         ? createdAt.toDate().toISOString()
         : null;
 
+      const name = data.name || 'N/A'; // 👈 Extracting 'name' field
+
       return {
         id: doc.id,
         userId,
+        name,
         createdAtFormatted,
         createdAtISO,
-        ...data,
+        totalPrice: data.totalPrice || 0,
       };
     });
 
     if (latestOrders.length === 0) {
-      console.warn('⚠️ No recent orders found. Make sure each document has a Firestore Timestamp field called createdAt.');
+      console.warn(
+        '⚠️ No recent orders found. Make sure each document has a Firestore Timestamp field called createdAt.'
+      );
     }
 
     return NextResponse.json({ latestOrders });
   } catch (error) {
-    console.error('🔥 Error fetching orders:', error instanceof Error ? error.message : error);
+    console.error(
+      '🔥 Error fetching orders:',
+      error instanceof Error ? error.message : error
+    );
     return NextResponse.json({ latestOrders: [] }, { status: 500 });
   }
 }
-
-
