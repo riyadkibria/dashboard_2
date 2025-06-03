@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
-import { db } from "../firebase"; // Adjust path if needed
+import { db } from "../firebase";
 
-// Type supporting both "Name" and "Customer-Name" fields
 type Order = {
   Name?: string;
   ["Customer-Name"]?: string;
@@ -19,7 +18,7 @@ const RecentData = () => {
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    const fetchRecentOrders = async () => {
+    async function fetchRecentOrders() {
       try {
         const q = query(
           collection(db, "user_request"),
@@ -33,7 +32,7 @@ const RecentData = () => {
       } catch (err) {
         console.error("Error fetching recent orders:", err);
       }
-    };
+    }
 
     fetchRecentOrders();
   }, []);
@@ -64,3 +63,4 @@ const RecentData = () => {
 };
 
 export default RecentData;
+
