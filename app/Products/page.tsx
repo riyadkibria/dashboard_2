@@ -1,27 +1,30 @@
 // app/Products/page.tsx
-import { getSingleName, NameData } from '@/lib/getAllCustomerNames';
+import { getAllCustomerNames, CustomerData } from '@/lib/getAllCustomerNames';
 
 export default async function ProductsPage() {
-  const docId = 'miB2BpABeOC1arOqM2hp';
-  const nameData: NameData | null = await getAllCustomerNames(docId);
+  const allCustomers: CustomerData[] = await getAllCustomerNames();
 
   return (
     <main style={styles.container}>
       <section style={styles.card}>
-        <h1 style={styles.title}>Product Name Details</h1>
+        <h1 style={styles.title}>All Customers</h1>
 
-        {nameData ? (
+        {allCustomers.length > 0 ? (
           <div style={styles.dataContainer}>
-            <p>
-              <strong>ID:</strong> {nameData.id}
-            </p>
-            <p>
-              <strong>Name:</strong> {nameData.Name}
-            </p>
-            {/* Add more fields if needed */}
+            {allCustomers.map((customer) => (
+              <div key={customer.id}>
+                <p>
+                  <strong>ID:</strong> {customer.id}
+                </p>
+                <p>
+                  <strong>Name:</strong> {customer.customerName}
+                </p>
+                <hr />
+              </div>
+            ))}
           </div>
         ) : (
-          <p style={styles.error}>No data found for the specified document.</p>
+          <p style={styles.error}>No customers found.</p>
         )}
       </section>
     </main>
