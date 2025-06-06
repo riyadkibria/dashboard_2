@@ -34,7 +34,7 @@ export const getSingleName = async (): Promise<NameData | null> => {
     ) {
       return {
         id: docSnap.id,
-        name: data.Name,
+        Name: data.Name,
         age: data.age,
         email: data.email,
       };
