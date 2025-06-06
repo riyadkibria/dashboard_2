@@ -1,9 +1,9 @@
 // app/Products/page.tsx
-import { getSingleName, NameData } from '@/lib/getSingleName';
+import { getSingleName, NameData } from '@/lib/getAllCustomerNames';
 
 export default async function ProductsPage() {
   const docId = 'miB2BpABeOC1arOqM2hp';
-  const nameData: NameData | null = await getSingleName(docId);
+  const nameData: NameData | null = await getAllCustomerNames(docId);
 
   return (
     <main style={styles.container}>
