@@ -1,14 +1,13 @@
-// example: pages/api/getName.ts or inside a React component
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+// app/Products/page.tsx
+import { getSingleName } from '@/lib/getSingleName';
 
-export const getSingleName = async () => {
-  const docRef = doc(db, 'Names', 'miB2BpABeOC1arOqM2hp');
-  const docSnap = await getDoc(docRef);
+export default async function ProductsPage() {
+  const nameData = await getSingleName();
 
-  if (docSnap.exists()) {
-    return { id: docSnap.id, ...docSnap.data() };
-  } else {
-    return null;
-  }
-};
+  return (
+    <div>
+      <h1>Product Name Data</h1>
+      <pre>{JSON.stringify(nameData, null, 2)}</pre>
+    </div>
+  );
+}
