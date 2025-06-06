@@ -2,7 +2,9 @@
 import { getSingleName } from '@/lib/getSingleName';
 
 export default async function ProductsPage() {
-  const nameData = await getSingleName();
+  // Pass the document ID here:
+  const docId = 'miB2BpABeOC1arOqM2hp';
+  const nameData = await getSingleName(docId);
 
   return (
     <div>
