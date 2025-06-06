@@ -1,38 +1,59 @@
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebase'; // Make sure this exports your initialized Firestore
+import { collection, getDocs, Timestamp } from 'firebase/firestore';
+import { db } from './firebase';
 
-// Define the shape of the document
-export interface CustomerData {
+// 🧾 Define exactly what a single order looks like
+export interface OrderData {
   id: string;
-  customerName: string;
+  name: string;
+  mobile: string;
+  address: string;
+  productName: string;
+  productPrice: string;
+  createdAt: Timestamp;
 }
 
 /**
- * Fetches all documents from the 'user_request' collection in Firestore.
- * @returns Array of documents containing their ID and Customer-Name field.
+ * Fetches all orders for a given user UID from Firestore.
+ * @param uid The user ID.
+ * @returns An array of orders with details.
  */
-export const getAllCustomerNames = async (): Promise<CustomerData[]> => {
+export const getOrdersForUser = async (uid: string): Promise<OrderData[]> => {
   try {
-    const querySnapshot = await getDocs(collection(db, 'user_request'));
+    // 🔎 Go to: users → [uid] → orders
+    const ordersRef = collection(db, 'users', uid, 'orders');
+    const snapshot = await getDocs(ordersRef);
 
-    const customers: CustomerData[] = [];
+    const orders: OrderData[] = [];
 
-    querySnapshot.forEach((docSnap) => {
+    snapshot.forEach((docSnap) => {
       const data = docSnap.data();
 
-      if (typeof data['Customer-Name'] === 'string') {
-        customers.push({
+      // ✅ Make sure all expected fields exist
+      if (
+        typeof data.name === 'string' &&
+        typeof data.mobile === 'string' &&
+        typeof data.address === 'string' &&
+        typeof data.productName === 'string' &&
+        typeof data.productPrice === 'string' &&
+        data.createdAt instanceof Timestamp
+      ) {
+        orders.push({
           id: docSnap.id,
-          customerName: data['Customer-Name'],
+          name: data.name,
+          mobile: data.mobile,
+          address: data.address,
+          productName: data.productName,
+          productPrice: data.productPrice,
+          createdAt: data.createdAt,
         });
       } else {
-        console.warn(`[Firestore] Skipping document ${docSnap.id}: Missing or invalid "Customer-Name"`);
+        console.warn(`Skipping order ${docSnap.id} — missing or invalid fields.`);
       }
     });
 
-    return customers;
+    return orders;
   } catch (error) {
-    console.error('[Firestore] Error fetching customer names:', error);
+    console.error(`[Firestore] Failed to fetch orders for user ${uid}:`, error);
     return [];
   }
 };
