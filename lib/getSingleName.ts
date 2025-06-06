@@ -5,7 +5,9 @@ import { db } from './firebase';
 
 export interface NameData {
   id: string;
-  [key: string]: any; // Replace 'any' with specific fields if known, e.g., name: string;
+  name: string;
+  age: number;
+  email: string;
 }
 
 /**
@@ -22,13 +24,27 @@ export const getSingleName = async (): Promise<NameData | null> => {
       return null;
     }
 
-    return {
-      id: docSnap.id,
-      ...docSnap.data(),
-    } as NameData;
+    const data = docSnap.data();
 
+    // Type assertion with validation fallback
+    if (
+      typeof data.name === 'string' &&
+      typeof data.age === 'number' &&
+      typeof data.email === 'string'
+    ) {
+      return {
+        id: docSnap.id,
+        name: data.name,
+        age: data.age,
+        email: data.email,
+      };
+    } else {
+      console.error('Document data is malformed.');
+      return null;
+    }
   } catch (error) {
     console.error('Error fetching document from Firestore:', error);
     return null;
   }
 };
+
