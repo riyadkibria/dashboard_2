@@ -1,44 +1,38 @@
-
-// lib/getSingleName.ts
-
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from './firebase'; // make sure this exports your initialized Firestore instance
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from './firebase'; // Make sure this exports your initialized Firestore
 
 // Define the shape of the document
-export interface NameData {
+export interface CustomerData {
   id: string;
-  Name: string;
+  customerName: string;
 }
 
 /**
- * Fetches a specific document from the 'Names' collection in Firestore.
- * @param docId The document ID to fetch (e.g., 'miB2BpABeOC1arOqM2hp')
- * @returns The document data with its ID, or null if not found or malformed.
+ * Fetches all documents from the 'user_request' collection in Firestore.
+ * @returns Array of documents containing their ID and Customer-Name field.
  */
-export const getSingleName = async (docId: string): Promise<NameData | null> => {
+export const getAllCustomerNames = async (): Promise<CustomerData[]> => {
   try {
-    const docRef = doc(db, 'Names', docId);
-    const docSnap = await getDoc(docRef);
+    const querySnapshot = await getDocs(collection(db, 'user_request'));
 
-    if (!docSnap.exists()) {
-      console.warn(`[Firestore] Document not found in 'Names' with ID: ${docId}`);
-      return null;
-    }
+    const customers: CustomerData[] = [];
 
-    const data = docSnap.data();
-    console.log('[Firestore] Data fetched:', data);
+    querySnapshot.forEach((docSnap) => {
+      const data = docSnap.data();
 
-    if (typeof data?.Name === 'string') {
-      return {
-        id: docSnap.id,
-        Name: data.Name,
-      };
-    } else {
-      console.error('[Firestore] Missing or invalid "Name" field:', data);
-      return null;
-    }
+      if (typeof data['Customer-Name'] === 'string') {
+        customers.push({
+          id: docSnap.id,
+          customerName: data['Customer-Name'],
+        });
+      } else {
+        console.warn(`[Firestore] Skipping document ${docSnap.id}: Missing or invalid "Customer-Name"`);
+      }
+    });
+
+    return customers;
   } catch (error) {
-    console.error('[Firestore] Error getting document:', error);
-    return null;
+    console.error('[Firestore] Error fetching customer names:', error);
+    return [];
   }
 };
