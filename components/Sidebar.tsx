@@ -17,7 +17,7 @@ import {
 const links = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Orders", href: "/orders", icon: ShoppingCart },
-  { name: "Products", href: "/dashboard/products", icon: Package },
+  { name: "Products", href: "/products", icon: Package },
   { name: "Customers", href: "/dashboard/customers", icon: Users },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
   { name: "Analytics", href: "/dashboard/analytics", icon: BarChart },
