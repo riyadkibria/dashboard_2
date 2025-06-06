@@ -5,7 +5,7 @@ import { db } from './firebase';
 
 export interface NameData {
   id: string;
-  name: string;
+  Name: string;
   age: number;
   email: string;
 }
@@ -28,13 +28,13 @@ export const getSingleName = async (): Promise<NameData | null> => {
 
     // Type assertion with validation fallback
     if (
-      typeof data.name === 'string' &&
+      typeof data.Name === 'string' &&
       typeof data.age === 'number' &&
       typeof data.email === 'string'
     ) {
       return {
         id: docSnap.id,
-        name: data.name,
+        name: data.Name,
         age: data.age,
         email: data.email,
       };
