@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { fetchNames } from '../../lib/fetchNames';  // adjust path
+import { fetchNames } from '../../lib/fetchNames';
 
 export default function ProductsPage() {
   const [names, setNames] = useState<string[]>([]);
@@ -9,8 +9,9 @@ export default function ProductsPage() {
 
   useEffect(() => {
     async function getData() {
-      const data = await fetchNames();
-      setNames(data);
+      const data = await fetchNames(); // returns OrderData[]
+      const nameList = data.map(item => String(item.Name)); // extract just the names
+      setNames(nameList);
       setLoading(false);
     }
     getData();
