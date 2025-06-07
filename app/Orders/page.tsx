@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { fetchAllOrders, Order } from "@/lib/fetchOrders";
-import { db } from "@/lib/firebase";
+import { fetchAllOrders, Order } from "@/lib/fetchOrders";
+
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
