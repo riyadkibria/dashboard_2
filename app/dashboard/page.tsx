@@ -1,6 +1,6 @@
 // lib/fetchAllOrders.ts
 import { collection, getDocs, Timestamp } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "@/lib/firebase"; // ✅ correct path
 
 interface Order {
   orderId: string;
