@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -49,7 +50,8 @@ export default function ProductsPage() {
               className="bg-white p-4 rounded shadow hover:shadow-lg transition"
             >
               <p>
-                <strong>Name:</strong> {order.Name || "N/A"}
+                <strong>Name:</strong>{" "}
+                {typeof order.Name === "string" ? order.Name : "N/A"}
               </p>
               <p>
                 <strong>Order ID:</strong> {order.orderId}
@@ -77,7 +79,9 @@ export default function ProductsPage() {
               key={order.orderId || i}
               className="bg-white p-6 rounded-lg shadow-lg border-l-8 border-blue-500"
             >
-              <p className="text-xl font-semibold mb-2">{order.Name || "N/A"}</p>
+              <p className="text-xl font-semibold mb-2">
+                {typeof order.Name === "string" ? order.Name : "N/A"}
+              </p>
               <p className="text-gray-700 mb-1">
                 Order ID: <span className="font-mono">{order.orderId}</span>
               </p>
