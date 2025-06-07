@@ -29,7 +29,7 @@ export async function fetchNames(): Promise<OrderData[]> {
     });
   }
 
-  // Filter out orders without a Time, then sort descending by Time (newest first)
+  // Filter orders that have a valid Timestamp in Time
   const sortedOrders = allOrders
     .filter((order) => order.Time instanceof Timestamp)
     .sort(
@@ -37,6 +37,7 @@ export async function fetchNames(): Promise<OrderData[]> {
         (b.Time as Timestamp).toMillis() - (a.Time as Timestamp).toMillis()
     );
 
-  // Return only the latest 2 orders
+  // Return the latest 2 orders only
   return sortedOrders.slice(0, 2);
 }
+
