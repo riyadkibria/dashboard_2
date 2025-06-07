@@ -1,5 +1,7 @@
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { fetchAllOrders, Order } from "@/lib/fetchAllOrders";
+
 
 export interface Order {
   orderId: string;
