@@ -10,7 +10,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     async function getData() {
-      const data = await fetchNames(); // returns OrderData[]
+      const data = await fetchNames();
       setOrders(data);
       setLoading(false);
     }
@@ -26,7 +26,8 @@ export default function ProductsPage() {
         <ul>
           {orders.map((order, index) => (
             <li key={index}>
-              <strong>Name:</strong> {order.Name ?? "No name"} <br />
+              <strong>Name:</strong>{" "}
+              {typeof order.Name === "string" ? order.Name : "No name"} <br />
               <strong>Time:</strong>{" "}
               {order.Time instanceof Timestamp
                 ? order.Time.toDate().toLocaleString()
