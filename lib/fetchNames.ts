@@ -1,11 +1,13 @@
 // lib/fetchNames.ts
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "../lib/firebase";
 
-type OrderData = {
+// Define the type to include Time (can be Timestamp or undefined)
+export type OrderData = {
   nameId: string;
   orderId: string;
-  [key: string]: unknown; // allows extra fields in order data
+  Time?: Timestamp;
+  [key: string]: unknown; // include any extra fields
 };
 
 export async function fetchNames(): Promise<OrderData[]> {
@@ -19,10 +21,12 @@ export async function fetchNames(): Promise<OrderData[]> {
     const ordersSnapshot = await getDocs(ordersRef);
 
     ordersSnapshot.forEach((orderDoc) => {
+      const orderData = orderDoc.data();
       allOrders.push({
         nameId: nameDoc.id,
         orderId: orderDoc.id,
-        ...orderDoc.data(),
+        Time: orderData.Time, // includes timestamp if present
+        ...orderData,         // spread the rest of the data
       });
     });
   }
