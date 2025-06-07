@@ -1,8 +1,8 @@
+
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "./firebase";
 
-// Define the structure of an order
-interface Order {
+export interface Order {
   orderId: string;
   userId: string;
   address: string;
@@ -16,7 +16,6 @@ interface Order {
 export const fetchAllOrders = async (): Promise<Order[]> => {
   const usersRef = collection(db, "users");
   const usersSnapshot = await getDocs(usersRef);
-
   const allOrders: Order[] = [];
 
   for (const userDoc of usersSnapshot.docs) {
