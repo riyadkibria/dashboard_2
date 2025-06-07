@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { fetchNames } from '../../lib/fetchNames';
+import React, { useEffect, useState } from "react";
+import { fetchNames, OrderData } from "../../lib/fetchNames";
+import { Timestamp } from "firebase/firestore";
 
 export default function ProductsPage() {
-  const [names, setNames] = useState<string[]>([]);
+  const [orders, setOrders] = useState<OrderData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getData() {
       const data = await fetchNames(); // returns OrderData[]
-      const nameList = data.map(item => String(item.Name)); // extract just the names
-      setNames(nameList);
+      setOrders(data);
       setLoading(false);
     }
     getData();
@@ -21,15 +21,21 @@ export default function ProductsPage() {
 
   return (
     <div>
-      <h1>All Names</h1>
-      {names.length > 0 ? (
+      <h1>All Orders</h1>
+      {orders.length > 0 ? (
         <ul>
-          {names.map((name, index) => (
-            <li key={index}>{name}</li>
+          {orders.map((order, index) => (
+            <li key={index}>
+              <strong>Name:</strong> {order.Name ?? "No name"} <br />
+              <strong>Time:</strong>{" "}
+              {order.Time instanceof Timestamp
+                ? order.Time.toDate().toLocaleString()
+                : "No time"}
+            </li>
           ))}
         </ul>
       ) : (
-        <p>No names found.</p>
+        <p>No orders found.</p>
       )}
     </div>
   );
