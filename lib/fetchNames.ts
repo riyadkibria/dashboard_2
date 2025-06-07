@@ -3,7 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase";
 
 export async function fetchNames() {
-  const nameCollection = collection(db, "Name");
+  const nameCollection = collection(db, "Names");
 
   try {
     const snapshot = await getDocs(nameCollection);
