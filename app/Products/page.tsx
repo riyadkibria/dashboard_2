@@ -17,7 +17,7 @@ export default async function ProductsPage() {
                   <strong>ID:</strong> {customer.id}
                 </p>
                 <p>
-                  <strong>Name:</strong> {customer.customerName}
+                  <strong>Name:</strong> {customer.name}
                 </p>
                 <hr />
               </div>
@@ -66,3 +66,4 @@ const styles = {
     fontSize: '1.1rem',
   },
 };
+
