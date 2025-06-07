@@ -1,10 +1,18 @@
-// lib/fetchAllOrders.ts
 import { collection, getDocs, Timestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase"; // ✅ correct path
+import { db } from "@/lib/firebase";
 
-interface Order {
+export interface Order {
   orderId: string;
   userId: string;
+  address: string;
+  createdAt: Timestamp;
+  mobile: string;
+  name: string;
+  productName: string;
+  productPrice: string;
+}
+
+interface OrderData {
   address: string;
   createdAt: Timestamp;
   mobile: string;
@@ -25,12 +33,13 @@ export const fetchAllOrders = async (): Promise<Order[]> => {
     const ordersSnapshot = await getDocs(ordersRef);
 
     const userOrders: Order[] = ordersSnapshot.docs.map((orderDoc) => {
-      const data = orderDoc.data();
+      const data = orderDoc.data() as OrderData; // ✅ explicitly typed
+
       return {
         orderId: orderDoc.id,
         userId,
         address: data.address,
-        createdAt: data.createdAt as Timestamp,
+        createdAt: data.createdAt,
         mobile: data.mobile,
         name: data.name,
         productName: data.productName,
