@@ -1,38 +1,19 @@
-// lib/getAllCustomerNames.ts
+// fetchNames.ts or wherever you want to use it
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../lib/firebase"; // adjust the path based on your project structure
 
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebase';
+async function fetchNames() {
+  const nameCollection = collection(db, "Name");
 
-// Define the type
-export interface CustomerData {
-  id: string;
-  name: string;
-}
-
-/**
- * Fetches all customer names from Firestore.
- */
-export const getAllCustomerNames = async (): Promise<CustomerData[]> => {
   try {
-    const usersRef = collection(db, 'users');
-    const snapshot = await getDocs(usersRef);
-
-    const customers: CustomerData[] = [];
-
-    snapshot.forEach((doc) => {
-      const data = doc.data();
-      if (typeof data.name === 'string') {
-        customers.push({
-          id: doc.id,
-          name: data.name,
-        });
-      }
-    });
-
-    return customers;
+    const snapshot = await getDocs(nameCollection);
+    const nameList = snapshot.docs.map(doc => doc.data().Name);
+    console.log(nameList);
+    return nameList;
   } catch (error) {
-    console.error('[Firestore] Failed to fetch customer names:', error);
+    console.error("Error fetching names:", error);
     return [];
   }
-};
+}
 
+fetchNames();
