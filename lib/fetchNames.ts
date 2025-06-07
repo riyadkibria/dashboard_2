@@ -1,16 +1,30 @@
-// fetchNames.ts
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase";
 
 export async function fetchNames() {
-  const nameCollection = collection(db, "Names");
+  const namesCollection = collection(db, "Names");
 
   try {
-    const snapshot = await getDocs(nameCollection);
-    const nameList = snapshot.docs.map(doc => doc.data().Name);
-    return nameList;
+    const namesSnapshot = await getDocs(namesCollection);
+
+    const allOrders: any[] = [];
+
+    for (const nameDoc of namesSnapshot.docs) {
+      const ordersRef = collection(db, "Names", nameDoc.id, "orders");
+      const ordersSnapshot = await getDocs(ordersRef);
+
+      ordersSnapshot.forEach(orderDoc => {
+        allOrders.push({
+          nameId: nameDoc.id,
+          orderId: orderDoc.id,
+          ...orderDoc.data(),
+        });
+      });
+    }
+
+    return allOrders;
   } catch (error) {
-    console.error("Error fetching names:", error);
+    console.error("Error fetching orders from subcollections:", error);
     return [];
   }
 }
