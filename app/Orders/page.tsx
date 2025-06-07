@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
-import { fetchAllOrders, Order } from "@/lib/fetchOrders"; // using @
-import { db } from "@/lib/firebase"; // Firebase is now imported from @
+"use client";
 
-export default function Dashboard() {
+import { useEffect, useState } from "react";
+import { fetchAllOrders, Order } from "@/lib/fetchOrders";
+import { db } from "@/lib/firebase";
+
+export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
