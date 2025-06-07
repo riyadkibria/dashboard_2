@@ -1,13 +1,11 @@
-// lib/fetchNames.ts
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "../lib/firebase";
 
-// Define the type to include Time (can be Timestamp or undefined)
 export type OrderData = {
   nameId: string;
   orderId: string;
   Time?: Timestamp;
-  [key: string]: unknown; // include any extra fields
+  [key: string]: unknown;
 };
 
 export async function fetchNames(): Promise<OrderData[]> {
@@ -25,11 +23,20 @@ export async function fetchNames(): Promise<OrderData[]> {
       allOrders.push({
         nameId: nameDoc.id,
         orderId: orderDoc.id,
-        Time: orderData.Time, // includes timestamp if present
-        ...orderData,         // spread the rest of the data
+        Time: orderData.Time,
+        ...orderData,
       });
     });
   }
 
-  return allOrders;
+  // Filter out orders without a Time, then sort descending by Time (newest first)
+  const sortedOrders = allOrders
+    .filter((order) => order.Time instanceof Timestamp)
+    .sort(
+      (a, b) =>
+        (b.Time as Timestamp).toMillis() - (a.Time as Timestamp).toMillis()
+    );
+
+  // Return only the latest 2 orders
+  return sortedOrders.slice(0, 2);
 }
