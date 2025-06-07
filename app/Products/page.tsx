@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { fetchNames } from '../path/to/fetchNames';  // adjust path
+import { fetchNames } from '../lib/fetchNames';  // adjust path
 
 export default function ProductsPage() {
   const [names, setNames] = useState<string[]>([]);
