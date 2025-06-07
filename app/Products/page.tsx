@@ -1,8 +1,8 @@
 // app/Products/page.tsx
-import { getAllCustomerNames, CustomerData } from '@/lib/getAllCustomerNames';
+import { fetchNames, CustomerData } from '@/lib/fetchNames';
 
 export default async function ProductsPage() {
-  const allCustomers: CustomerData[] = await getAllCustomerNames();
+  const allCustomers: CustomerData[] = await fetchNames();
 
   return (
     <main style={styles.container}>
@@ -66,4 +66,3 @@ const styles = {
     fontSize: '1.1rem',
   },
 };
-
