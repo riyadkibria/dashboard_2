@@ -1,65 +1,38 @@
-import { collection, getDocs, Timestamp, DocumentData } from 'firebase/firestore';
+// lib/getAllCustomerNames.ts
+
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 
-// 🧾 Define what a single order looks like
-export interface OrderData {
+// Define the type
+export interface CustomerData {
   id: string;
   name: string;
-  mobile: string;
-  address: string;
-  productName: string;
-  productPrice: string;
-  createdAt: Timestamp;
 }
 
 /**
- * Type guard to validate Firestore order data.
+ * Fetches all customer names from Firestore.
  */
-function isValidOrderData(data: DocumentData): data is Omit<OrderData, 'id'> {
-  return (
-    typeof data.name === 'string' &&
-    typeof data.mobile === 'string' &&
-    typeof data.address === 'string' &&
-    typeof data.productName === 'string' &&
-    typeof data.productPrice === 'string' &&
-    data.createdAt instanceof Timestamp
-  );
-}
-
-/**
- * Fetches all orders for a given user UID from Firestore.
- * @param uid - The user ID
- * @returns Array of orders with details
- */
-export const getOrdersForUser = async (uid: string): Promise<OrderData[]> => {
+export const getAllCustomerNames = async (): Promise<CustomerData[]> => {
   try {
-    // 🔎 Path: users → [uid] → orders
-    const ordersRef = collection(db, 'users', uid, 'orders');
-    const snapshot = await getDocs(ordersRef);
+    const usersRef = collection(db, 'users');
+    const snapshot = await getDocs(usersRef);
 
-    const orders: OrderData[] = [];
+    const customers: CustomerData[] = [];
 
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-
-      if (isValidOrderData(data)) {
-        orders.push({
-          id: docSnap.id,
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      if (typeof data.name === 'string') {
+        customers.push({
+          id: doc.id,
           name: data.name,
-          mobile: data.mobile,
-          address: data.address,
-          productName: data.productName,
-          productPrice: data.productPrice,
-          createdAt: data.createdAt,
         });
-      } else {
-        console.warn(`Skipping invalid order document: ${docSnap.id}`);
       }
     });
 
-    return orders;
+    return customers;
   } catch (error) {
-    console.error(`[Firestore] Failed to fetch orders for user ${uid}:`, error);
+    console.error('[Firestore] Failed to fetch customer names:', error);
     return [];
   }
 };
+
