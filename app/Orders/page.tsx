@@ -1,9 +1,16 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { fetchAllOrders } from "../../lib/fetchOrders";
 
+type Order = {
+  userId: string;
+  orderId: string;
+  [key: string]: any;  // allows other fields without causing errors
+};
+
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     async function loadOrders() {
