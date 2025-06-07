@@ -1,7 +1,7 @@
-import { collection, getDocs, Timestamp } from 'firebase/firestore';
+import { collection, getDocs, Timestamp, DocumentData } from 'firebase/firestore';
 import { db } from './firebase';
 
-// 🧾 Define exactly what a single order looks like
+// 🧾 Define what a single order looks like
 export interface OrderData {
   id: string;
   name: string;
@@ -13,13 +13,27 @@ export interface OrderData {
 }
 
 /**
+ * Type guard to validate Firestore order data.
+ */
+function isValidOrderData(data: DocumentData): data is Omit<OrderData, 'id'> {
+  return (
+    typeof data.name === 'string' &&
+    typeof data.mobile === 'string' &&
+    typeof data.address === 'string' &&
+    typeof data.productName === 'string' &&
+    typeof data.productPrice === 'string' &&
+    data.createdAt instanceof Timestamp
+  );
+}
+
+/**
  * Fetches all orders for a given user UID from Firestore.
- * @param uid The user ID.
- * @returns An array of orders with details.
+ * @param uid - The user ID
+ * @returns Array of orders with details
  */
 export const getOrdersForUser = async (uid: string): Promise<OrderData[]> => {
   try {
-    // 🔎 Go to: users → [uid] → orders
+    // 🔎 Path: users → [uid] → orders
     const ordersRef = collection(db, 'users', uid, 'orders');
     const snapshot = await getDocs(ordersRef);
 
@@ -28,15 +42,7 @@ export const getOrdersForUser = async (uid: string): Promise<OrderData[]> => {
     snapshot.forEach((docSnap) => {
       const data = docSnap.data();
 
-      // ✅ Make sure all expected fields exist
-      if (
-        typeof data.name === 'string' &&
-        typeof data.mobile === 'string' &&
-        typeof data.address === 'string' &&
-        typeof data.productName === 'string' &&
-        typeof data.productPrice === 'string' &&
-        data.createdAt instanceof Timestamp
-      ) {
+      if (isValidOrderData(data)) {
         orders.push({
           id: docSnap.id,
           name: data.name,
@@ -47,7 +53,7 @@ export const getOrdersForUser = async (uid: string): Promise<OrderData[]> => {
           createdAt: data.createdAt,
         });
       } else {
-        console.warn(`Skipping order ${docSnap.id} — missing or invalid fields.`);
+        console.warn(`Skipping invalid order document: ${docSnap.id}`);
       }
     });
 
