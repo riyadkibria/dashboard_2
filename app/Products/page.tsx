@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -6,59 +5,92 @@ import { fetchNames, OrderData } from "../../lib/fetchNames";
 import { Timestamp } from "firebase/firestore";
 
 export default function ProductsPage() {
-  const [orders, setOrders] = useState<OrderData[]>([]);
+  const [allOrders, setAllOrders] = useState<OrderData[]>([]);
+  const [latestTwoOrders, setLatestTwoOrders] = useState<OrderData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getData() {
       const data = await fetchNames();
-      setOrders(data);
+
+      // Sort all orders by Time descending (newest first)
+      const sorted = data
+        .filter((order) => order.Time instanceof Timestamp)
+        .sort(
+          (a, b) =>
+            (b.Time as Timestamp).toMillis() - (a.Time as Timestamp).toMillis()
+        );
+
+      setAllOrders(data); // all orders as-is (unsorted or sorted — your choice)
+      setLatestTwoOrders(sorted.slice(0, 2)); // pick only the latest two
       setLoading(false);
     }
+
     getData();
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-gray-500 text-xl animate-pulse">Loading orders...</p>
-      </div>
-    );
+    return <p>Loading orders...</p>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-6">
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-8">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800 border-b pb-2">
-          Customer Orders
-        </h1>
+    <div className="min-h-screen bg-gray-50 p-8 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-center">Orders Overview</h1>
 
-        {orders.length > 0 ? (
-          <ul className="space-y-4">
-            {orders.map((order, index) => (
-              <li
-                key={index}
-                className="border rounded-lg p-4 bg-gray-50 hover:bg-white transition duration-200 shadow-sm"
-              >
-                <p className="text-lg font-medium text-gray-800">
-                  🧾 Name:{" "}
-                  <span className="font-semibold text-blue-600">
-                    {typeof order.Name === "string" ? order.Name : "No name"}
-                  </span>
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
-                  ⏰ Time:{" "}
-                  {order.Time instanceof Timestamp
-                    ? order.Time.toDate().toLocaleString()
-                    : "No time"}
-                </p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-600 text-center">No orders found.</p>
-        )}
-      </div>
+      {/* Block 1: All Orders */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold mb-4 border-b border-gray-300 pb-2">
+          All Orders ({allOrders.length})
+        </h2>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {allOrders.map((order, i) => (
+            <div
+              key={order.orderId || i}
+              className="bg-white p-4 rounded shadow hover:shadow-lg transition"
+            >
+              <p>
+                <strong>Name:</strong> {order.Name || "N/A"}
+              </p>
+              <p>
+                <strong>Order ID:</strong> {order.orderId}
+              </p>
+              <p>
+                <strong>Time:</strong>{" "}
+                {order.Time instanceof Timestamp
+                  ? order.Time.toDate().toLocaleString()
+                  : "No timestamp"}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Block 2: Latest 2 Orders */}
+      <section>
+        <h2 className="text-2xl font-semibold mb-4 border-b border-gray-300 pb-2">
+          Latest 2 Orders
+        </h2>
+        <div className="space-y-6">
+          {latestTwoOrders.length === 0 && <p>No recent orders found.</p>}
+          {latestTwoOrders.map((order, i) => (
+            <div
+              key={order.orderId || i}
+              className="bg-white p-6 rounded-lg shadow-lg border-l-8 border-blue-500"
+            >
+              <p className="text-xl font-semibold mb-2">{order.Name || "N/A"}</p>
+              <p className="text-gray-700 mb-1">
+                Order ID: <span className="font-mono">{order.orderId}</span>
+              </p>
+              <p className="text-gray-600 text-sm">
+                Time:{" "}
+                {order.Time instanceof Timestamp
+                  ? order.Time.toDate().toLocaleString()
+                  : "No timestamp"}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
