@@ -2,7 +2,7 @@
 import { fetchNames, CustomerData } from '@/lib/fetchNames';
 
 export default async function ProductsPage() {
-  const allCustomers: CustomerData[] = await fetchNames();
+  const allCustomers:fetchNames[] = await fetchNames();
 
   return (
     <main style={styles.container}>
