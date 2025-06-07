@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -14,7 +13,6 @@ export default function ProductsPage() {
     async function getData() {
       const data = await fetchNames();
 
-      // Sort all orders by Time descending (newest first)
       const sorted = data
         .filter((order) => order.Time instanceof Timestamp)
         .sort(
@@ -22,8 +20,8 @@ export default function ProductsPage() {
             (b.Time as Timestamp).toMillis() - (a.Time as Timestamp).toMillis()
         );
 
-      setAllOrders(data); // all orders as-is (unsorted or sorted — your choice)
-      setLatestTwoOrders(sorted.slice(0, 2)); // pick only the latest two
+      setAllOrders(data);
+      setLatestTwoOrders(sorted.slice(0, 2));
       setLoading(false);
     }
 
@@ -31,32 +29,39 @@ export default function ProductsPage() {
   }, []);
 
   if (loading) {
-    return <p>Loading orders...</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
+        <p className="text-lg animate-pulse">Loading orders...</p>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">Orders Overview</h1>
+    <div className="min-h-screen bg-slate-900 text-white p-8 max-w-6xl mx-auto">
+      <h1 className="text-4xl font-extrabold mb-10 text-center text-white">
+        📦 Orders Overview
+      </h1>
 
       {/* Block 1: All Orders */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4 border-b border-gray-300 pb-2">
-          All Orders ({allOrders.length})
+      <section className="mb-16">
+        <h2 className="text-2xl font-bold mb-6 border-b border-slate-700 pb-2">
+          All Orders <span className="text-blue-400">({allOrders.length})</span>
         </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {allOrders.map((order, i) => (
             <div
               key={order.orderId || i}
-              className="bg-white p-4 rounded shadow hover:shadow-lg transition"
+              className="bg-slate-800 backdrop-blur-md p-5 rounded-xl shadow-md border border-slate-700 hover:border-blue-500 transition-all"
             >
-              <p>
-                <strong>Name:</strong>{" "}
+              <p className="mb-1">
+                <strong className="text-blue-300">Name:</strong>{" "}
                 {typeof order.Name === "string" ? order.Name : "N/A"}
               </p>
-              <p>
-                <strong>Order ID:</strong> {order.orderId}
+              <p className="mb-1">
+                <strong className="text-blue-300">Order ID:</strong>{" "}
+                {order.orderId}
               </p>
-              <p>
+              <p className="text-sm text-slate-400">
                 <strong>Time:</strong>{" "}
                 {order.Time instanceof Timestamp
                   ? order.Time.toDate().toLocaleString()
@@ -69,23 +74,26 @@ export default function ProductsPage() {
 
       {/* Block 2: Latest 2 Orders */}
       <section>
-        <h2 className="text-2xl font-semibold mb-4 border-b border-gray-300 pb-2">
-          Latest 2 Orders
+        <h2 className="text-2xl font-bold mb-6 border-b border-slate-700 pb-2">
+          🚀 Latest 2 Orders
         </h2>
         <div className="space-y-6">
-          {latestTwoOrders.length === 0 && <p>No recent orders found.</p>}
+          {latestTwoOrders.length === 0 && (
+            <p className="text-slate-400">No recent orders found.</p>
+          )}
           {latestTwoOrders.map((order, i) => (
             <div
               key={order.orderId || i}
-              className="bg-white p-6 rounded-lg shadow-lg border-l-8 border-blue-500"
+              className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 rounded-xl shadow-lg border-l-8 border-white/30"
             >
-              <p className="text-xl font-semibold mb-2">
+              <p className="text-xl font-semibold text-white mb-1">
                 {typeof order.Name === "string" ? order.Name : "N/A"}
               </p>
-              <p className="text-gray-700 mb-1">
-                Order ID: <span className="font-mono">{order.orderId}</span>
+              <p className="text-slate-100">
+                <span className="text-sm text-slate-300">Order ID:</span>{" "}
+                <span className="font-mono">{order.orderId}</span>
               </p>
-              <p className="text-gray-600 text-sm">
+              <p className="text-sm text-slate-300 mt-1">
                 Time:{" "}
                 {order.Time instanceof Timestamp
                   ? order.Time.toDate().toLocaleString()
