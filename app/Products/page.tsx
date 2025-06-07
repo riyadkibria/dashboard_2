@@ -1,7 +1,7 @@
-// app/Products/page.tsx (or any React component)
+"use client";
 
 import React, { useEffect, useState } from 'react';
-import { fetchNames } from '../lib/fetchNames';  // adjust the path
+import { fetchNames } from '../path/to/fetchNames';  // adjust path
 
 export default function ProductsPage() {
   const [names, setNames] = useState<string[]>([]);
@@ -33,4 +33,3 @@ export default function ProductsPage() {
     </div>
   );
 }
-
