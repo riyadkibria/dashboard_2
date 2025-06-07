@@ -1,23 +1,38 @@
-// lib/fetchAllOrders.ts
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "./firebase";
 
-export const fetchAllOrders = async () => {
+// Define the structure of an order
+interface Order {
+  orderId: string;
+  userId: string;
+  address: string;
+  createdAt: Timestamp;
+  mobile: string;
+  name: string;
+  productName: string;
+  productPrice: string;
+}
+
+export const fetchAllOrders = async (): Promise<Order[]> => {
   const usersRef = collection(db, "users");
   const usersSnapshot = await getDocs(usersRef);
 
-  const allOrders: any[] = [];
+  const allOrders: Order[] = [];
 
   for (const userDoc of usersSnapshot.docs) {
     const userId = userDoc.id;
     const ordersRef = collection(db, "users", userId, "orders");
     const ordersSnapshot = await getDocs(ordersRef);
 
-    const userOrders = ordersSnapshot.docs.map((orderDoc) => ({
-      orderId: orderDoc.id,
-      userId,
-      ...orderDoc.data(),
-    }));
+    const userOrders: Order[] = ordersSnapshot.docs.map((orderDoc) => {
+      const data = orderDoc.data() as Omit<Order, "orderId" | "userId">;
+
+      return {
+        orderId: orderDoc.id,
+        userId,
+        ...data,
+      };
+    });
 
     allOrders.push(...userOrders);
   }
