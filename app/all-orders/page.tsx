@@ -22,7 +22,7 @@ export default function AllOrdersPage() {
       padding: '40px',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
       fontSize: '18px',
-      color: '#6b7280', // soft gray
+      color: '#6b7280',
       textAlign: 'center',
     }}>
       Loading...
@@ -31,20 +31,22 @@ export default function AllOrdersPage() {
 
   return (
     <div style={{
-      maxWidth: '720px',
+      maxWidth: '900px',
       margin: '40px auto',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
-      color: '#374151', // dark gray-blue
-      backgroundColor: '#f9fafb', // very soft off-white
+      color: '#374151',
+      backgroundColor: '#f9fafb',
       borderRadius: '12px',
-      padding: '32px 40px',
+      padding: '32px 24px',
       boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
+      overflowX: 'auto',
     }}>
       <h1 style={{
         fontWeight: '700',
-        fontSize: '2.25rem',
+        fontSize: '2rem',
         marginBottom: '24px',
-        color: '#111827', // almost black
+        color: '#111827',
+        textAlign: 'center',
       }}>
         All Orders
       </h1>
@@ -52,40 +54,66 @@ export default function AllOrdersPage() {
       {orders.length === 0 ? (
         <p style={{
           fontSize: '16px',
-          color: '#6b7280', // soft gray
+          color: '#6b7280',
           textAlign: 'center',
           padding: '40px 0',
         }}>
           No orders found.
         </p>
       ) : (
-        orders.map((order, index) => (
-          <div
-            key={index}
-            style={{
-              backgroundColor: '#fff',
-              padding: '20px 24px',
+        <table style={{
+          width: '100%',
+          borderCollapse: 'separate',
+          borderSpacing: '0 12px',
+          backgroundColor: '#fff',
+          borderRadius: '8px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+        }}>
+          <thead>
+            <tr style={{ 
+              backgroundColor: '#e5e7eb', 
+              color: '#374151', 
+              textAlign: 'left',
+              fontWeight: 600,
+              fontSize: '14px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
               borderRadius: '8px',
-              marginBottom: '20px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-              transition: 'box-shadow 0.2s ease',
-              cursor: 'default',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.1)')}
-            onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)')}
-          >
-            <p style={{ margin: '4px 0', fontWeight: 600 }}>Name: <span style={{ fontWeight: 400 }}>{order.name}</span></p>
-            <p style={{ margin: '4px 0', fontWeight: 600 }}>Mobile: <span style={{ fontWeight: 400 }}>{order.mobile}</span></p>
-            <p style={{ margin: '4px 0', fontWeight: 600 }}>Address: <span style={{ fontWeight: 400 }}>{order.address}</span></p>
-            <p style={{ margin: '4px 0', fontWeight: 600 }}>Product: <span style={{ fontWeight: 400 }}>{order.productName}</span></p>
-            <p style={{ margin: '4px 0', fontWeight: 600 }}>Price: <span style={{ fontWeight: 400 }}>{order.productPrice}</span></p>
-            <p style={{ margin: '4px 0', fontWeight: 600 }}>
-              Created At: <span style={{ fontWeight: 400 }}>
-                {order.createdAt ? order.createdAt.toDate().toLocaleString() : 'N/A'}
-              </span>
-            </p>
-          </div>
-        ))
+            }}>
+              <th style={{ padding: '12px 16px' }}>Name</th>
+              <th style={{ padding: '12px 16px' }}>Mobile</th>
+              <th style={{ padding: '12px 16px' }}>Address</th>
+              <th style={{ padding: '12px 16px' }}>Product</th>
+              <th style={{ padding: '12px 16px' }}>Price</th>
+              <th style={{ padding: '12px 16px' }}>Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order, index) => (
+              <tr
+                key={index}
+                style={{
+                  backgroundColor: '#fefefe',
+                  borderBottom: '1px solid #e5e7eb',
+                  fontSize: '15px',
+                  color: '#4b5563',
+                  transition: 'background-color 0.2s ease',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#fefefe')}
+              >
+                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.name}</td>
+                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.mobile}</td>
+                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.address}</td>
+                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.productName}</td>
+                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.productPrice}</td>
+                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>
+                  {order.createdAt ? order.createdAt.toDate().toLocaleString() : 'N/A'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );
