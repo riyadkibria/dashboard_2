@@ -1,8 +1,7 @@
 "use client";
 
-// pages/all-orders.tsx
 import { useEffect, useState } from "react";
-import { fetchOrders, Order } from "../../lib/fetchOrders";
+import { fetchOrders, Order } from "@/lib/fetchOrders";
 
 export default function AllOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -10,9 +9,14 @@ export default function AllOrdersPage() {
 
   useEffect(() => {
     const getOrders = async () => {
-      const allOrders = await fetchOrders();
-      setOrders(allOrders);
-      setLoading(false);
+      try {
+        const allOrders = await fetchOrders();
+        setOrders(allOrders);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getOrders();
