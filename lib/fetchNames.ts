@@ -2,42 +2,53 @@ import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "../lib/firebase";
 
 export type OrderData = {
-  nameId: string;
+  nameId: string;       // here it will be userId now
   orderId: string;
+  address?: string;
+  createdAt?: Timestamp;
+  mobile?: string;
+  name?: string;
+  productName?: string;
+  productPrice?: string;
   Time?: Timestamp;
   [key: string]: unknown;
 };
 
 export async function fetchNames(): Promise<OrderData[]> {
-  const namesCollection = collection(db, "Names");
-  const namesSnapshot = await getDocs(namesCollection);
+  const usersCollection = collection(db, "users");  // Changed here
+  const usersSnapshot = await getDocs(usersCollection);
 
   const allOrders: OrderData[] = [];
 
-  for (const nameDoc of namesSnapshot.docs) {
-    const ordersRef = collection(db, "Names", nameDoc.id, "orders");
+  for (const userDoc of usersSnapshot.docs) {
+    const ordersRef = collection(db, "users", userDoc.id, "orders");  // Changed here
     const ordersSnapshot = await getDocs(ordersRef);
 
     ordersSnapshot.forEach((orderDoc) => {
       const orderData = orderDoc.data();
+
       allOrders.push({
-        nameId: nameDoc.id,
+        nameId: userDoc.id,  // this is now the userId
         orderId: orderDoc.id,
+        address: orderData.address || "335/3 zafrabad,shankar",
+        createdAt: orderData.createdAt,
+        mobile: orderData.mobile || "01918646488",
+        name: orderData.name || "Riyad Bin Kibria",
+        productName: orderData.productName || "",
+        productPrice: orderData.productPrice || "",
         Time: orderData.Time,
-        ...orderData,
       });
     });
   }
 
-  // Filter orders that have a valid Timestamp in Time
+  // Filter orders with valid createdAt Timestamp and sort descending
   const sortedOrders = allOrders
-    .filter((order) => order.Time instanceof Timestamp)
+    .filter((order) => order.createdAt instanceof Timestamp)
     .sort(
       (a, b) =>
-        (b.Time as Timestamp).toMillis() - (a.Time as Timestamp).toMillis()
+        (b.createdAt as Timestamp).toMillis() - (a.createdAt as Timestamp).toMillis()
     );
 
   // Return the latest 2 orders only
   return sortedOrders.slice(0, 2);
 }
-
