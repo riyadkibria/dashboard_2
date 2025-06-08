@@ -1,5 +1,5 @@
 import { collection, getDocs, Timestamp } from "firebase/firestore";
-import { db } from "../lib/firebase";
+import { db } from "./firebase";
 
 export type OrderData = {
   userId: string;
