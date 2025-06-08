@@ -1,12 +1,16 @@
-
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { db } from "./firebase";
 
-// Define the Order type
+// Strongly typed Order
 export type Order = {
   userId: string;
   orderId: string;
-  [key: string]: unknown;
+  address: string;
+  createdAt: Timestamp;
+  mobile: string;
+  name: string;
+  productName: string;
+  productPrice: string;
 };
 
 export async function fetchAllOrders(): Promise<Order[]> {
@@ -19,11 +23,28 @@ export async function fetchAllOrders(): Promise<Order[]> {
       const ordersSnapshot = await getDocs(collection(db, `users/${userId}/orders`));
 
       ordersSnapshot.forEach(orderDoc => {
-        allOrders.push({
-          userId,
-          orderId: orderDoc.id,
-          ...orderDoc.data(),
-        });
+        const data = orderDoc.data();
+
+        // Optional: Add validation checks if needed
+        if (
+          data.address &&
+          data.createdAt &&
+          data.mobile &&
+          data.name &&
+          data.productName &&
+          data.productPrice
+        ) {
+          allOrders.push({
+            userId,
+            orderId: orderDoc.id,
+            address: data.address,
+            createdAt: data.createdAt,
+            mobile: data.mobile,
+            name: data.name,
+            productName: data.productName,
+            productPrice: data.productPrice,
+          });
+        }
       });
     }
 
