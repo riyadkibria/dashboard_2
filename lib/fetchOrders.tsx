@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase"; // Adjust the path if needed
-import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase"; // Update this path if needed
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 
-// TypeScript type for a single user request
+// ✅ Correct type for each user request
 type UserRequest = {
   Address: string;
   Courier: string;
@@ -15,7 +15,7 @@ type UserRequest = {
   "Product-Name": string;
   "Product-Price": string;
   Quantity: string;
-  Time: any; // Firestore Timestamp
+  Time: Timestamp;
   "User-Email": string;
 };
 
@@ -83,7 +83,7 @@ export default function FetchData() {
 
             <p>
               <strong>Time:</strong>{" "}
-              {req.Time?.toDate?.().toLocaleString?.() || "N/A"}
+              {req.Time?.toDate().toLocaleString() || "N/A"}
             </p>
           </div>
         ))
