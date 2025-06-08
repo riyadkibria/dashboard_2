@@ -1,5 +1,5 @@
 import { db } from './firebase';
-import { collection, getDocs, orderBy, limit, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, limit, query, Timestamp } from 'firebase/firestore';
 
 export interface Order {
   name: string;
@@ -7,7 +7,7 @@ export interface Order {
   address: string;
   productName: string;
   productPrice: string;
-  createdAt?: timestamp;
+  createdAt?: Timestamp;
 }
 
 export async function fetchLatestOrders(): Promise<Order[]> {
