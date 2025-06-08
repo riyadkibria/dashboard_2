@@ -15,7 +15,7 @@ type UserRequest = {
   "Product-Name": string;
   "Product-Price": string;
   Quantity: string;
-  Time: any; // Firestore Timestamp
+  Time: Timestamp; // Firestore Timestamp
   "User-Email": string;
 };
 
