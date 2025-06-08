@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchOrders, Order } from '../../lib/fetchOrders';
+import { fetchOrders, Order } from '../lib/fetchOrders';
 
 export default function AllOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -38,9 +38,7 @@ export default function AllOrdersPage() {
           <p><strong>Product:</strong> {order.productName}</p>
           <p><strong>Price:</strong> {order.productPrice}</p>
           <p><strong>Created At:</strong> {
-            typeof order.createdAt?.toDate === 'function'
-              ? order.createdAt.toDate().toLocaleString()
-              : 'N/A'
+            order.createdAt ? order.createdAt.toDate().toString() : 'N/A'
           }</p>
         </div>
       ))}
