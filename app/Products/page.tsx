@@ -14,10 +14,11 @@ export default function ProductsPage() {
       const data = await fetchNames();
 
       const sorted = data
-        .filter((order) => order.Time instanceof Timestamp)
+        .filter((order) => order.createdAt instanceof Timestamp)
         .sort(
           (a, b) =>
-            (b.Time as Timestamp).toMillis() - (a.Time as Timestamp).toMillis()
+            (b.createdAt as Timestamp).toMillis() -
+            (a.createdAt as Timestamp).toMillis()
         );
 
       setAllOrders(data);
@@ -42,10 +43,11 @@ export default function ProductsPage() {
         📦 Orders Overview
       </h1>
 
-      {/* Block 1: All Orders */}
+      {/* All Orders */}
       <section className="mb-16">
         <h2 className="text-2xl font-bold mb-6 border-b border-slate-700 pb-2">
-          All Orders <span className="text-blue-400">({allOrders.length})</span>
+          All Orders{" "}
+          <span className="text-blue-400">({allOrders.length})</span>
         </h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {allOrders.map((order, i) => (
@@ -55,16 +57,24 @@ export default function ProductsPage() {
             >
               <p className="mb-1">
                 <strong className="text-blue-300">Name:</strong>{" "}
-                {typeof order.Name === "string" ? order.Name : "N/A"}
+                {order.name || "N/A"}
               </p>
               <p className="mb-1">
                 <strong className="text-blue-300">Order ID:</strong>{" "}
                 {order.orderId}
               </p>
+              <p className="mb-1">
+                <strong className="text-blue-300">Mobile:</strong>{" "}
+                {order.mobile || "N/A"}
+              </p>
+              <p className="mb-1">
+                <strong className="text-blue-300">Address:</strong>{" "}
+                {order.address || "N/A"}
+              </p>
               <p className="text-sm text-slate-400">
                 <strong>Time:</strong>{" "}
-                {order.Time instanceof Timestamp
-                  ? order.Time.toDate().toLocaleString()
+                {order.createdAt instanceof Timestamp
+                  ? order.createdAt.toDate().toLocaleString()
                   : "No timestamp"}
               </p>
             </div>
@@ -72,7 +82,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Block 2: Latest 2 Orders */}
+      {/* Latest 2 Orders */}
       <section>
         <h2 className="text-2xl font-bold mb-6 border-b border-slate-700 pb-2">
           🚀 Latest 2 Orders
@@ -87,7 +97,7 @@ export default function ProductsPage() {
               className="bg-gradient-to-r from-blue-600 to-blue-800 p-6 rounded-xl shadow-lg border-l-8 border-white/30"
             >
               <p className="text-xl font-semibold text-white mb-1">
-                {typeof order.Name === "string" ? order.Name : "N/A"}
+                {order.name || "N/A"}
               </p>
               <p className="text-slate-100">
                 <span className="text-sm text-slate-300">Order ID:</span>{" "}
@@ -95,8 +105,8 @@ export default function ProductsPage() {
               </p>
               <p className="text-sm text-slate-300 mt-1">
                 Time:{" "}
-                {order.Time instanceof Timestamp
-                  ? order.Time.toDate().toLocaleString()
+                {order.createdAt instanceof Timestamp
+                  ? order.createdAt.toDate().toLocaleString()
                   : "No timestamp"}
               </p>
             </div>
