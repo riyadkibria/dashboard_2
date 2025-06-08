@@ -6,7 +6,7 @@ import { fetchAllOrders } from "../../lib/fetchOrders";
 type Order = {
   userId: string;
   orderId: string;
-  [key: string]: any;  // allows other fields without causing errors
+  [key: string]: unknown;  // allows other fields without causing ers
 };
 
 export default function OrdersPage() {
