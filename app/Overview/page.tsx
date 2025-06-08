@@ -1,20 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchLatestOrders, Order } from '../../lib/fetchLatestOrders'; // adjust path if needed
+import { fetchLatestOrders, Order } from '../../lib/fetchLatestOrders';
+import { Timestamp } from 'firebase/firestore';
 
 export default function OverviewPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = async () => {
+    const loadOrders = async () => {
       const data = await fetchLatestOrders();
+      console.log('Latest Orders:', data); // 🔍 Debug log
       setOrders(data);
       setLoading(false);
     };
-
-    load();
+    loadOrders();
   }, []);
 
   return (
@@ -28,15 +29,17 @@ export default function OverviewPage() {
       ) : orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
-        <table style={{
-          width: '100%',
-          borderCollapse: 'collapse',
-          border: '1px solid #e5e7eb',
-          backgroundColor: '#fff',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
-        }}>
+        <table
+          style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+            border: '1px solid #e5e7eb',
+            backgroundColor: '#fff',
+            borderRadius: '8px',
+            overflow: 'hidden',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+          }}
+        >
           <thead style={{ backgroundColor: '#f3f4f6' }}>
             <tr>
               <th style={{ padding: '12px', textAlign: 'left' }}>Name</th>
@@ -52,7 +55,9 @@ export default function OverviewPage() {
                 <td style={{ padding: '12px' }}>{order.productName}</td>
                 <td style={{ padding: '12px' }}>{order.productPrice}</td>
                 <td style={{ padding: '12px' }}>
-                  {order.createdAt ? order.createdAt.toDate().toLocaleString() : 'N/A'}
+                  {order.createdAt instanceof Timestamp
+                    ? order.createdAt.toDate().toLocaleString()
+                    : 'No timestamp'}
                 </td>
               </tr>
             ))}
