@@ -35,7 +35,7 @@ export default function Sidebar({
   return (
     <aside
       className={cn(
-        "h-screen bg-white border-r transition-all duration-300 flex flex-col",
+        "fixed top-0 left-0 h-screen bg-white border-r transition-all duration-300 flex flex-col z-30",
         isCollapsed ? "w-16" : "w-64"
       )}
     >
@@ -83,6 +83,3 @@ export default function Sidebar({
     </aside>
   );
 }
-
-
-
