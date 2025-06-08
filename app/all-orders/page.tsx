@@ -1,4 +1,4 @@
-import fetchOrders from "@/lib/fetchOrders"; // Adjust the path if needed
+import FetchData from "@/lib/fetchOrders"; // Adjust the path if needed
 
 export default function AllOrdersPage() {
   return (
