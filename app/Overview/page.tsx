@@ -12,7 +12,17 @@ export default function OverviewPage() {
     const loadOrders = async () => {
       const data = await fetchLatestOrders();
       console.log("📦 Latest Orders:", data);
-      setOrders(data);
+
+      // Sort orders by createdAt timestamp descending (newest first)
+      const sortedOrders = data
+        .filter(order => order.createdAt instanceof Timestamp) // ensure timestamp exists
+        .sort(
+          (a, b) =>
+            (b.createdAt as Timestamp).toMillis() -
+            (a.createdAt as Timestamp).toMillis()
+        );
+
+      setOrders(sortedOrders);
       setLoading(false);
     };
     loadOrders();
@@ -41,11 +51,16 @@ export default function OverviewPage() {
             </thead>
             <tbody>
               {orders.map((order, index) => (
-                <tr key={index} className="border-t border-slate-600 hover:bg-slate-700/50 transition">
+                <tr
+                  key={index}
+                  className="border-t border-slate-600 hover:bg-slate-700/50 transition"
+                >
                   <td className="px-4 py-3">{order.name || "N/A"}</td>
                   <td className="px-4 py-3">{order.productName || "N/A"}</td>
                   <td className="px-4 py-3">
-                    {order.productPrice !== undefined ? `৳${order.productPrice}` : "N/A"}
+                    {order.productPrice !== undefined
+                      ? `৳${order.productPrice}`
+                      : "N/A"}
                   </td>
                   <td className="px-4 py-3 text-sm text-slate-400">
                     {order.createdAt instanceof Timestamp
