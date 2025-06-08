@@ -1,3 +1,5 @@
+"use client";
+
 // pages/all-orders.tsx
 import { useEffect, useState } from "react";
 import { fetchOrders, Order } from "../lib/fetchOrders";
