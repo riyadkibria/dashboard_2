@@ -1,25 +1,49 @@
-// lib/fetchOrders.ts
-import { collectionGroup, getDocs, Timestamp } from "firebase/firestore";
-import { db } from "./firebase";
+'use client';
 
-export type Order = {
-  address: string;
-  createdAt: Timestamp;
-  mobile: string;
-  name: string;
-  productName: string;
-  productPrice: string;
-};
+import { useEffect, useState } from 'react';
+import { fetchOrders, Order } from '../lib/fetchOrders';
 
-export const fetchOrders = async (): Promise<Order[]> => {
-  const snapshot = await getDocs(collectionGroup(db, "orders"));
-  const orders: Order[] = [];
+export default function AllOrdersPage() {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  snapshot.forEach((doc) => {
-    const data = doc.data() as Order;
-    orders.push(data);
-  });
+  useEffect(() => {
+    const getOrders = async () => {
+      const allOrders = await fetchOrders();
+      setOrders(allOrders);
+      setLoading(false);
+    };
 
-  return orders;
-};
+    getOrders();
+  }, []);
 
+  if (loading) return <p style={{ padding: '20px' }}>Loading...</p>;
+
+  return (
+    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+      <h1>All Orders</h1>
+      {orders.length === 0 && <p>No orders found.</p>}
+      {orders.map((order, index) => (
+        <div
+          key={index}
+          style={{
+            marginBottom: '20px',
+            borderBottom: '1px solid #ccc',
+            paddingBottom: '10px',
+          }}
+        >
+          <p><strong>Name:</strong> {order.name}</p>
+          <p><strong>Mobile:</strong> {order.mobile}</p>
+          <p><strong>Address:</strong> {order.address}</p>
+          <p><strong>Product:</strong> {order.productName}</p>
+          <p><strong>Price:</strong> {order.productPrice}</p>
+          <p><strong>Created At:</strong> {
+            typeof order.createdAt?.toDate === 'function'
+              ? order.createdAt.toDate().toLocaleString()
+              : 'N/A'
+          }</p>
+        </div>
+      ))}
+    </div>
+  );
+}
