@@ -1,7 +1,16 @@
 import { db } from './firebase';
-import { collection, getDocs, orderBy, limit, query, Timestamp } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  orderBy,
+  limit,
+  query,
+  Timestamp,
+  DocumentData,
+} from 'firebase/firestore';
 
 export interface Order {
+  id: string;
   name: string;
   mobile: string;
   address: string;
@@ -15,5 +24,21 @@ export async function fetchLatestOrders(): Promise<Order[]> {
   const latestOrdersQuery = query(ordersRef, orderBy('createdAt', 'desc'), limit(5));
   const snapshot = await getDocs(latestOrdersQuery);
 
-  return snapshot.docs.map(doc => doc.data() as Order);
+  const orders: Order[] = [];
+
+  snapshot.forEach((doc) => {
+    const data = doc.data() as DocumentData;
+
+    orders.push({
+      id: doc.id,
+      name: data.name || '',
+      mobile: data.mobile || '',
+      address: data.address || '',
+      productName: data.productName || '',
+      productPrice: data.productPrice || '',
+      createdAt: data.createdAt,
+    });
+  });
+
+  return orders;
 }
