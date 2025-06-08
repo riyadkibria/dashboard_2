@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { getLatestOrders, UserRequest } from "@/lib/getLatestOrders";
+import { getLatestOrders, UserRequest } from "@/lib/latestorders";
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
@@ -10,7 +10,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await getLatestOrders(5);
+      const data = await latestorders(5);
       setOrders(data);
       setLoading(false);
     };
