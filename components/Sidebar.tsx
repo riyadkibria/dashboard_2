@@ -17,7 +17,7 @@ import {
 const links = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "All-Orders", href: "/all-orders", icon: ShoppingCart },
-  { name: "Products", href: "/Products", icon: Package },
+  { name: "Products", href: "/products", icon: Package },
   { name: "Customers", href: "/dashboard/customers", icon: Users },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
   { name: "Analytics", href: "/dashboard/analytics", icon: BarChart },
@@ -49,6 +49,7 @@ export default function Sidebar({
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="p-1 rounded hover:bg-gray-100 transition"
+          aria-label="Toggle Sidebar"
         >
           {isCollapsed ? (
             <ChevronRight size={20} className="text-gray-600 hover:text-blue-600" />
