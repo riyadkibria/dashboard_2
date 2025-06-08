@@ -2,7 +2,7 @@
 
 // pages/all-orders.tsx
 import { useEffect, useState } from "react";
-import { fetchOrders, Order } from "../lib/fetchOrders";
+import { fetchOrders, Order } from "../../lib/fetchOrders";
 
 export default function AllOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
