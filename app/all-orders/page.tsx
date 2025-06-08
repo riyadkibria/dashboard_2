@@ -1,11 +1,8 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
-import Sidebar from "@/components/Sidebar"; // Adjust the path if needed
+import Sidebar from "@/components/Sidebar";
 
-// TypeScript type
 type UserRequest = {
   Address: string;
   Courier: string;
@@ -16,13 +13,16 @@ type UserRequest = {
   "Product-Name": string;
   "Product-Price": string;
   Quantity: string;
-  Time: Timestamp; // Firestore Timestamp
+  Time: Timestamp;
   "User-Email": string;
 };
 
 export default function AllOrdersPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Add sidebar collapse state here:
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -44,10 +44,9 @@ export default function AllOrdersPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar component */}
-      <Sidebar />
+      {/* Pass required props here */}
+      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
-      {/* Main content */}
       <main className="flex-grow p-6">
         <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
