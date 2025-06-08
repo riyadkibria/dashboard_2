@@ -1,15 +1,22 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
 
-export async function fetchAllOrders() {
+// Define the Order type
+export type Order = {
+  userId: string;
+  orderId: string;
+  [key: string]: unknown;
+};
+
+export async function fetchAllOrders(): Promise<Order[]> {
   try {
     const usersSnapshot = await getDocs(collection(db, "users"));
-    const allOrders = [];
+    const allOrders: Order[] = [];
 
     for (const userDoc of usersSnapshot.docs) {
       const userId = userDoc.id;
       const ordersSnapshot = await getDocs(collection(db, `users/${userId}/orders`));
-      
+
       ordersSnapshot.forEach(orderDoc => {
         allOrders.push({
           userId,
@@ -25,4 +32,3 @@ export async function fetchAllOrders() {
     return [];
   }
 }
-
