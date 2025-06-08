@@ -8,6 +8,9 @@ export default function AllOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Sidebar collapsed state
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   useEffect(() => {
     const getOrders = async () => {
       const allOrders = await fetchOrders();
@@ -40,13 +43,14 @@ export default function AllOrdersPage() {
     }}>
       {/* Sidebar */}
       <aside style={{
-        width: '280px',
+        width: isCollapsed ? '80px' : '280px',  // example collapse width
         borderRight: '1px solid #e5e7eb',
         backgroundColor: '#fff',
         boxShadow: '2px 0 6px rgba(0,0,0,0.05)',
         overflowY: 'auto',
+        transition: 'width 0.3s ease',
       }}>
-        <Sidebar />
+        <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       </aside>
 
       {/* Main content */}
