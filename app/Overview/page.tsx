@@ -4,33 +4,33 @@ import { useEffect, useState } from "react";
 import { fetchLatestOrders, Order } from "../../lib/fetchLatestOrders";
 import { Timestamp } from "firebase/firestore";
 
+const LATEST_ORDER_COUNT = 5;
+
 export default function OverviewPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadOrders = async () => {
-      const data = await fetchLatestOrders();
-      console.log("📦 Latest Orders:", data);
-
-      // Sort orders by createdAt timestamp descending (newest first)
-      const sortedOrders = data
-        .filter(order => order.createdAt instanceof Timestamp) // ensure timestamp exists
-        .sort(
-          (a, b) =>
-            (b.createdAt as Timestamp).toMillis() -
-            (a.createdAt as Timestamp).toMillis()
-        );
-
-      setOrders(sortedOrders);
-      setLoading(false);
+      try {
+        const data = await fetchLatestOrders(LATEST_ORDER_COUNT);
+        console.log("📦 Latest Orders:", data);
+        setOrders(data);
+      } catch (error) {
+        console.error("Failed to fetch orders:", error);
+      } finally {
+        setLoading(false);
+      }
     };
+
     loadOrders();
   }, []);
 
   return (
     <div className="min-h-screen bg-slate-900 text-white px-6 py-10 md:py-16 max-w-6xl mx-auto">
-      <h1 className="text-4xl font-extrabold mb-10 text-center">📦 Latest 5 Orders</h1>
+      <h1 className="text-4xl font-extrabold mb-10 text-center">
+        📦 Latest {LATEST_ORDER_COUNT} Orders
+      </h1>
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
@@ -52,7 +52,7 @@ export default function OverviewPage() {
             <tbody>
               {orders.map((order, index) => (
                 <tr
-                  key={index}
+                  key={order.id || index}
                   className="border-t border-slate-600 hover:bg-slate-700/50 transition"
                 >
                   <td className="px-4 py-3">{order.name || "N/A"}</td>
