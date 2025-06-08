@@ -19,14 +19,12 @@ export interface Order {
   createdAt?: Timestamp;
 }
 
-export async function fetchLatestOrders(): Promise<Order[]> {
+export async function fetchLatestOrders(count: number = 5): Promise<Order[]> {
   const ordersRef = collection(db, 'orders');
-
-  // ✅ Let Firestore sort by createdAt and limit results
-  const q = query(ordersRef, orderBy('createdAt', 'desc'), limit(2));
+  const q = query(ordersRef, orderBy('createdAt', 'desc'), limit(count));
   const snapshot = await getDocs(q);
 
-  const latestOrders: Order[] = snapshot.docs.map((doc) => {
+  return snapshot.docs.map((doc) => {
     const data = doc.data() as DocumentData;
 
     return {
@@ -39,6 +37,4 @@ export async function fetchLatestOrders(): Promise<Order[]> {
       createdAt: data.createdAt,
     };
   });
-
-  return latestOrders;
 }
