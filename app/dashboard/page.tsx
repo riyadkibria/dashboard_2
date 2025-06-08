@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { getLatestOrders, UserRequest } from "@/lib/latestorders"; // ✅ fixed import
+import { getLatestOrders, UserRequest } from "@/lib/latestorders";
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
@@ -10,7 +10,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await getLatestOrders(5); // ✅ using correct function name
+      const data = await getLatestOrders(5);
       setOrders(data);
       setLoading(false);
     };
@@ -20,7 +20,13 @@ export default function DashboardPage() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-      <main className="flex-grow p-6">
+      
+      {/* Adjust width based on sidebar collapse */}
+      <main
+        className={`transition-all duration-300 ease-in-out p-6 ${
+          isCollapsed ? "ml-16 w-[calc(100%-4rem)]" : "ml-64 w-[calc(100%-16rem)]"
+        }`}
+      >
         <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
             Latest 5 Orders
