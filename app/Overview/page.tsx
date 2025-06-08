@@ -11,9 +11,22 @@ export default function OverviewPage() {
   useEffect(() => {
     async function loadOrders() {
       const data = await fetchLatestOrders();
-      setOrders(data);
+
+      // Filter orders that have a valid Timestamp in createdAt
+      const filtered = data.filter(order => order.createdAt instanceof Timestamp);
+
+      // Sort descending by createdAt
+      const sorted = filtered.sort(
+        (a, b) => b.createdAt!.toMillis() - a.createdAt!.toMillis()
+      );
+
+      // Get the latest 5 orders
+      const latestFive = sorted.slice(0, 5);
+
+      setOrders(latestFive);
       setLoading(false);
     }
+
     loadOrders();
   }, []);
 
@@ -65,4 +78,3 @@ export default function OverviewPage() {
     </div>
   );
 }
-
