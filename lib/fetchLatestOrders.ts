@@ -2,9 +2,6 @@ import { db } from './firebase';
 import {
   collection,
   getDocs,
-  orderBy,
-  limit,
-  query,
   Timestamp,
   DocumentData,
 } from 'firebase/firestore';
@@ -21,15 +18,12 @@ export interface Order {
 
 export async function fetchLatestOrders(): Promise<Order[]> {
   const ordersRef = collection(db, 'orders');
-  const latestOrdersQuery = query(ordersRef, orderBy('createdAt', 'desc'), limit(5));
-  const snapshot = await getDocs(latestOrdersQuery);
+  const snapshot = await getDocs(ordersRef);
 
-  const orders: Order[] = [];
-
-  snapshot.forEach((doc) => {
+  const allOrders: Order[] = snapshot.docs.map((doc) => {
     const data = doc.data() as DocumentData;
 
-    orders.push({
+    return {
       id: doc.id,
       name: data.name || '',
       mobile: data.mobile || '',
@@ -37,8 +31,17 @@ export async function fetchLatestOrders(): Promise<Order[]> {
       productName: data.productName || '',
       productPrice: data.productPrice || '',
       createdAt: data.createdAt,
-    });
+    };
   });
 
-  return orders;
+  // ✅ Filter out orders without a valid Timestamp, then sort
+  const sortedOrders = allOrders
+    .filter((order) => order.createdAt instanceof Timestamp)
+    .sort(
+      (a, b) =>
+        (b.createdAt as Timestamp).toMillis() - (a.createdAt as Timestamp).toMillis()
+    );
+
+  // ✅ Return only the latest 2 orders
+  return sortedOrders.slice(0, 2);
 }
