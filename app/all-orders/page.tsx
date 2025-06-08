@@ -31,8 +31,8 @@ export default function AllOrdersPage() {
 
   return (
     <div style={{
-      width: '90vw',       // full viewport width
-      padding: '40px 24px', // padding left and right so content isn’t flush against edges
+      width: '100vw',       // full viewport width
+      padding: '40px 40px', // padding left and right so content isn’t flush against edges
       boxSizing: 'border-box',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
       color: '#374151',
