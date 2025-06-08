@@ -7,7 +7,7 @@ export interface Order {
   address: string;
   productName: string;
   productPrice: string;
-  createdAt?: any;
+  createdAt?: timestamp;
 }
 
 export async function fetchLatestOrders(): Promise<Order[]> {
