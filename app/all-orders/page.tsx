@@ -31,15 +31,13 @@ export default function AllOrdersPage() {
 
   return (
     <div style={{
-      maxWidth: '900px',
-      margin: '40px auto',
+      width: '100vw',       // full viewport width
+      padding: '40px 24px', // padding left and right so content isn’t flush against edges
+      boxSizing: 'border-box',
       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
       color: '#374151',
       backgroundColor: '#f9fafb',
-      borderRadius: '12px',
-      padding: '32px 24px',
-      boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
-      overflowX: 'auto',
+      minHeight: '100vh',   // at least full height of viewport
     }}>
       <h1 style={{
         fontWeight: '700',
@@ -61,59 +59,62 @@ export default function AllOrdersPage() {
           No orders found.
         </p>
       ) : (
-        <table style={{
-          width: '100%',
-          borderCollapse: 'separate',
-          borderSpacing: '0 12px',
-          backgroundColor: '#fff',
-          borderRadius: '8px',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-        }}>
-          <thead>
-            <tr style={{ 
-              backgroundColor: '#e5e7eb', 
-              color: '#374151', 
-              textAlign: 'left',
-              fontWeight: 600,
-              fontSize: '14px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              borderRadius: '8px',
-            }}>
-              <th style={{ padding: '12px 16px' }}>Name</th>
-              <th style={{ padding: '12px 16px' }}>Mobile</th>
-              <th style={{ padding: '12px 16px' }}>Address</th>
-              <th style={{ padding: '12px 16px' }}>Product</th>
-              <th style={{ padding: '12px 16px' }}>Price</th>
-              <th style={{ padding: '12px 16px' }}>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order, index) => (
-              <tr
-                key={index}
-                style={{
-                  backgroundColor: '#fefefe',
-                  borderBottom: '1px solid #e5e7eb',
-                  fontSize: '15px',
-                  color: '#4b5563',
-                  transition: 'background-color 0.2s ease',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
-                onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#fefefe')}
-              >
-                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.name}</td>
-                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.mobile}</td>
-                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.address}</td>
-                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.productName}</td>
-                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.productPrice}</td>
-                <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>
-                  {order.createdAt ? order.createdAt.toDate().toLocaleString() : 'N/A'}
-                </td>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{
+            width: '100%',
+            borderCollapse: 'separate',
+            borderSpacing: '0 12px',
+            backgroundColor: '#fff',
+            borderRadius: '8px',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+            minWidth: '700px' // prevent collapsing on narrow screens
+          }}>
+            <thead>
+              <tr style={{ 
+                backgroundColor: '#e5e7eb', 
+                color: '#374151', 
+                textAlign: 'left',
+                fontWeight: 600,
+                fontSize: '14px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                borderRadius: '8px',
+              }}>
+                <th style={{ padding: '12px 16px' }}>Name</th>
+                <th style={{ padding: '12px 16px' }}>Mobile</th>
+                <th style={{ padding: '12px 16px' }}>Address</th>
+                <th style={{ padding: '12px 16px' }}>Product</th>
+                <th style={{ padding: '12px 16px' }}>Price</th>
+                <th style={{ padding: '12px 16px' }}>Created At</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orders.map((order, index) => (
+                <tr
+                  key={index}
+                  style={{
+                    backgroundColor: '#fefefe',
+                    borderBottom: '1px solid #e5e7eb',
+                    fontSize: '15px',
+                    color: '#4b5563',
+                    transition: 'background-color 0.2s ease',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#f3f4f6')}
+                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#fefefe')}
+                >
+                  <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.name}</td>
+                  <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.mobile}</td>
+                  <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.address}</td>
+                  <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.productName}</td>
+                  <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>{order.productPrice}</td>
+                  <td style={{ padding: '12px 16px', verticalAlign: 'middle' }}>
+                    {order.createdAt ? order.createdAt.toDate().toLocaleString() : 'N/A'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
