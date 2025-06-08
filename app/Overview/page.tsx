@@ -1,4 +1,4 @@
-
+"use_client"
 
 import { useEffect, useState } from "react";
 import { fetchLatestOrders, OrderData } from "../../lib/fetchLatestOrders";
