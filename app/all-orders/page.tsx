@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
@@ -22,7 +23,7 @@ export default function AllOrdersPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Add sidebar collapse state here:
+  // Sidebar collapse state
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
@@ -45,10 +46,15 @@ export default function AllOrdersPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Pass required props here */}
+      {/* Sidebar with collapse state */}
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
-      <main className="flex-grow p-6">
+      {/* Main content with dynamic margin-left based on sidebar width */}
+      <main
+        className={`flex-grow p-6 transition-all duration-300 ${
+          isCollapsed ? "ml-16" : "ml-64"
+        }`}
+      >
         <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-6">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
             All Orders
