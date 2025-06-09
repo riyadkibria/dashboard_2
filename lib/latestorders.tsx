@@ -1,98 +1,38 @@
-"use client";
-import { useEffect, useState } from "react";
-import Sidebar from "@/components/Sidebar";
-import { getLatestOrders, UserRequest } from "@/lib/latestorders";
+import { db } from "@/lib/firebase";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  limit,
+  query,
+} from "firebase/firestore";
 
-export default function DashboardPage() {
-  const [orders, setOrders] = useState<UserRequest[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+// Updated type with only required fields
+export type UserRequest = {
+  "Customer-Name": string;
+  "Phone-Number": string;
+  "Product-Name": string;
+  "Product-Price": string;
+};
 
-  useEffect(() => {
-    const fetch = async () => {
-      const data = await getLatestOrders(5);
-      setOrders(data);
-      setLoading(false);
-    };
-    fetch();
-  }, []);
+// Updated function to fetch and return only selected fields
+export async function getLatestOrders(limitCount: number = 5): Promise<UserRequest[]> {
+  try {
+    const ordersRef = collection(db, "user_request");
+    const q = query(ordersRef, orderBy("Time", "desc"), limit(limitCount));
+    const snapshot = await getDocs(q);
 
-  return (
-    <div className="flex min-h-screen bg-gray-100">
-      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-
-      <main
-        className={`transition-all duration-300 ease-in-out p-6 ${
-          isCollapsed ? "ml-16 w-[calc(100%-4rem)]" : "ml-64 w-[calc(100%-16rem)]"
-        }`}
-      >
-        {/* Main Dashboard Background */}
-        <div className="w-full min-h-[85vh] bg-white rounded-2xl shadow-md p-8">
-          <h1 className="text-3xl font-bold mb-8 text-gray-800 text-center">
-            Admin Dashboard
-          </h1>
-
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Card 1: Latest Orders */}
-            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Latest 5 Orders
-              </h2>
-              {loading ? (
-                <p className="text-sm text-gray-500">Loading...</p>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full text-xs text-left text-gray-700">
-                    <thead className="bg-gray-100 text-[11px] uppercase text-gray-600">
-                      <tr>
-                        <th className="px-3 py-2">Name</th>
-                        <th className="px-3 py-2">Phone</th>
-                        <th className="px-3 py-2">Product</th>
-                        <th className="px-3 py-2">Price</th>
-                        <th className="px-3 py-2">Date</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                      {orders.map((order, index) => (
-                        <tr key={index}>
-                          <td className="px-3 py-2 text-[13px]">{order["Customer-Name"]}</td>
-                          <td className="px-3 py-2 text-[13px]">{order["Phone-Number"]}</td>
-                          <td className="px-3 py-2 text-[13px]">{order["Product-Name"]}</td>
-                          <td className="px-3 py-2 text-[13px]">{order["Product-Price"]}</td>
-                          <td className="px-3 py-2 text-[13px]">
-                            {order.Time?.toDate?.().toLocaleString() || "N/A"}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-
-            {/* Card 2: Container with 2 Small Cards */}
-            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Overview Stats
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Sub-card 1: Total Orders */}
-                <div className="bg-gray-50 border rounded-lg p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 mb-1">Total Orders</p>
-                  <p className="text-xl font-bold text-gray-800">{orders.length}</p>
-                </div>
-
-                {/* Sub-card 2: Placeholder */}
-                <div className="bg-gray-50 border rounded-lg p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 mb-1">Another Stat</p>
-                  <p className="text-xl font-bold text-gray-800">Coming Soon</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        "Customer-Name": data["Customer-Name"] || "",
+        "Phone-Number": data["Phone-Number"] || "",
+        "Product-Name": data["Product-Name"] || "",
+        "Product-Price": data["Product-Price"] || "",
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    return [];
+  }
 }
