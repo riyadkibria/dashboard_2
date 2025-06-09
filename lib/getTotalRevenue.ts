@@ -2,7 +2,7 @@ import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 /**
- * Fetches all orders and calculates total revenue by summing all Product-Price values.
+ * Fetches all orders and calculates total revenue by summing Product-Price * Quantity for each order.
  */
 export async function getTotalRevenue(): Promise<number> {
   const snapshot = await getDocs(collection(db, "user_request"));
@@ -11,8 +11,10 @@ export async function getTotalRevenue(): Promise<number> {
   snapshot.forEach((doc) => {
     const data = doc.data();
     const price = parseFloat(data["Product-Price"]);
-    if (!isNaN(price)) {
-      total += price;
+    const quantity = parseInt(data["Quantity"]);
+
+    if (!isNaN(price) && !isNaN(quantity)) {
+      total += price * quantity;
     }
   });
 
