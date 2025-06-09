@@ -61,7 +61,7 @@ export default function AllOrdersPage() {
 
           {/* Total Orders Card */}
           {!loading && (
-            <div className="bg-white shadow-md rounded-lg p-6 w-full">
+            <div className="bg-white shadow-md rounded-lg p-6 w-full md:w-1/2 lg:w-1/3">
               <h2 className="text-xl font-semibold text-gray-700 mb-2">
                 Total Orders
               </h2>
