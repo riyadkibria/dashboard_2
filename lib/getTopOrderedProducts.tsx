@@ -1,26 +1,23 @@
-
 // lib/getTopOrderedProducts.ts
 import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 export async function getTopOrderedProducts() {
-  const snapshot = await getDocs(collection(db, "orders"));
+  const snapshot = await getDocs(collection(db, "user_request"));
   const productTotals: Record<string, number> = {};
 
   snapshot.forEach((doc) => {
     const data = doc.data();
-    const products = data.products || [];
+    const productName = data["Product-Name"];
+    const quantity = data["Quantity"];
 
-    products.forEach((item: { productName: string; quantity: number }) => {
-      const name = item.productName;
-      const qty = item.quantity || 0;
-
-      if (productTotals[name]) {
-        productTotals[name] += qty;
+    if (typeof productName === "string" && typeof quantity === "number") {
+      if (productTotals[productName]) {
+        productTotals[productName] += quantity;
       } else {
-        productTotals[name] = qty;
+        productTotals[productName] = quantity;
       }
-    });
+    }
   });
 
   const result = Object.entries(productTotals).map(([name, totalOrders]) => ({
