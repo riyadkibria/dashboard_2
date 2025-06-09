@@ -13,6 +13,7 @@ export type UserRequest = {
   "Phone-Number": string;
   "Product-Name": string;
   "Product-Price": string;
+  "Customer-Address": string;
 };
 
 // Updated function to fetch and return only selected fields
@@ -29,6 +30,7 @@ export async function getLatestOrders(limitCount: number = 5): Promise<UserReque
         "Phone-Number": data["Phone-Number"] || "",
         "Product-Name": data["Product-Name"] || "",
         "Product-Price": data["Product-Price"] || "",
+        "Customer-Address": data["Customer-Address"] || "",
       };
     });
   } catch (error) {
