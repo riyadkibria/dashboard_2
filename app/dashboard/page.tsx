@@ -20,8 +20,7 @@ export default function DashboardPage() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-      
-      {/* Adjust width based on sidebar collapse */}
+
       <main
         className={`transition-all duration-300 ease-in-out p-6 ${
           isCollapsed ? "ml-16 w-[calc(100%-4rem)]" : "ml-64 w-[calc(100%-16rem)]"
@@ -31,6 +30,7 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
             Latest 5 Orders
           </h1>
+
           {loading ? (
             <p className="text-center text-gray-600">Loading...</p>
           ) : (
@@ -39,45 +39,18 @@ export default function DashboardPage() {
                 <thead className="bg-gray-200 text-xs uppercase text-gray-700">
                   <tr>
                     <th className="px-4 py-3">Name</th>
-                    <th className="px-4 py-3">Email</th>
                     <th className="px-4 py-3">Phone</th>
                     <th className="px-4 py-3">Product</th>
-                    <th className="px-4 py-3">Quantity</th>
                     <th className="px-4 py-3">Price</th>
-                    <th className="px-4 py-3">Courier</th>
-                    <th className="px-4 py-3">Time</th>
-                    <th className="px-4 py-3">Links</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {orders.map((order, index) => (
                     <tr key={index}>
                       <td className="px-4 py-3">{order["Customer-Name"]}</td>
-                      <td className="px-4 py-3">{order["User-Email"]}</td>
                       <td className="px-4 py-3">{order["Phone-Number"]}</td>
                       <td className="px-4 py-3">{order["Product-Name"]}</td>
-                      <td className="px-4 py-3">{order.Quantity}</td>
                       <td className="px-4 py-3">{order["Product-Price"]}</td>
-                      <td className="px-4 py-3">{order.Courier}</td>
-                      <td className="px-4 py-3">
-                        {order.Time?.toDate?.().toLocaleString() || "N/A"}
-                      </td>
-                      <td className="px-4 py-3">
-                        <ul className="list-disc pl-4">
-                          {order["Product-Links"]?.map((link, i) => (
-                            <li key={i}>
-                              <a
-                                href={link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 underline"
-                              >
-                                Link {i + 1}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </td>
                     </tr>
                   ))}
                 </tbody>
