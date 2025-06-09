@@ -13,6 +13,7 @@ export type UserRequest = {
   "Phone-Number": string;
   "Product-Name": string;
   "Product-Price": string;
+   Time?: Timestamp; // 👈 Add this line
 };
 
 // Updated function to fetch and return only selected fields
