@@ -5,6 +5,7 @@ import {
   orderBy,
   limit,
   query,
+  Timestamp,
 } from "firebase/firestore";
 
 // Updated type with only required fields
