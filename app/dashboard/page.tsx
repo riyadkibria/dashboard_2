@@ -1,3 +1,4 @@
+
 "use client";
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
@@ -6,13 +7,16 @@ import getTotalOrders from "@/lib/getTotalOrders";
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
+  const [totalOrders, setTotalOrders] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await getLatestOrders(5);
-      setOrders(data);
+      const latestOrders = await getLatestOrders(5);
+      const total = await getTotalOrders();
+      setOrders(latestOrders);
+      setTotalOrders(total);
       setLoading(false);
     };
     fetch();
@@ -34,7 +38,7 @@ export default function DashboardPage() {
           </h1>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1: Latest Orders */}
             <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
@@ -68,17 +72,28 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Card 2: Placeholder Stat */}
+            {/* Card 2: Total Orders */}
+            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Total Orders
+              </h2>
+              {loading ? (
+                <p className="text-sm text-gray-500">Loading...</p>
+              ) : (
+                <p className="text-4xl font-bold text-indigo-600">
+                  {totalOrders}
+                </p>
+              )}
+            </div>
+
+            {/* Card 3: Placeholder Stat */}
             <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Overview Stats
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
-                {/* Sub-card: Placeholder */}
-                <div className="bg-gray-50 border rounded-lg p-4 shadow-sm">
-                  <p className="text-sm text-gray-500 mb-1">Another Stat</p>
-                  <p className="text-xl font-bold text-gray-800">Coming Soon</p>
-                </div>
+              <div className="bg-gray-50 border rounded-lg p-4 shadow-sm">
+                <p className="text-sm text-gray-500 mb-1">Another Stat</p>
+                <p className="text-xl font-bold text-gray-800">Coming Soon</p>
               </div>
             </div>
           </div>
