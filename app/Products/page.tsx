@@ -1,28 +1,26 @@
-import { db } from "./firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { getTopOrderedProducts } from "@/lib/getTopOrderedProducts";
 
-export async function getTopOrderedProducts() {
-  const snapshot = await getDocs(collection(db, "user_request"));
-  const productTotals: Record<string, number> = {};
+export default async function ProductsPage() {
+  const products = await getTopOrderedProducts();
 
-  snapshot.forEach((doc) => {
-    const data = doc.data();
-    const productName = data["Product-Name"];
-    const quantity = data["Quantity"];
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Top Ordered Products</h1>
 
-    if (typeof productName === "string" && typeof quantity === "number") {
-      if (productTotals[productName]) {
-        productTotals[productName] += quantity;
-      } else {
-        productTotals[productName] = quantity;
-      }
-    }
-  });
-
-  const result = Object.entries(productTotals).map(([name, totalOrders]) => ({
-    name,
-    totalOrders,
-  }));
-
-  return result.sort((a, b) => b.totalOrders - a.totalOrders);
+      {products.length === 0 ? (
+        <p className="text-gray-600">No products found.</p>
+      ) : (
+        <ul className="space-y-2">
+          {products.map((product) => (
+            <li key={product.name} className="p-4 border rounded shadow-sm">
+              <div className="text-lg font-medium">{product.name}</div>
+              <div className="text-gray-600">
+                Total Quantity Ordered: {product.totalOrders}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
