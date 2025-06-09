@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import { getLatestOrders, UserRequest } from "@/lib/latestorders";
+import getTotalOrders from "@/lib/getTotalOrders";
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
