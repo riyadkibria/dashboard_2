@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import { getLatestOrders, UserRequest } from "@/lib/latestorders";
 import { getTotalOrders } from "@/lib/getTotalOrders";
+import { getTotalRevenue } from "@/lib/getTotalRevenue";
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
   const [totalOrders, setTotalOrders] = useState<number>(0);
+  const [totalRevenue, setTotalRevenue] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -14,8 +16,10 @@ export default function DashboardPage() {
     const fetch = async () => {
       const latestOrders = await getLatestOrders(5);
       const total = await getTotalOrders();
+      const revenue = await getTotalRevenue();
       setOrders(latestOrders);
       setTotalOrders(total);
+      setTotalRevenue(revenue);
       setLoading(false);
     };
     fetch();
@@ -61,7 +65,7 @@ export default function DashboardPage() {
                           <td className="px-3 py-2 text-[13px]">{order["Customer-Name"]}</td>
                           <td className="px-3 py-2 text-[13px]">{order["Phone-Number"]}</td>
                           <td className="px-3 py-2 text-[13px]">{order["Product-Name"]}</td>
-                          <td className="px-3 py-2 text-[13px]">{order["Product-Price"]}</td>
+                          <td className="px-3 py-2 text-[13px]">${order["Product-Price"]}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -84,7 +88,21 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Card 3: Overview Stats - Move to second line */}
+            {/* Card 3: Total Revenue */}
+            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Total Revenue
+              </h2>
+              {loading ? (
+                <p className="text-sm text-gray-500">Loading...</p>
+              ) : (
+                <p className="text-4xl font-bold text-green-600">
+                  ${totalRevenue.toFixed(2)}
+                </p>
+              )}
+            </div>
+
+            {/* Card 4: Overview Stats - Move to second line */}
             <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5 md:col-span-2">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Overview Stats
