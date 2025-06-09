@@ -1,4 +1,3 @@
-
 "use client";
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
@@ -31,14 +30,13 @@ export default function DashboardPage() {
           isCollapsed ? "ml-16 w-[calc(100%-4rem)]" : "ml-64 w-[calc(100%-16rem)]"
         }`}
       >
-        {/* Main Dashboard Background */}
         <div className="w-full min-h-[85vh] bg-white rounded-2xl shadow-md p-8">
           <h1 className="text-3xl font-bold mb-8 text-gray-800 text-center">
             Admin Dashboard
           </h1>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Card 1: Latest Orders */}
             <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
@@ -86,8 +84,8 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Card 3: Placeholder Stat */}
-            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
+            {/* Card 3: Overview Stats - Move to second line */}
+            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5 md:col-span-2">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Overview Stats
               </h2>
