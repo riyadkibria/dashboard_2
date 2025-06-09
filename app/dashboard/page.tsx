@@ -26,15 +26,15 @@ export default function DashboardPage() {
           isCollapsed ? "ml-16 w-[calc(100%-4rem)]" : "ml-64 w-[calc(100%-16rem)]"
         }`}
       >
-        {/* Background Section */}
+        {/* Main Dashboard Background */}
         <div className="w-full min-h-[85vh] bg-white rounded-2xl shadow-md p-8">
           <h1 className="text-3xl font-bold mb-8 text-gray-800 text-center">
             Admin Dashboard
           </h1>
 
-          {/* Cards Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {/* Latest Orders Card */}
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Card 1: Latest Orders */}
             <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-6">
               <h2 className="text-xl font-semibold text-gray-800 mb-4">
                 Latest 5 Orders
@@ -67,14 +67,9 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Placeholder for another card (optional) */}
+            {/* Card 2: Placeholder for another metric */}
             <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-6 flex items-center justify-center text-gray-500">
-              <span>Another Card (e.g., Total Orders)</span>
-            </div>
-
-            {/* Another placeholder */}
-            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-6 flex items-center justify-center text-gray-500">
-              <span>Analytics / Status Card</span>
+              <span>Another Card (e.g., Total Orders or Status)</span>
             </div>
           </div>
         </div>
