@@ -61,7 +61,7 @@ export default function DashboardPage() {
                           <td className="px-3 py-2 text-[13px]">{order["Product-Name"]}</td>
                           <td className="px-3 py-2 text-[13px]">{order["Product-Price"]}</td>
                           <td className="px-3 py-2 text-[13px]">
-                            {order.Time?.toDate?.().toLocaleString() || "N/A"}
+                
                           </td>
                         </tr>
                       ))}
