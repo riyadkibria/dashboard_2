@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { getTopOrderedProducts } from "@/lib/getTopOrderedProducts";
 
 type TopProduct = {
   name: string;
