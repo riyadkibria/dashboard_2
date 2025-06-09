@@ -50,6 +50,7 @@ export default function DashboardPage() {
                         <th className="px-3 py-2">Phone</th>
                         <th className="px-3 py-2">Product</th>
                         <th className="px-3 py-2">Price</th>
+                        <th className="px-3 py-2">Date</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -59,6 +60,9 @@ export default function DashboardPage() {
                           <td className="px-3 py-2 text-[13px]">{order["Phone-Number"]}</td>
                           <td className="px-3 py-2 text-[13px]">{order["Product-Name"]}</td>
                           <td className="px-3 py-2 text-[13px]">{order["Product-Price"]}</td>
+                          <td className="px-3 py-2 text-[13px]">
+                            {order.Time?.toDate?.().toLocaleString() || "N/A"}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -67,9 +71,24 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Card 2: Placeholder */}
-            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5 flex items-center justify-center text-sm text-gray-500">
-              <span>Another Card (e.g., Total Orders, Revenue, etc.)</span>
+            {/* Card 2: Container with 2 Small Cards */}
+            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Overview Stats
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Sub-card 1: Total Orders */}
+                <div className="bg-gray-50 border rounded-lg p-4 shadow-sm">
+                  <p className="text-sm text-gray-500 mb-1">Total Orders</p>
+                  <p className="text-xl font-bold text-gray-800">{orders.length}</p>
+                </div>
+
+                {/* Sub-card 2: Placeholder */}
+                <div className="bg-gray-50 border rounded-lg p-4 shadow-sm">
+                  <p className="text-sm text-gray-500 mb-1">Another Stat</p>
+                  <p className="text-xl font-bold text-gray-800">Coming Soon</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
