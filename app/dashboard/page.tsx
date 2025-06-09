@@ -35,30 +35,30 @@ export default function DashboardPage() {
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Card 1: Latest Orders */}
-            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Latest 5 Orders
               </h2>
               {loading ? (
-                <p className="text-gray-500">Loading...</p>
+                <p className="text-sm text-gray-500">Loading...</p>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="min-w-full text-sm text-left text-gray-700">
-                    <thead className="bg-gray-100 text-xs uppercase text-gray-700">
+                  <table className="min-w-full text-xs text-left text-gray-700">
+                    <thead className="bg-gray-100 text-[11px] uppercase text-gray-600">
                       <tr>
-                        <th className="px-4 py-2">Name</th>
-                        <th className="px-4 py-2">Phone</th>
-                        <th className="px-4 py-2">Product</th>
-                        <th className="px-4 py-2">Price</th>
+                        <th className="px-3 py-2">Name</th>
+                        <th className="px-3 py-2">Phone</th>
+                        <th className="px-3 py-2">Product</th>
+                        <th className="px-3 py-2">Price</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
                       {orders.map((order, index) => (
                         <tr key={index}>
-                          <td className="px-4 py-2">{order["Customer-Name"]}</td>
-                          <td className="px-4 py-2">{order["Phone-Number"]}</td>
-                          <td className="px-4 py-2">{order["Product-Name"]}</td>
-                          <td className="px-4 py-2">{order["Product-Price"]}</td>
+                          <td className="px-3 py-2 text-[13px]">{order["Customer-Name"]}</td>
+                          <td className="px-3 py-2 text-[13px]">{order["Phone-Number"]}</td>
+                          <td className="px-3 py-2 text-[13px]">{order["Product-Name"]}</td>
+                          <td className="px-3 py-2 text-[13px]">{order["Product-Price"]}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -67,9 +67,9 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Card 2: Placeholder for another metric */}
-            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-6 flex items-center justify-center text-gray-500">
-              <span>Another Card (e.g., Total Orders or Status)</span>
+            {/* Card 2: Placeholder */}
+            <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5 flex items-center justify-center text-sm text-gray-500">
+              <span>Another Card (e.g., Total Orders, Revenue, etc.)</span>
             </div>
           </div>
         </div>
