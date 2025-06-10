@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import { getTopOrderedProducts } from "@/lib/getTopOrderedProducts";
 
@@ -10,44 +10,41 @@ export default function ProductsPage() {
     { name: string; totalOrders: number }[]
   >([]);
 
-  useState(() => {
-    // Fetch products once on mount
+  useEffect(() => {
     getTopOrderedProducts().then(setProducts);
-  });
+  }, []);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-gray-50 text-gray-800">
       {/* Sidebar */}
       {!isCollapsed && (
-        <div className="w-64 border-r">
+        <div className="w-64 border-r bg-white shadow-md">
           <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
         </div>
       )}
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        <button
-          className="mb-4 px-3 py-1 bg-gray-200 rounded"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          {isCollapsed ? "Show Sidebar" : "Hide Sidebar"}
-        </button>
-
-        <h1 className="text-2xl font-bold mb-4">Top Ordered Products</h1>
+      <div className="flex-1 p-8">
+        <h1 className="text-3xl font-semibold mb-6">Top Ordered Products</h1>
 
         {products.length === 0 ? (
-          <p className="text-gray-600">No products found.</p>
+          <p className="text-sm text-gray-500">No products found.</p>
         ) : (
-          <ul className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {products.map((product) => (
-              <li key={product.name} className="p-4 border rounded shadow-sm">
-                <div className="text-lg font-medium">{product.name}</div>
-                <div className="text-gray-600">
+              <div
+                key={product.name}
+                className="w-full md:w-[90%] bg-white rounded-2xl shadow-md p-6 transition hover:shadow-lg"
+              >
+                <h2 className="text-base font-medium text-gray-900 mb-1">
+                  {product.name}
+                </h2>
+                <p className="text-sm text-gray-600">
                   Total Quantity Ordered: {product.totalOrders}
-                </div>
-              </li>
+                </p>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>
