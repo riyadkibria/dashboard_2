@@ -3,6 +3,15 @@
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import { getTopOrderedProducts } from "@/lib/getTopOrderedProducts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function ProductsPage() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -37,6 +46,22 @@ export default function ProductsPage() {
           </button>
         </div>
 
+        {/* Bar Chart */}
+        {products.length > 0 && (
+          <div className="w-full md:w-3/4 h-96 mb-10">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={products} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="totalOrders" fill="#4F46E5" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+
+        {/* Table */}
         {products.length === 0 ? (
           <p className="text-sm text-gray-500">No products found.</p>
         ) : (
