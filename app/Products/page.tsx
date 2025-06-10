@@ -15,17 +15,27 @@ export default function ProductsPage() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-800">
+    <div className="flex min-h-screen bg-gray-50 text-gray-800 transition-all duration-300">
       {/* Sidebar */}
-      {!isCollapsed && (
-        <div className="w-64 border-r bg-white shadow-md">
-          <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-        </div>
-      )}
+      <div
+        className={`${
+          isCollapsed ? "w-20" : "w-64"
+        } transition-all duration-300 bg-white border-r shadow-md`}
+      >
+        <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      </div>
 
       {/* Main Content */}
       <div className="flex-1 p-8">
-        <h1 className="text-3xl font-semibold mb-6">Top Ordered Products</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-semibold">Top Ordered Products</h1>
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="text-sm px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition"
+          >
+            {isCollapsed ? "Expand" : "Collapse"}
+          </button>
+        </div>
 
         {products.length === 0 ? (
           <p className="text-sm text-gray-500">No products found.</p>
