@@ -40,20 +40,32 @@ export default function ProductsPage() {
         {products.length === 0 ? (
           <p className="text-sm text-gray-500">No products found.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {products.map((product) => (
-              <div
-                key={product.name}
-                className="w-full md:w-[90%] bg-white rounded-2xl shadow-md p-6 transition hover:shadow-lg"
-              >
-                <h2 className="text-base font-medium text-gray-900 mb-1">
-                  {product.name}
-                </h2>
-                <p className="text-sm text-gray-600">
-                  Total Quantity Ordered: {product.totalOrders}
-                </p>
-              </div>
-            ))}
+          <div className="w-full md:w-1/2">
+            <table className="w-full table-auto bg-white rounded-xl shadow-md overflow-hidden text-sm">
+              <thead className="bg-gray-100 text-gray-700">
+                <tr>
+                  <th className="text-left px-4 py-3">Product Name</th>
+                  <th className="text-left px-4 py-3">Total Orders</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product, idx) => (
+                  <tr
+                    key={product.name}
+                    className={`border-t hover:bg-gray-50 ${
+                      idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    }`}
+                  >
+                    <td className="px-4 py-3 font-medium text-gray-800">
+                      {product.name}
+                    </td>
+                    <td className="px-4 py-3 text-gray-600">
+                      {product.totalOrders}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
