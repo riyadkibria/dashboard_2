@@ -11,6 +11,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell,
 } from "recharts";
 
 export default function ProductsPage() {
@@ -22,6 +23,9 @@ export default function ProductsPage() {
   useEffect(() => {
     getTopOrderedProducts().then(setProducts);
   }, []);
+
+  // Define colors for bars with a nice gradient effect
+  const barColors = ["#6366F1", "#818CF8", "#A5B4FC", "#C7D2FE"];
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-800 transition-all duration-300">
@@ -46,53 +50,93 @@ export default function ProductsPage() {
           </button>
         </div>
 
-        {/* Bar Chart */}
-        {products.length > 0 && (
-          <div className="w-full md:w-3/4 h-96 mb-10">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={products} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="totalOrders" fill="#4F46E5" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        )}
-
-        {/* Table */}
-        {products.length === 0 ? (
-          <p className="text-sm text-gray-500">No products found.</p>
-        ) : (
-          <div className="w-full md:w-1/2">
-            <table className="w-full table-auto bg-white rounded-xl shadow-md overflow-hidden text-sm">
-              <thead className="bg-gray-100 text-gray-700">
-                <tr>
-                  <th className="text-left px-4 py-3">Product Name</th>
-                  <th className="text-left px-4 py-3">Total Orders</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((product, idx) => (
-                  <tr
-                    key={product.name}
-                    className={`border-t hover:bg-gray-50 ${
-                      idx % 2 === 0 ? "bg-white" : "bg-gray-50"
-                    }`}
+        {/* Container for chart and table side-by-side */}
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Bar Chart */}
+          {products.length > 0 && (
+            <div className="w-full md:w-1/2 h-96 bg-white rounded-2xl shadow-lg p-6">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={products}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="4 4" stroke="#e0e0e0" />
+                  <XAxis
+                    dataKey="name"
+                    tick={{ fill: "#4B5563", fontWeight: 600 }}
+                    axisLine={{ stroke: "#CBD5E1" }}
+                  />
+                  <YAxis
+                    tick={{ fill: "#4B5563", fontWeight: 600 }}
+                    axisLine={{ stroke: "#CBD5E1" }}
+                    tickFormatter={(value) => value.toLocaleString()}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "#fff",
+                      borderRadius: 8,
+                      borderColor: "#E5E7EB",
+                      boxShadow:
+                        "0 2px 6px rgba(0, 0, 0, 0.12)",
+                      fontWeight: 600,
+                    }}
+                    cursor={{ fill: "rgba(99, 102, 241, 0.1)" }}
+                  />
+                  <Bar
+                    dataKey="totalOrders"
+                    radius={[8, 8, 0, 0]}
+                    barSize={28}
+                    background={{ fill: "#f3f4f6" }}
                   >
-                    <td className="px-4 py-3 font-medium text-gray-800">
-                      {product.name}
-                    </td>
-                    <td className="px-4 py-3 text-gray-600">
-                      {product.totalOrders}
-                    </td>
+                    {products.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={barColors[index % barColors.length]}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          {/* Table */}
+          {products.length === 0 ? (
+            <p className="text-sm text-gray-500">No products found.</p>
+          ) : (
+            <div className="w-full md:w-1/2 overflow-x-auto">
+              <table className="w-full table-auto bg-white rounded-2xl shadow-lg overflow-hidden text-sm">
+                <thead className="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th className="text-left px-6 py-4 font-semibold tracking-wide">
+                      Product Name
+                    </th>
+                    <th className="text-left px-6 py-4 font-semibold tracking-wide">
+                      Total Orders
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {products.map((product, idx) => (
+                    <tr
+                      key={product.name}
+                      className={`border-t hover:bg-gray-50 ${
+                        idx % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      }`}
+                    >
+                      <td className="px-6 py-4 font-medium text-gray-800">
+                        {product.name}
+                      </td>
+                      <td className="px-6 py-4 text-gray-600">
+                        {product.totalOrders.toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
