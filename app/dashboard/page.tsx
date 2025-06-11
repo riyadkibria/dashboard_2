@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import { getLatestOrders, UserRequest } from "@/lib/latestorders";
 import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
+import WeeklySalesChart from "@/components/WeeklySalesChart"; // <-- Import your chart component
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
@@ -102,15 +103,12 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Card 4: Overview Stats - Move to second line */}
+            {/* Card 4: Overview Stats with Weekly Sales Chart */}
             <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5 md:col-span-2">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Overview Stats
+                Weekly Sales Overview
               </h2>
-              <div className="bg-gray-50 border rounded-lg p-4 shadow-sm">
-                <p className="text-sm text-gray-500 mb-1">Another Stat</p>
-                <p className="text-xl font-bold text-gray-800">Coming Soon</p>
-              </div>
+              <WeeklySalesChart />
             </div>
           </div>
         </div>
