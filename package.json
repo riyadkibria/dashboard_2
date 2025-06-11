@@ -33,6 +33,12 @@
     "overrides": {
       "@types/react": "19.0.10",
       "@types/react-dom": "19.0.4"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "@firebase/util",
+      "protobufjs",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
