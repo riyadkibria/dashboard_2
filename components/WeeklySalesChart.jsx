@@ -1,6 +1,6 @@
 // components/WeeklySalesChart.jsx
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase";  // Make sure this path is correct
+import { db } from "@/lib/firebase";  // Make sure this path is correct
 import { collection, getDocs } from "firebase/firestore";
 import { startOfWeek, format } from "date-fns";
 import {
