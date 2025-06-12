@@ -23,6 +23,7 @@ export default function AllOrdersPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [minimal, setMinimal] = useState(false); // toggle state
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -42,6 +43,30 @@ export default function AllOrdersPage() {
     fetchOrders();
   }, []);
 
+  // Columns for full and minimal views
+  const columnsFull = [
+    { key: "Customer-Name", label: "Name" },
+    { key: "User-Email", label: "Email" },
+    { key: "Phone-Number", label: "Phone" },
+    { key: "Product-Name", label: "Product" },
+    { key: "Quantity", label: "Quantity" },
+    { key: "Product-Price", label: "Price (BDT)" },
+    { key: "Courier", label: "Courier" },
+    { key: "Time", label: "Time" },
+    { key: "Product-Links", label: "Links" },
+  ];
+
+  const columnsMinimal = [
+    { key: "Customer-Name", label: "Name" },
+    { key: "Phone-Number", label: "Phone" },
+    { key: "Product-Name", label: "Product" },
+    { key: "Quantity", label: "Quantity" },
+    { key: "Product-Price", label: "Price (BDT)" },
+    { key: "Product-Links", label: "Links" },
+  ];
+
+  const columns = minimal ? columnsMinimal : columnsFull;
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -53,21 +78,41 @@ export default function AllOrdersPage() {
       >
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header */}
-          <h1 className="text-3xl font-bold text-center text-gray-800">
-            All Orders
-          </h1>
+          <h1 className="text-3xl font-bold text-center text-gray-800">All Orders</h1>
 
           {/* Total Orders Card */}
           {!loading && (
             <div className="bg-white shadow-md rounded-lg p-6 w-full md:w-1/2 lg:w-1/3">
-              <h2 className="text-xl font-semibold text-gray-700 mb-2">
-                Total Orders
-              </h2>
-              <p className="text-4xl font-bold text-indigo-600">
-                {orders.length}
-              </p>
+              <h2 className="text-xl font-semibold text-gray-700 mb-2">Total Orders</h2>
+              <p className="text-4xl font-bold text-indigo-600">{orders.length}</p>
             </div>
           )}
+
+          {/* Toggle Button */}
+          <div className="flex justify-end">
+            <button
+              onClick={() => setMinimal(!minimal)}
+              className={`inline-flex items-center px-4 py-2 text-sm font-medium rounded-md transition
+                ${
+                  minimal
+                    ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              aria-pressed={minimal}
+            >
+              Minimal
+              <span
+                className={`ml-2 inline-block w-5 h-5 rounded-full transition-transform ${
+                  minimal ? "translate-x-3 bg-white" : "bg-gray-500"
+                }`}
+                style={{
+                  boxShadow: "0 0 2px rgba(0,0,0,0.2)",
+                  position: "relative",
+                  top: "1px",
+                }}
+              />
+            </button>
+          </div>
 
           {/* Orders Table */}
           <div className="bg-white rounded-xl shadow-lg p-6">
@@ -80,45 +125,52 @@ export default function AllOrdersPage() {
                 <table className="min-w-full text-sm text-left text-gray-700">
                   <thead className="bg-gray-200 text-xs uppercase text-gray-700">
                     <tr>
-                      <th className="px-4 py-3">Name</th>
-                      <th className="px-4 py-3">Email</th>
-                      <th className="px-4 py-3">Phone</th>
-                      <th className="px-4 py-3">Product</th>
-                      <th className="px-4 py-3">Quantity</th>
-                      <th className="px-4 py-3">Price (BDT)</th>
-                      <th className="px-4 py-3">Courier</th>
-                      <th className="px-4 py-3">Time</th>
-                      <th className="px-4 py-3">Links</th>
+                      {columns.map(({ key, label }) => (
+                        <th key={key} className="px-4 py-3">
+                          {label}
+                        </th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {orders.map((order, index) => (
                       <tr key={index} className="hover:bg-gray-50 transition">
-                        <td className="px-4 py-3">{order["Customer-Name"]}</td>
-                        <td className="px-4 py-3">{order["User-Email"]}</td>
-                        <td className="px-4 py-3">{order["Phone-Number"]}</td>
-                        <td className="px-4 py-3">{order["Product-Name"]}</td>
-                        <td className="px-4 py-3">{order.Quantity}</td>
-                        <td className="px-4 py-3">{order["Product-Price"]}</td>
-                        <td className="px-4 py-3">{order.Courier}</td>
-                        <td className="px-4 py-3">
-                          {order.Time?.toDate?.().toLocaleString() || "N/A"}
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex flex-wrap gap-2">
-                            {order["Product-Links"]?.map((link, i) => (
-                              <a
-                                key={i}
-                                href={link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full shadow hover:bg-indigo-600 transition"
-                              >
-                                Product Link-{i + 1}
-                              </a>
-                            ))}
-                          </div>
-                        </td>
+                        {columns.map(({ key }) => {
+                          if (key === "Time") {
+                            return (
+                              <td key={key} className="px-4 py-3">
+                                {order.Time?.toDate?.().toLocaleString() || "N/A"}
+                              </td>
+                            );
+                          }
+                          if (key === "Product-Links") {
+                            return (
+                              <td key={key} className="px-4 py-3">
+                                <div className="flex flex-wrap gap-2">
+                                  {order["Product-Links"]?.map((link, i) => (
+                                    <a
+                                      key={i}
+                                      href={link}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full shadow hover:bg-indigo-600 transition"
+                                    >
+                                      Product Link-{i + 1}
+                                    </a>
+                                  ))}
+                                </div>
+                              </td>
+                            );
+                          }
+                          // For other fields
+                          // @ts-ignore
+                          return (
+                            <td key={key} className="px-4 py-3">
+                              {/* @ts-ignore */}
+                              {order[key] || "N/A"}
+                            </td>
+                          );
+                        })}
                       </tr>
                     ))}
                   </tbody>
