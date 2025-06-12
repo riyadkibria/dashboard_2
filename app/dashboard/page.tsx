@@ -1,10 +1,11 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import { getLatestOrders, UserRequest } from "@/lib/latestorders";
 import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
-import WeeklySalesChart from "@/components/WeeklySalesChart"; // <-- Import your chart component
+import WeeklySalesChart from "@/components/WeeklySalesChart"; // Weekly sales chart
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
@@ -14,7 +15,7 @@ export default function DashboardPage() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchData = async () => {
       const latestOrders = await getLatestOrders(5);
       const total = await getTotalOrders();
       const revenue = await getTotalRevenue();
@@ -23,7 +24,7 @@ export default function DashboardPage() {
       setTotalRevenue(revenue);
       setLoading(false);
     };
-    fetch();
+    fetchData();
   }, []);
 
   return (
@@ -83,9 +84,7 @@ export default function DashboardPage() {
               {loading ? (
                 <p className="text-sm text-gray-500">Loading...</p>
               ) : (
-                <p className="text-4xl font-bold text-indigo-600">
-                  {totalOrders}
-                </p>
+                <p className="text-4xl font-bold text-indigo-600">{totalOrders}</p>
               )}
             </div>
 
@@ -103,7 +102,7 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Card 4: Overview Stats with Weekly Sales Chart */}
+            {/* Card 4: Weekly Sales Chart */}
             <div className="bg-white border border-gray-200 shadow-lg rounded-xl p-5 md:col-span-2">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Weekly Sales Overview
