@@ -22,8 +22,6 @@ type UserRequest = {
 export default function AllOrdersPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // Sidebar collapse state
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
@@ -107,20 +105,19 @@ export default function AllOrdersPage() {
                           {order.Time?.toDate?.().toLocaleString() || "N/A"}
                         </td>
                         <td className="px-4 py-3">
-                          <ul className="list-disc pl-4">
+                          <div className="flex flex-wrap gap-2">
                             {order["Product-Links"]?.map((link, i) => (
-                              <li key={i}>
-                                <a
-                                  href={link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-blue-600 underline"
-                                >
-                                  Link {i + 1}
-                                </a>
-                              </li>
+                              <a
+                                key={i}
+                                href={link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full shadow hover:bg-indigo-600 transition"
+                              >
+                                Product Link-{i + 1}
+                              </a>
                             ))}
-                          </ul>
+                          </div>
                         </td>
                       </tr>
                     ))}
