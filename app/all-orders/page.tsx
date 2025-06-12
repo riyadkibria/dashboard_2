@@ -162,12 +162,10 @@ export default function AllOrdersPage() {
                               </td>
                             );
                           }
-                          // For other fields
-                          // @ts-ignore
+                          // For other fields safely access with any cast
                           return (
                             <td key={key} className="px-4 py-3">
-                              {/* @ts-ignore */}
-                              {order[key] || "N/A"}
+                              {(order as any)[key] ?? "N/A"}
                             </td>
                           );
                         })}
