@@ -34,7 +34,7 @@ export default function ProductsPage() {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 text-gray-800">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
       <main
@@ -43,7 +43,7 @@ export default function ProductsPage() {
         }`}
       >
         <div className="bg-white rounded-2xl shadow-md p-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
             Top Ordered Products
           </h1>
 
@@ -51,32 +51,55 @@ export default function ProductsPage() {
             <p className="text-center text-gray-500">Loading data...</p>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Bar Chart */}
-              <div className="h-[350px] w-full">
+              {/* Compact Bar Chart */}
+              <div className="h-[320px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="totalOrders" fill="#4f46e5" radius={[4, 4, 0, 0]} />
+                  <BarChart
+                    data={data}
+                    margin={{ top: 10, right: 20, left: 0, bottom: 20 }}
+                    barCategoryGap={16}
+                  >
+                    <CartesianGrid strokeDasharray="2 4" vertical={false} />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fontSize: 12 }}
+                      interval={0}
+                      angle={-15}
+                      textAnchor="end"
+                      height={60}
+                    />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip
+                      wrapperStyle={{ fontSize: "0.85rem" }}
+                      contentStyle={{
+                        borderRadius: "8px",
+                        borderColor: "#e5e7eb",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+                      }}
+                    />
+                    <Bar
+                      dataKey="totalOrders"
+                      fill="#6366f1"
+                      radius={[6, 6, 0, 0]}
+                      barSize={30}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
               {/* Table */}
-              <div className="overflow-auto border border-gray-200 rounded-lg shadow-sm">
-                <table className="min-w-full text-sm text-left text-gray-700">
-                  <thead className="bg-gray-100 text-xs uppercase text-gray-600">
+              <div className="overflow-auto border border-gray-200 rounded-xl shadow-sm bg-white">
+                <table className="min-w-full text-sm">
+                  <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-medium">
                     <tr>
-                      <th className="px-4 py-3">Product Name</th>
-                      <th className="px-4 py-3">Total Orders</th>
+                      <th className="px-4 py-3 text-left">Product</th>
+                      <th className="px-4 py-3 text-left">Orders</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {data.map((item, index) => (
-                      <tr key={index}>
-                        <td className="px-4 py-2">{item.name}</td>
+                      <tr key={index} className="hover:bg-gray-50 transition">
+                        <td className="px-4 py-2 font-medium">{item.name}</td>
                         <td className="px-4 py-2">{item.totalOrders}</td>
                       </tr>
                     ))}
@@ -90,5 +113,3 @@ export default function ProductsPage() {
     </div>
   );
 }
-
-
