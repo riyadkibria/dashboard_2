@@ -12,9 +12,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
-// Import icon
-import { FaBoxOpen } from "react-icons/fa";
+import { FaBoxOpen } from "react-icons/fa"; // Icon for product
 
 interface ProductData {
   name: string;
@@ -54,7 +52,7 @@ export default function ProductsPage() {
             <p className="text-center text-gray-500">Loading data...</p>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Compact Bar Chart */}
+              {/* Bar Chart */}
               <div className="h-[320px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
@@ -95,17 +93,17 @@ export default function ProductsPage() {
                 <table className="min-w-full text-sm">
                   <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-medium">
                     <tr>
-                      <th className="px-4 py-3 text-left flex items-center gap-2">
-                        <FaBoxOpen className="w-4 h-4 text-indigo-600" />
-                        Product
-                      </th>
+                      <th className="px-4 py-3 text-left">Product</th>
                       <th className="px-4 py-3 text-left">Orders</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {data.map((item, index) => (
                       <tr key={index} className="hover:bg-gray-50 transition">
-                        <td className="px-4 py-2 font-medium">{item.name}</td>
+                        <td className="px-4 py-2 font-medium flex items-center gap-2">
+                          <FaBoxOpen className="text-yellow-500 w-4 h-4" />
+                          <span>{item.name}</span>
+                        </td>
                         <td className="px-4 py-2">{item.totalOrders}</td>
                       </tr>
                     ))}
@@ -119,3 +117,4 @@ export default function ProductsPage() {
     </div>
   );
 }
+
