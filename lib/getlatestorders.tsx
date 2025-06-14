@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getLatestOrders, UserRequest } from "@/lib/latestorders";
 import {
   UserIcon,
   PhoneIcon,
@@ -10,7 +9,7 @@ import {
   MapPinIcon,
 } from "lucide-react";
 
-export default function latestOrders() {
+export default function getlatestOrders() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
 
   useEffect(() => {
