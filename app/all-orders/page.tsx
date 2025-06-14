@@ -151,19 +151,17 @@ export default function AllOrdersPage() {
             ) : orders.length === 0 ? (
               <p className="text-center text-gray-600">No orders found.</p>
             ) : (
-              <table className="text-xs text-left text-gray-700 min-w-full">
+              <table className="text-sm text-left text-gray-700 min-w-full">
                 <thead className="bg-gray-200 text-gray-700">
                   <tr>
                     {columns.map(({ key, label }) => (
                       <th
                         key={key}
-                        className={`px-2 py-2 whitespace-nowrap font-medium ${
+                        className={`px-3 py-2 whitespace-nowrap font-semibold ${
                           key === "Time" ? "max-w-[140px] w-36" : ""
                         }`}
                       >
-                        <span className="flex items-center">
-                          {iconMap[key]} {label}
-                        </span>
+                        {label}
                       </th>
                     ))}
                   </tr>
@@ -176,7 +174,7 @@ export default function AllOrdersPage() {
                           return (
                             <td
                               key={key}
-                              className="px-2 py-2 whitespace-nowrap max-w-[140px] w-36"
+                              className="px-3 py-2 whitespace-nowrap max-w-[140px] w-36"
                             >
                               <span className="flex items-center">
                                 {iconMap[key]}
@@ -187,7 +185,7 @@ export default function AllOrdersPage() {
                         }
                         if (key === "Product-Links") {
                           return (
-                            <td key={key} className="px-2 py-2 whitespace-nowrap">
+                            <td key={key} className="px-3 py-2 whitespace-nowrap">
                               <div className="flex flex-wrap gap-1">
                                 {order["Product-Links"]?.map((link, i) => (
                                   <a
@@ -206,7 +204,7 @@ export default function AllOrdersPage() {
                           );
                         }
                         return (
-                          <td key={key} className="px-2 py-2 whitespace-nowrap">
+                          <td key={key} className="px-3 py-2 whitespace-nowrap">
                             <span className="flex items-center">
                               {iconMap[key]}
                               {order[key] ?? "N/A"}
