@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react"; // <-- Add this import to fix JSX namespace error
+import * as React from "react";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import Sidebar from "@/components/Sidebar";
-import { LayoutList, LayoutGrid, User, Phone, Package, Hash, DollarSign } from "lucide-react"; // Lucide icons
+import { LayoutList, LayoutGrid } from "lucide-react";
 
 type UserRequest = {
   Address: string;
@@ -79,19 +79,6 @@ export default function AllOrdersPage() {
 
   const columns = minimal ? columnsMinimal : columnsFull;
 
-  // Icon map with React.ReactNode type to fix error
-  const iconMap: Record<ColumnKey, React.ReactNode | null> = {
-    "Customer-Name": <User className="w-4 h-4 text-indigo-500 inline mr-1" />,
-    "Phone-Number": <Phone className="w-4 h-4 text-green-500 inline mr-1" />,
-    "Product-Name": <Package className="w-4 h-4 text-yellow-500 inline mr-1" />,
-    Quantity: <Hash className="w-4 h-4 text-blue-500 inline mr-1" />,
-    "Product-Price": <DollarSign className="w-4 h-4 text-emerald-500 inline mr-1" />,
-    "User-Email": null,
-    Courier: null,
-    Time: null,
-    "Product-Links": null,
-  };
-
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -158,14 +145,14 @@ export default function AllOrdersPage() {
                         {columns.map(({ key }) => {
                           if (key === "Time") {
                             return (
-                              <td key={key} className="px-4 py-3">
+                              <td key={key} className="px-4 py-3 whitespace-nowrap">
                                 {order.Time?.toDate?.().toLocaleString() ?? "N/A"}
                               </td>
                             );
                           }
                           if (key === "Product-Links") {
                             return (
-                              <td key={key} className="px-4 py-3">
+                              <td key={key} className="px-4 py-3 whitespace-nowrap">
                                 <div className="flex flex-wrap gap-2">
                                   {order["Product-Links"]?.map((link, i) => (
                                     <a
@@ -173,7 +160,7 @@ export default function AllOrdersPage() {
                                       href={link}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full shadow hover:bg-indigo-600 transition"
+                                      className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition"
                                     >
                                       Link-{i + 1}
                                     </a>
@@ -183,10 +170,8 @@ export default function AllOrdersPage() {
                             );
                           }
                           return (
-                            <td key={key} className="px-4 py-3 whitespace-nowrap flex items-center">
-                              {/* Add icon if available */}
-                              {iconMap[key]}
-                              <span>{order[key] ?? "N/A"}</span>
+                            <td key={key} className="px-4 py-3 whitespace-nowrap">
+                              {order[key] ?? "N/A"}
                             </td>
                           );
                         })}
