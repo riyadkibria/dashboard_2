@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import Sidebar from "@/components/Sidebar";
-import { LayoutList, LayoutGrid } from "lucide-react"; // modern icons
+import { LayoutList, LayoutGrid } from "lucide-react";
 
 type UserRequest = {
   Address: string;
@@ -91,7 +91,7 @@ export default function AllOrdersPage() {
           <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold text-gray-800">All Orders</h1>
 
-            {/* Modern Toggle Button */}
+            {/* Toggle Button with Lucide Icons */}
             <button
               onClick={() => setMinimal(!minimal)}
               className="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded-lg shadow transition"
@@ -182,4 +182,3 @@ export default function AllOrdersPage() {
     </div>
   );
 }
-
