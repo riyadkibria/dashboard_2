@@ -1,18 +1,11 @@
 "use client";
 
+import * as React from "react"; // <-- Add this import to fix JSX namespace error
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import Sidebar from "@/components/Sidebar";
-import {
-  LayoutList,
-  LayoutGrid,
-  User,
-  Phone,
-  Package,
-  Hash,
-  DollarSign,
-} from "lucide-react";
+import { LayoutList, LayoutGrid, User, Phone, Package, Hash, DollarSign } from "lucide-react"; // Lucide icons
 
 type UserRequest = {
   Address: string;
@@ -86,6 +79,19 @@ export default function AllOrdersPage() {
 
   const columns = minimal ? columnsMinimal : columnsFull;
 
+  // Icon map with React.ReactNode type to fix error
+  const iconMap: Record<ColumnKey, React.ReactNode | null> = {
+    "Customer-Name": <User className="w-4 h-4 text-indigo-500 inline mr-1" />,
+    "Phone-Number": <Phone className="w-4 h-4 text-green-500 inline mr-1" />,
+    "Product-Name": <Package className="w-4 h-4 text-yellow-500 inline mr-1" />,
+    Quantity: <Hash className="w-4 h-4 text-blue-500 inline mr-1" />,
+    "Product-Price": <DollarSign className="w-4 h-4 text-emerald-500 inline mr-1" />,
+    "User-Email": null,
+    Courier: null,
+    Time: null,
+    "Product-Links": null,
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -96,6 +102,7 @@ export default function AllOrdersPage() {
         }`}
       >
         <div className="max-w-7xl mx-auto space-y-6">
+          {/* Header + Toggle View */}
           <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold text-gray-800">All Orders</h1>
 
@@ -117,17 +124,17 @@ export default function AllOrdersPage() {
             </button>
           </div>
 
+          {/* Total Orders Count */}
           {!loading && (
             <div className="bg-white shadow-md rounded-lg p-6 w-full md:w-1/2 lg:w-1/3">
               <h2 className="text-xl font-semibold text-gray-700 mb-2">
                 Total Orders
               </h2>
-              <p className="text-4xl font-bold text-indigo-600">
-                {orders.length}
-              </p>
+              <p className="text-4xl font-bold text-indigo-600">{orders.length}</p>
             </div>
           )}
 
+          {/* Orders Table */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             {loading ? (
               <p className="text-center text-gray-600">Loading...</p>
@@ -149,8 +156,6 @@ export default function AllOrdersPage() {
                     {orders.map((order, index) => (
                       <tr key={index} className="hover:bg-gray-50 transition">
                         {columns.map(({ key }) => {
-                          const value = order[key];
-
                           if (key === "Time") {
                             return (
                               <td key={key} className="px-4 py-3">
@@ -158,7 +163,6 @@ export default function AllOrdersPage() {
                               </td>
                             );
                           }
-
                           if (key === "Product-Links") {
                             return (
                               <td key={key} className="px-4 py-3">
@@ -178,26 +182,11 @@ export default function AllOrdersPage() {
                               </td>
                             );
                           }
-
-                          // Icon logic
-                          const iconMap: Record<ColumnKey, JSX.Element | null> = {
-                            "Customer-Name": <User className="w-4 h-4 text-indigo-500" />,
-                            "Phone-Number": <Phone className="w-4 h-4 text-green-500" />,
-                            "Product-Name": <Package className="w-4 h-4 text-yellow-500" />,
-                            Quantity: <Hash className="w-4 h-4 text-blue-500" />,
-                            "Product-Price": <DollarSign className="w-4 h-4 text-emerald-500" />,
-                            "User-Email": null,
-                            Courier: null,
-                            Time: null,
-                            "Product-Links": null,
-                          };
-
                           return (
-                            <td key={key} className="px-4 py-3 whitespace-nowrap">
-                              <div className="flex items-center gap-2">
-                                {iconMap[key] && iconMap[key]}
-                                <span>{value ?? "N/A"}</span>
-                              </div>
+                            <td key={key} className="px-4 py-3 whitespace-nowrap flex items-center">
+                              {/* Add icon if available */}
+                              {iconMap[key]}
+                              <span>{order[key] ?? "N/A"}</span>
                             </td>
                           );
                         })}
