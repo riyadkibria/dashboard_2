@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { latestOrders, UserRequest } from "@/lib/latestorders";
+import { getLatestOrders } from "@/lib/getLatestOrders"; // ✅ Only import what's used
 import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
-import WeeklySalesChart from "@/components/WeeklySalesChart"; // Weekly sales chart
+import { UserRequest } from "@/lib/latestorders"; // ✅ Import type only
+import WeeklySalesChart from "@/components/WeeklySalesChart";
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
