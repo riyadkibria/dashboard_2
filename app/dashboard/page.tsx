@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { getLatestorders } from "@/lib/getLatestorders"; // ✅ Only import what's used
+import { getLatestOrders } from "@/lib/getLatestorders"; // ✅ Correct function name
 import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
-import { UserRequest } from "@/lib/latestorders"; // ✅ Import type only
+import { UserRequest } from "@/lib/latestorders";
 import WeeklySalesChart from "@/components/WeeklySalesChart";
 
 export default function DashboardPage() {
@@ -17,7 +17,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const latestOrders = await getLatestOrders(5);
+      const latestOrders = await getLatestOrders(5); // ✅ Used properly
       const total = await getTotalOrders();
       const revenue = await getTotalRevenue();
       setOrders(latestOrders);
