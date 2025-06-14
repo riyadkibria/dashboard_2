@@ -92,15 +92,15 @@ export default function AllOrdersPage() {
   const columns = minimal ? columnsMinimal : columnsFull;
 
   const iconMap: Record<ColumnKey, React.ReactNode> = {
-    "Customer-Name": <User className="w-4 h-4 text-indigo-500 inline mr-1" />,
-    "User-Email": <Mail className="w-4 h-4 text-pink-500 inline mr-1" />,
-    "Phone-Number": <Phone className="w-4 h-4 text-green-500 inline mr-1" />,
-    "Product-Name": <Package className="w-4 h-4 text-yellow-500 inline mr-1" />,
-    Quantity: <ShoppingCart className="w-4 h-4 text-purple-500 inline mr-1" />,
-    "Product-Price": <DollarSign className="w-4 h-4 text-emerald-500 inline mr-1" />,
-    Courier: <Truck className="w-4 h-4 text-blue-500 inline mr-1" />,
-    Time: <Clock className="w-4 h-4 text-gray-500 inline mr-1" />,
-    "Product-Links": <LinkIcon className="w-4 h-4 text-indigo-400 inline mr-1" />,
+    "Customer-Name": <User className="w-3 h-3 text-indigo-500 inline mr-1" />,
+    "User-Email": <Mail className="w-3 h-3 text-pink-500 inline mr-1" />,
+    "Phone-Number": <Phone className="w-3 h-3 text-green-500 inline mr-1" />,
+    "Product-Name": <Package className="w-3 h-3 text-yellow-500 inline mr-1" />,
+    Quantity: <ShoppingCart className="w-3 h-3 text-purple-500 inline mr-1" />,
+    "Product-Price": <DollarSign className="w-3 h-3 text-emerald-500 inline mr-1" />,
+    Courier: <Truck className="w-3 h-3 text-blue-500 inline mr-1" />,
+    Time: <Clock className="w-3 h-3 text-gray-500 inline mr-1" />,
+    "Product-Links": <LinkIcon className="w-3 h-3 text-indigo-400 inline mr-1" />,
   };
 
   return (
@@ -112,13 +112,13 @@ export default function AllOrdersPage() {
           isCollapsed ? "ml-16" : "ml-64"
         }`}
       >
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto space-y-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-800">All Orders</h1>
+            <h1 className="text-xl font-bold text-gray-800">All Orders</h1>
 
             <button
               onClick={() => setMinimal(!minimal)}
-              className="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 px-3 py-1.5 rounded-md shadow transition text-sm"
+              className="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 px-3 py-1 rounded shadow text-xs"
             >
               {minimal ? (
                 <>
@@ -135,29 +135,27 @@ export default function AllOrdersPage() {
           </div>
 
           {!loading && (
-            <div className="bg-white shadow-md rounded-md p-4 w-full max-w-sm">
-              <h2 className="text-base font-semibold text-gray-700 mb-1">
-                Total Orders
-              </h2>
-              <p className="text-3xl font-bold text-indigo-600">
+            <div className="bg-white shadow rounded p-4 w-full max-w-sm text-xs">
+              <h2 className="font-semibold text-gray-700 mb-1">Total Orders</h2>
+              <p className="text-2xl font-bold text-indigo-600">
                 {orders.length}
               </p>
             </div>
           )}
 
-          <div className="bg-white rounded-lg shadow-md p-4 overflow-x-auto">
+          <div className="bg-white rounded shadow p-4 overflow-x-auto">
             {loading ? (
-              <p className="text-center text-gray-600">Loading...</p>
+              <p className="text-center text-gray-500 text-sm">Loading...</p>
             ) : orders.length === 0 ? (
-              <p className="text-center text-gray-600">No orders found.</p>
+              <p className="text-center text-gray-500 text-sm">No orders found.</p>
             ) : (
-              <table className="text-sm text-left text-gray-700 min-w-[800px]">
+              <table className="text-xs text-left text-gray-700 min-w-[800px]">
                 <thead className="bg-gray-200 text-gray-700">
                   <tr>
                     {columns.map(({ key, label }) => (
                       <th
                         key={key}
-                        className="px-4 py-2 whitespace-nowrap font-semibold"
+                        className="px-3 py-2 whitespace-nowrap font-semibold"
                       >
                         {label}
                       </th>
@@ -172,10 +170,7 @@ export default function AllOrdersPage() {
                           const dateStr =
                             order.Time?.toDate?.().toISOString().split("T")[0] ?? "N/A";
                           return (
-                            <td
-                              key={key}
-                              className="px-4 py-2 whitespace-nowrap text-sm"
-                            >
+                            <td key={key} className="px-3 py-2 whitespace-nowrap">
                               <span className="flex items-center gap-1">
                                 {iconMap[key]}
                                 {dateStr}
@@ -186,7 +181,7 @@ export default function AllOrdersPage() {
 
                         if (key === "Product-Links") {
                           return (
-                            <td key={key} className="px-4 py-2 whitespace-nowrap">
+                            <td key={key} className="px-3 py-2 whitespace-nowrap">
                               <div className="flex flex-wrap gap-1">
                                 {order["Product-Links"]?.map((link, i) => (
                                   <a
@@ -206,7 +201,7 @@ export default function AllOrdersPage() {
                         }
 
                         return (
-                          <td key={key} className="px-4 py-2 whitespace-nowrap text-sm">
+                          <td key={key} className="px-3 py-2 whitespace-nowrap">
                             <span className="flex items-center gap-1">
                               {iconMap[key]}
                               {order[key] ?? "N/A"}
@@ -225,3 +220,4 @@ export default function AllOrdersPage() {
     </div>
   );
 }
+
