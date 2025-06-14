@@ -76,7 +76,7 @@ export default function AllOrdersPage() {
     { key: "Quantity", label: "Quantity" },
     { key: "Product-Price", label: "Price (BDT)" },
     { key: "Courier", label: "Courier" },
-    { key: "Time", label: "Time" },
+    { key: "Time", label: "Date" },
     { key: "Product-Links", label: "Links" },
   ];
 
@@ -145,21 +145,19 @@ export default function AllOrdersPage() {
             </div>
           )}
 
-          <div className="bg-white rounded-lg shadow-md p-4 overflow-x-auto max-w-full">
+          <div className="bg-white rounded-lg shadow-md p-4 overflow-x-auto">
             {loading ? (
               <p className="text-center text-gray-600">Loading...</p>
             ) : orders.length === 0 ? (
               <p className="text-center text-gray-600">No orders found.</p>
             ) : (
-              <table className="text-sm text-left text-gray-700 min-w-full">
+              <table className="text-sm text-left text-gray-700 min-w-[800px]">
                 <thead className="bg-gray-200 text-gray-700">
                   <tr>
                     {columns.map(({ key, label }) => (
                       <th
                         key={key}
-                        className={`px-3 py-2 whitespace-nowrap font-semibold ${
-                          key === "Time" ? "max-w-[140px] w-36" : ""
-                        }`}
+                        className="px-4 py-2 whitespace-nowrap font-semibold"
                       >
                         {label}
                       </th>
@@ -171,21 +169,24 @@ export default function AllOrdersPage() {
                     <tr key={index} className="hover:bg-gray-50 transition">
                       {columns.map(({ key }) => {
                         if (key === "Time") {
+                          const dateStr =
+                            order.Time?.toDate?.().toISOString().split("T")[0] ?? "N/A";
                           return (
                             <td
                               key={key}
-                              className="px-3 py-2 whitespace-nowrap max-w-[140px] w-36"
+                              className="px-4 py-2 whitespace-nowrap text-sm"
                             >
-                              <span className="flex items-center">
+                              <span className="flex items-center gap-1">
                                 {iconMap[key]}
-                                {order.Time?.toDate?.().toLocaleString() ?? "N/A"}
+                                {dateStr}
                               </span>
                             </td>
                           );
                         }
+
                         if (key === "Product-Links") {
                           return (
-                            <td key={key} className="px-3 py-2 whitespace-nowrap">
+                            <td key={key} className="px-4 py-2 whitespace-nowrap">
                               <div className="flex flex-wrap gap-1">
                                 {order["Product-Links"]?.map((link, i) => (
                                   <a
@@ -203,9 +204,10 @@ export default function AllOrdersPage() {
                             </td>
                           );
                         }
+
                         return (
-                          <td key={key} className="px-3 py-2 whitespace-nowrap">
-                            <span className="flex items-center">
+                          <td key={key} className="px-4 py-2 whitespace-nowrap text-sm">
+                            <span className="flex items-center gap-1">
                               {iconMap[key]}
                               {order[key] ?? "N/A"}
                             </span>
