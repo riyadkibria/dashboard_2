@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { getLatestOrders } from "@/lib/getLatestorders";// ✅ Correct function name
+import { getLatestOrders, UserRequest } from "@/lib/getLatestorders";
 import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
-import { UserRequest } from "@/lib/getLatestorders";
 import WeeklySalesChart from "@/components/WeeklySalesChart";
+
+// Icons
+import { FaUser, FaPhone, FaBoxOpen, FaDollarSign } from "react-icons/fa";
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
@@ -17,7 +19,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const latestOrders = await getLatestOrders(5); // ✅ Used properly
+      const latestOrders = await getLatestOrders(5);
       const total = await getTotalOrders();
       const revenue = await getTotalRevenue();
       setOrders(latestOrders);
@@ -65,10 +67,22 @@ export default function DashboardPage() {
                     <tbody className="divide-y divide-gray-100">
                       {orders.map((order, index) => (
                         <tr key={index}>
-                          <td className="px-3 py-2 text-[13px]">{order["Customer-Name"]}</td>
-                          <td className="px-3 py-2 text-[13px]">{order["Phone-Number"]}</td>
-                          <td className="px-3 py-2 text-[13px]">{order["Product-Name"]}</td>
-                          <td className="px-3 py-2 text-[13px]">${order["Product-Price"]}</td>
+                          <td className="px-3 py-2 text-[13px] flex items-center gap-2">
+                            <FaUser className="text-indigo-600 w-4 h-4" />
+                            {order["Customer-Name"]}
+                          </td>
+                          <td className="px-3 py-2 text-[13px] flex items-center gap-2">
+                            <FaPhone className="text-green-600 w-4 h-4" />
+                            {order["Phone-Number"]}
+                          </td>
+                          <td className="px-3 py-2 text-[13px] flex items-center gap-2">
+                            <FaBoxOpen className="text-yellow-600 w-4 h-4" />
+                            {order["Product-Name"]}
+                          </td>
+                          <td className="px-3 py-2 text-[13px] flex items-center gap-2">
+                            <FaDollarSign className="text-green-700 w-4 h-4" />
+                            ${order["Product-Price"]}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
