@@ -75,19 +75,19 @@ export default function DashboardPage() {
                         >
                           <td className="px-4 py-3 flex items-center gap-2">
                             <FaUser className="text-indigo-500 w-4 h-4" />
-                            {order["Customer-Name"]}
+                            <span>{order["Customer-Name"]}</span>
                           </td>
                           <td className="px-4 py-3 flex items-center gap-2">
                             <FaPhone className="text-green-500 w-4 h-4" />
-                            {order["Phone-Number"]}
+                            <span>{order["Phone-Number"]}</span>
                           </td>
                           <td className="px-4 py-3 flex items-center gap-2">
                             <FaBoxOpen className="text-yellow-500 w-4 h-4" />
-                            {order["Product-Name"]}
+                            <span>{order["Product-Name"]}</span>
                           </td>
                           <td className="px-4 py-3 flex items-center gap-2">
                             <FaDollarSign className="text-emerald-500 w-4 h-4" />
-                            ${order["Product-Price"]}
+                            <span>${order["Product-Price"]}</span>
                           </td>
                         </tr>
                       ))}
