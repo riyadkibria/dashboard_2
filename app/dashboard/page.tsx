@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { getLatestOrders } from "@/lib/getLatestOrders"; // ✅ Only import what's used
+import { getLatestorders } from "@/lib/getLatestorders"; // ✅ Only import what's used
 import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
 import { UserRequest } from "@/lib/latestorders"; // ✅ Import type only
