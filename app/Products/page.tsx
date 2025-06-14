@@ -13,6 +13,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// Import icon
+import { FaBoxOpen } from "react-icons/fa";
+
 interface ProductData {
   name: string;
   totalOrders: number;
@@ -92,7 +95,10 @@ export default function ProductsPage() {
                 <table className="min-w-full text-sm">
                   <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-medium">
                     <tr>
-                      <th className="px-4 py-3 text-left">Product</th>
+                      <th className="px-4 py-3 text-left flex items-center gap-2">
+                        <FaBoxOpen className="w-4 h-4 text-indigo-600" />
+                        Product
+                      </th>
                       <th className="px-4 py-3 text-left">Orders</th>
                     </tr>
                   </thead>
