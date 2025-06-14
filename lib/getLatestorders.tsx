@@ -1,63 +1,38 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import { db } from "@/lib/firebase";
 import {
-  UserIcon,
-  PhoneIcon,
-  PackageIcon,
-  DollarSignIcon,
-  MapPinIcon,
-} from "lucide-react";
-import { getLatestOrders } from "@/lib/getLatestorders"; // Make sure this function exists
-import { UserRequest } from "@/lib/latestorders"; // Type for your Firestore documents
+  collection,
+  getDocs,
+  orderBy,
+  limit,
+  query,
+} from "firebase/firestore";
 
-export default function GetLatestOrders() {
-  const [orders, setOrders] = useState<UserRequest[]>([]);
+export type UserRequest = {
+  "Customer-Name": string;
+  "Phone-Number": string;
+  "Product-Name": string;
+  "Product-Price": string;
+  "Customer-Address": string;
+};
 
-  useEffect(() => {
-    async function fetchOrders() {
-      const data = await getLatestOrders();
-      setOrders(data);
-    }
-    fetchOrders();
-  }, []);
+export async function getLatestOrders(limitCount: number = 5): Promise<UserRequest[]> {
+  try {
+    const ordersRef = collection(db, "user_request");
+    const q = query(ordersRef, orderBy("Time", "desc"), limit(limitCount));
+    const snapshot = await getDocs(q);
 
-  return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Latest Orders</h2>
-      {orders.length === 0 ? (
-        <p>No orders found.</p>
-      ) : (
-        <ul className="space-y-4">
-          {orders.map((order, idx) => (
-            <li
-              key={idx}
-              className="p-4 border rounded-lg shadow-sm bg-white space-y-2"
-            >
-              <div className="flex items-center gap-2 text-gray-800">
-                <UserIcon className="w-4 h-4" />
-                <span>{order["Customer-Name"]}</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-800">
-                <PhoneIcon className="w-4 h-4" />
-                <span>{order["Phone-Number"]}</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-800">
-                <PackageIcon className="w-4 h-4" />
-                <span>{order["Product-Name"]}</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-800">
-                <DollarSignIcon className="w-4 h-4" />
-                <span>{order["Product-Price"]}</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-800">
-                <MapPinIcon className="w-4 h-4" />
-                <span>{order["Customer-Address"]}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        "Customer-Name": data["Customer-Name"] || "",
+        "Phone-Number": data["Phone-Number"] || "",
+        "Product-Name": data["Product-Name"] || "",
+        "Product-Price": data["Product-Price"] || "",
+        "Customer-Address": data["Customer-Address"] || "",
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    return [];
+  }
 }
