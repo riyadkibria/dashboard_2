@@ -8,8 +8,10 @@ import {
   DollarSignIcon,
   MapPinIcon,
 } from "lucide-react";
+import { getLatestOrders } from "@/lib/getLatestorders"; // Make sure this function exists
+import { UserRequest } from "@/lib/latestorders"; // Type for your Firestore documents
 
-export default function getLatestorders() {
+export default function GetLatestOrders() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
 
   useEffect(() => {
