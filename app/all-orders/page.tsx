@@ -81,12 +81,38 @@ export default function AllOrdersPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      {/* Sidebar */}
+      <div
+        className={`
+          fixed z-30 inset-y-0 left-0 transform
+          bg-white shadow-lg
+          transition-transform duration-300 ease-in-out
+          w-64
+          lg:static lg:translate-x-0
+          ${isCollapsed ? "-translate-x-full lg:translate-x-0 lg:w-16" : "translate-x-0"}
+        `}
+      >
+        <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      </div>
 
+      {/* Overlay on mobile when sidebar open */}
+      {isCollapsed && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+          onClick={() => setIsCollapsed(false)}
+        />
+      )}
+
+      {/* Main Content */}
       <main
-        className={`flex-grow p-6 transition-all duration-300 ${
-          isCollapsed ? "ml-16" : "ml-64"
-        }`}
+        className={`
+          flex-grow p-6
+          transition-margin duration-300 ease-in-out
+          ml-0
+          lg:ml-64
+          ${isCollapsed ? "lg:ml-16" : ""}
+        `}
+        style={{ marginLeft: isCollapsed ? "4rem" : "16rem" }}
       >
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header + Toggle View */}
@@ -122,64 +148,62 @@ export default function AllOrdersPage() {
           )}
 
           {/* Orders Table */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
+          <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
             {loading ? (
               <p className="text-center text-gray-600">Loading...</p>
             ) : orders.length === 0 ? (
               <p className="text-center text-gray-600">No orders found.</p>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-sm text-left text-gray-700">
-                  <thead className="bg-gray-200 text-xs uppercase text-gray-700">
-                    <tr>
-                      {columns.map(({ key, label }) => (
-                        <th key={key} className="px-4 py-3 whitespace-nowrap">
-                          {label}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {orders.map((order, index) => (
-                      <tr key={index} className="hover:bg-gray-50 transition">
-                        {columns.map(({ key }) => {
-                          if (key === "Time") {
-                            return (
-                              <td key={key} className="px-4 py-3 whitespace-nowrap">
-                                {order.Time?.toDate?.().toLocaleString() ?? "N/A"}
-                              </td>
-                            );
-                          }
-                          if (key === "Product-Links") {
-                            return (
-                              <td key={key} className="px-4 py-3 whitespace-nowrap">
-                                <div className="flex flex-wrap gap-2">
-                                  {order["Product-Links"]?.map((link, i) => (
-                                    <a
-                                      key={i}
-                                      href={link}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition"
-                                    >
-                                      Link-{i + 1}
-                                    </a>
-                                  ))}
-                                </div>
-                              </td>
-                            );
-                          }
+              <table className="min-w-full text-sm text-left text-gray-700">
+                <thead className="bg-gray-200 text-xs uppercase text-gray-700">
+                  <tr>
+                    {columns.map(({ key, label }) => (
+                      <th key={key} className="px-4 py-3 whitespace-nowrap">
+                        {label}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {orders.map((order, index) => (
+                    <tr key={index} className="hover:bg-gray-50 transition">
+                      {columns.map(({ key }) => {
+                        if (key === "Time") {
                           return (
                             <td key={key} className="px-4 py-3 whitespace-nowrap">
-                              {order[key] ?? "N/A"}
+                              {order.Time?.toDate?.().toLocaleString() ?? "N/A"}
                             </td>
                           );
-                        })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                        }
+                        if (key === "Product-Links") {
+                          return (
+                            <td key={key} className="px-4 py-3 whitespace-nowrap">
+                              <div className="flex flex-wrap gap-2">
+                                {order["Product-Links"]?.map((link, i) => (
+                                  <a
+                                    key={i}
+                                    href={link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition"
+                                  >
+                                    Link-{i + 1}
+                                  </a>
+                                ))}
+                              </div>
+                            </td>
+                          );
+                        }
+                        return (
+                          <td key={key} className="px-4 py-3 whitespace-nowrap">
+                            {order[key] ?? "N/A"}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
           </div>
         </div>
