@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { getLatestOrders, UserRequest } from "@/lib/latestorders";
+import { latestOrders, UserRequest } from "@/lib/latestorders";
 import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
 import WeeklySalesChart from "@/components/WeeklySalesChart"; // Weekly sales chart
