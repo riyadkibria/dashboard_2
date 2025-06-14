@@ -1,9 +1,11 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase"; // Update this path if needed
+import { db } from "@/lib/firebase";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
+
+// ✅ Lucide Icons
+import { Phone, Mail, ShoppingCart } from "lucide-react";
 
 // ✅ Correct type for each user request
 type UserRequest = {
@@ -53,12 +55,31 @@ export default function FetchData() {
         <p>No orders found.</p>
       ) : (
         requests.map((req, i) => (
-          <div key={i} className="mb-6 p-4 border rounded shadow-sm bg-white">
-            <p><strong>Name:</strong> {req["Customer-Name"]}</p>
-            <p><strong>Email:</strong> {req["User-Email"]}</p>
-            <p><strong>Phone:</strong> {req["Phone-Number"]}</p>
+          <div
+            key={i}
+            className="mb-6 p-4 border rounded shadow-sm bg-white space-y-2"
+          >
+            <p>
+              <strong>Name:</strong> {req["Customer-Name"]}
+            </p>
+
+            <p className="flex items-center gap-2">
+              <Mail className="w-4 h-4 text-gray-600" />
+              <span><strong>Email:</strong> {req["User-Email"]}</span>
+            </p>
+
+            <p className="flex items-center gap-2">
+              <Phone className="w-4 h-4 text-gray-600" />
+              <span><strong>Phone:</strong> {req["Phone-Number"]}</span>
+            </p>
+
             <p><strong>Product:</strong> {req["Product-Name"]}</p>
-            <p><strong>Quantity:</strong> {req.Quantity}</p>
+
+            <p className="flex items-center gap-2">
+              <ShoppingCart className="w-4 h-4 text-gray-600" />
+              <span><strong>Quantity:</strong> {req.Quantity}</span>
+            </p>
+
             <p><strong>Price:</strong> {req["Product-Price"]} BDT</p>
             <p><strong>Courier:</strong> {req.Courier}</p>
             <p><strong>Address:</strong> {req.Address}</p>
