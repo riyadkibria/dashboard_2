@@ -105,24 +105,14 @@ export default function AllOrdersPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar with width toggle */}
-      <div
-        className={`h-full transition-all duration-300 ease-in-out ${
-          isCollapsed ? "w-16" : "w-64"
-        } fixed lg:static z-30 bg-white shadow-lg`}
-      >
-        <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-      </div>
+      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
-      {/* Main Content */}
       <main
-        className={`flex-grow p-6 transition-all duration-300 ease-in-out`}
-        style={{
-          marginLeft: isCollapsed ? "4rem" : "16rem", // match sidebar width
-        }}
+        className={`flex-grow p-6 transition-all duration-300 ${
+          isCollapsed ? "ml-16" : "ml-64"
+        }`}
       >
         <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header + Toggle View */}
           <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold text-gray-800">All Orders</h1>
 
@@ -144,7 +134,6 @@ export default function AllOrdersPage() {
             </button>
           </div>
 
-          {/* Total Orders Count */}
           {!loading && (
             <div className="bg-white shadow-md rounded-lg p-6 w-full md:w-1/2 lg:w-1/3">
               <h2 className="text-xl font-semibold text-gray-700 mb-2">
@@ -156,7 +145,6 @@ export default function AllOrdersPage() {
             </div>
           )}
 
-          {/* Orders Table */}
           <div className="bg-white rounded-xl shadow-lg p-6">
             {loading ? (
               <p className="text-center text-gray-600">Loading...</p>
@@ -183,7 +171,10 @@ export default function AllOrdersPage() {
                           if (key === "Time") {
                             return (
                               <td key={key} className="px-4 py-3 whitespace-nowrap">
-                                {order.Time?.toDate?.().toLocaleString() ?? "N/A"}
+                                <span className="flex items-center">
+                                  {iconMap[key]}
+                                  {order.Time?.toDate?.().toLocaleString() ?? "N/A"}
+                                </span>
                               </td>
                             );
                           }
@@ -199,6 +190,7 @@ export default function AllOrdersPage() {
                                       rel="noopener noreferrer"
                                       className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition"
                                     >
+                                      {iconMap["Product-Links"]}
                                       Link-{i + 1}
                                     </a>
                                   ))}
@@ -208,7 +200,10 @@ export default function AllOrdersPage() {
                           }
                           return (
                             <td key={key} className="px-4 py-3 whitespace-nowrap">
-                              {order[key] ?? "N/A"}
+                              <span className="flex items-center">
+                                {iconMap[key]}
+                                {order[key] ?? "N/A"}
+                              </span>
                             </td>
                           );
                         })}
