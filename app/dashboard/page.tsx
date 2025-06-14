@@ -7,7 +7,7 @@ import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
 import WeeklySalesChart from "@/components/WeeklySalesChart";
 
-// React Icons
+// Icons
 import { FaUser, FaPhone, FaBoxOpen, FaDollarSign } from "react-icons/fa";
 
 export default function DashboardPage() {
@@ -46,7 +46,7 @@ export default function DashboardPage() {
 
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Latest Orders Card */}
+            {/* Latest Orders */}
             <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Latest 5 Orders
@@ -59,7 +59,7 @@ export default function DashboardPage() {
               ) : (
                 <div className="overflow-x-auto rounded-lg">
                   <table className="min-w-full border border-gray-200 text-sm text-gray-700">
-                    <thead className="bg-gray-100 text-[11px] uppercase text-gray-600">
+                    <thead className="bg-gray-100 text-xs uppercase text-gray-600">
                       <tr>
                         <th className="px-4 py-3 text-left">Customer</th>
                         <th className="px-4 py-3 text-left">Phone</th>
@@ -74,19 +74,19 @@ export default function DashboardPage() {
                           className="hover:bg-gray-50 transition-colors duration-150"
                         >
                           <td className="px-4 py-3 flex items-center gap-2">
-                            <FaUser className="text-indigo-500" />
+                            <FaUser className="text-indigo-500 w-4 h-4" />
                             {order["Customer-Name"]}
                           </td>
                           <td className="px-4 py-3 flex items-center gap-2">
-                            <FaPhone className="text-green-500" />
+                            <FaPhone className="text-green-500 w-4 h-4" />
                             {order["Phone-Number"]}
                           </td>
                           <td className="px-4 py-3 flex items-center gap-2">
-                            <FaBoxOpen className="text-yellow-500" />
+                            <FaBoxOpen className="text-yellow-500 w-4 h-4" />
                             {order["Product-Name"]}
                           </td>
                           <td className="px-4 py-3 flex items-center gap-2">
-                            <FaDollarSign className="text-emerald-500" />
+                            <FaDollarSign className="text-emerald-500 w-4 h-4" />
                             ${order["Product-Price"]}
                           </td>
                         </tr>
@@ -97,7 +97,7 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Total Orders Card */}
+            {/* Total Orders */}
             <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Total Orders
@@ -111,7 +111,7 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Total Revenue Card */}
+            {/* Total Revenue */}
             <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Total Revenue
@@ -125,7 +125,7 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Weekly Sales Chart */}
+            {/* Weekly Sales */}
             <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6 md:col-span-2">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Weekly Sales Overview
