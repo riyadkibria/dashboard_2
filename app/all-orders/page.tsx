@@ -5,7 +5,19 @@ import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import Sidebar from "@/components/Sidebar";
-import { LayoutList, LayoutGrid } from "lucide-react";
+import {
+  LayoutList,
+  LayoutGrid,
+  User,
+  Phone,
+  Package,
+  ShoppingCart,
+  DollarSign,
+  Truck,
+  Clock,
+  Link as LinkIcon,
+  Mail,
+} from "lucide-react";
 
 type UserRequest = {
   Address: string;
@@ -79,44 +91,34 @@ export default function AllOrdersPage() {
 
   const columns = minimal ? columnsMinimal : columnsFull;
 
-  // Sidebar widths in pixels
-  const SIDEBAR_WIDTH_EXPANDED = 256; // 64 * 4 = 256px
-  const SIDEBAR_WIDTH_COLLAPSED = 64; // 16 * 4 = 64px
+  const iconMap: Record<ColumnKey, React.ReactNode> = {
+    "Customer-Name": <User className="w-4 h-4 text-indigo-500 inline mr-1" />,
+    "User-Email": <Mail className="w-4 h-4 text-pink-500 inline mr-1" />,
+    "Phone-Number": <Phone className="w-4 h-4 text-green-500 inline mr-1" />,
+    "Product-Name": <Package className="w-4 h-4 text-yellow-500 inline mr-1" />,
+    Quantity: <ShoppingCart className="w-4 h-4 text-purple-500 inline mr-1" />,
+    "Product-Price": <DollarSign className="w-4 h-4 text-emerald-500 inline mr-1" />,
+    Courier: <Truck className="w-4 h-4 text-blue-500 inline mr-1" />,
+    Time: <Clock className="w-4 h-4 text-gray-500 inline mr-1" />,
+    "Product-Links": <LinkIcon className="w-4 h-4 text-indigo-400 inline mr-1" />,
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
+      {/* Sidebar with width toggle */}
       <div
-        className={`
-          fixed inset-y-0 left-0 z-30 bg-white shadow-lg transition-transform duration-300 ease-in-out
-          transform
-          lg:static lg:translate-x-0
-        `}
-        style={{
-          width: isCollapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED,
-          transform: isCollapsed ? "translateX(-100%)" : "translateX(0)",
-          // On large screens, no transform (sidebar visible or collapsed)
-          // We'll override transform with media query below
-        }}
+        className={`h-full transition-all duration-300 ease-in-out ${
+          isCollapsed ? "w-16" : "w-64"
+        } fixed lg:static z-30 bg-white shadow-lg`}
       >
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       </div>
 
-      {/* Overlay on mobile when sidebar open */}
-      {!isCollapsed && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
-          onClick={() => setIsCollapsed(true)}
-        />
-      )}
-
-      {/* Main content */}
+      {/* Main Content */}
       <main
-        className="flex-grow p-6 transition-all duration-300 ease-in-out"
+        className={`flex-grow p-6 transition-all duration-300 ease-in-out`}
         style={{
-          marginLeft: isCollapsed
-            ? SIDEBAR_WIDTH_COLLAPSED
-            : SIDEBAR_WIDTH_EXPANDED,
+          marginLeft: isCollapsed ? "4rem" : "16rem", // match sidebar width
         }}
       >
         <div className="max-w-7xl mx-auto space-y-6">
@@ -148,67 +150,73 @@ export default function AllOrdersPage() {
               <h2 className="text-xl font-semibold text-gray-700 mb-2">
                 Total Orders
               </h2>
-              <p className="text-4xl font-bold text-indigo-600">{orders.length}</p>
+              <p className="text-4xl font-bold text-indigo-600">
+                {orders.length}
+              </p>
             </div>
           )}
 
           {/* Orders Table */}
-          <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
+          <div className="bg-white rounded-xl shadow-lg p-6">
             {loading ? (
               <p className="text-center text-gray-600">Loading...</p>
             ) : orders.length === 0 ? (
               <p className="text-center text-gray-600">No orders found.</p>
             ) : (
-              <table className="min-w-full text-sm text-left text-gray-700">
-                <thead className="bg-gray-200 text-xs uppercase text-gray-700">
-                  <tr>
-                    {columns.map(({ key, label }) => (
-                      <th key={key} className="px-4 py-3 whitespace-nowrap">
-                        {label}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {orders.map((order, index) => (
-                    <tr key={index} className="hover:bg-gray-50 transition">
-                      {columns.map(({ key }) => {
-                        if (key === "Time") {
-                          return (
-                            <td key={key} className="px-4 py-3 whitespace-nowrap">
-                              {order.Time?.toDate?.().toLocaleString() ?? "N/A"}
-                            </td>
-                          );
-                        }
-                        if (key === "Product-Links") {
-                          return (
-                            <td key={key} className="px-4 py-3 whitespace-nowrap">
-                              <div className="flex flex-wrap gap-2">
-                                {order["Product-Links"]?.map((link, i) => (
-                                  <a
-                                    key={i}
-                                    href={link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition"
-                                  >
-                                    Link-{i + 1}
-                                  </a>
-                                ))}
-                              </div>
-                            </td>
-                          );
-                        }
-                        return (
-                          <td key={key} className="px-4 py-3 whitespace-nowrap">
-                            {order[key] ?? "N/A"}
-                          </td>
-                        );
-                      })}
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-sm text-left text-gray-700">
+                  <thead className="bg-gray-200 text-xs uppercase text-gray-700">
+                    <tr>
+                      {columns.map(({ key, label }) => (
+                        <th key={key} className="px-4 py-3 whitespace-nowrap">
+                          <span className="flex items-center">
+                            {iconMap[key]} {label}
+                          </span>
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {orders.map((order, index) => (
+                      <tr key={index} className="hover:bg-gray-50 transition">
+                        {columns.map(({ key }) => {
+                          if (key === "Time") {
+                            return (
+                              <td key={key} className="px-4 py-3 whitespace-nowrap">
+                                {order.Time?.toDate?.().toLocaleString() ?? "N/A"}
+                              </td>
+                            );
+                          }
+                          if (key === "Product-Links") {
+                            return (
+                              <td key={key} className="px-4 py-3 whitespace-nowrap">
+                                <div className="flex flex-wrap gap-2">
+                                  {order["Product-Links"]?.map((link, i) => (
+                                    <a
+                                      key={i}
+                                      href={link}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition"
+                                    >
+                                      Link-{i + 1}
+                                    </a>
+                                  ))}
+                                </div>
+                              </td>
+                            );
+                          }
+                          return (
+                            <td key={key} className="px-4 py-3 whitespace-nowrap">
+                              {order[key] ?? "N/A"}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         </div>
