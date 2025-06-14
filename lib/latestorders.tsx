@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getLatestOrders, UserRequest } from "@/lib/latestOrders";
+import { getLatestOrders, UserRequest } from "@/lib/latestorders";
 import {
   UserIcon,
   PhoneIcon,
