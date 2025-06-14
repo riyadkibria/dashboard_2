@@ -5,7 +5,7 @@ import Sidebar from "@/components/Sidebar";
 import { getLatestOrders } from "@/lib/getLatestorders";// ✅ Correct function name
 import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
-import { UserRequest } from "@/lib/latestorders";
+import { UserRequest } from "@/lib/getLatestorders";
 import WeeklySalesChart from "@/components/WeeklySalesChart";
 
 export default function DashboardPage() {
