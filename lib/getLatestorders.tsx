@@ -9,7 +9,7 @@ import {
   MapPinIcon,
 } from "lucide-react";
 
-export default function getlatestorders() {
+export default function getLatestorders() {
   const [orders, setOrders] = useState<UserRequest[]>([]);
 
   useEffect(() => {
