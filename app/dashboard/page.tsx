@@ -73,19 +73,19 @@ export default function DashboardPage() {
                           key={index}
                           className="hover:bg-gray-50 transition-colors duration-150"
                         >
-                          <td className="px-4 py-3 flex items-center gap-2">
+                          <td className="px-4 py-3 whitespace-nowrap flex items-center gap-2">
                             <FaUser className="text-indigo-500 w-4 h-4" />
                             <span>{order["Customer-Name"]}</span>
                           </td>
-                          <td className="px-4 py-3 flex items-center gap-2">
+                          <td className="px-4 py-3 whitespace-nowrap flex items-center gap-2">
                             <FaPhone className="text-green-500 w-4 h-4" />
                             <span>{order["Phone-Number"]}</span>
                           </td>
-                          <td className="px-4 py-3 flex items-center gap-2">
+                          <td className="px-4 py-3 whitespace-nowrap flex items-center gap-2">
                             <FaBoxOpen className="text-yellow-500 w-4 h-4" />
                             <span>{order["Product-Name"]}</span>
                           </td>
-                          <td className="px-4 py-3 flex items-center gap-2">
+                          <td className="px-4 py-3 whitespace-nowrap flex items-center gap-2">
                             <FaDollarSign className="text-emerald-500 w-4 h-4" />
                             <span>${order["Product-Price"]}</span>
                           </td>
@@ -105,9 +105,7 @@ export default function DashboardPage() {
               {loading ? (
                 <p className="text-sm text-gray-500">Loading...</p>
               ) : (
-                <p className="text-4xl font-bold text-indigo-600">
-                  {totalOrders}
-                </p>
+                <p className="text-4xl font-bold text-indigo-600">{totalOrders}</p>
               )}
             </div>
 
