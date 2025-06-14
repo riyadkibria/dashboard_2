@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { getLatestOrders } from "@/lib/getLatestorders"; // ✅ Correct function name
+import { getLatestOrders } from "@/lib/getLatestorders";// ✅ Correct function name
 import { getTotalOrders } from "@/lib/getTotalOrders";
 import { getTotalRevenue } from "@/lib/getTotalRevenue";
 import { UserRequest } from "@/lib/latestorders";
