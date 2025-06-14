@@ -156,7 +156,12 @@ export default function AllOrdersPage() {
                   <thead className="bg-gray-200 text-xs uppercase text-gray-700">
                     <tr>
                       {columns.map(({ key, label }) => (
-                        <th key={key} className="px-4 py-3 whitespace-nowrap">
+                        <th
+                          key={key}
+                          className={`px-4 py-3 whitespace-nowrap ${
+                            key === "Time" ? "max-w-[160px] w-40" : ""
+                          }`}
+                        >
                           <span className="flex items-center">
                             {iconMap[key]} {label}
                           </span>
@@ -170,7 +175,10 @@ export default function AllOrdersPage() {
                         {columns.map(({ key }) => {
                           if (key === "Time") {
                             return (
-                              <td key={key} className="px-4 py-3 whitespace-nowrap">
+                              <td
+                                key={key}
+                                className="px-4 py-3 whitespace-nowrap max-w-[160px] w-40"
+                              >
                                 <span className="flex items-center">
                                   {iconMap[key]}
                                   {order.Time?.toDate?.().toLocaleString() ?? "N/A"}
@@ -188,7 +196,7 @@ export default function AllOrdersPage() {
                                       href={link}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition"
+                                      className="bg-indigo-500 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition flex items-center gap-1"
                                     >
                                       {iconMap["Product-Links"]}
                                       Link-{i + 1}
@@ -219,3 +227,4 @@ export default function AllOrdersPage() {
     </div>
   );
 }
+
