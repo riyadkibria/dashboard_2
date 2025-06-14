@@ -79,40 +79,45 @@ export default function AllOrdersPage() {
 
   const columns = minimal ? columnsMinimal : columnsFull;
 
+  // Sidebar widths in pixels
+  const SIDEBAR_WIDTH_EXPANDED = 256; // 64 * 4 = 256px
+  const SIDEBAR_WIDTH_COLLAPSED = 64; // 16 * 4 = 64px
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
       <div
         className={`
-          fixed z-30 inset-y-0 left-0 transform
-          bg-white shadow-lg
-          transition-transform duration-300 ease-in-out
-          w-64
+          fixed inset-y-0 left-0 z-30 bg-white shadow-lg transition-transform duration-300 ease-in-out
+          transform
           lg:static lg:translate-x-0
-          ${isCollapsed ? "-translate-x-full lg:translate-x-0 lg:w-16" : "translate-x-0"}
         `}
+        style={{
+          width: isCollapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH_EXPANDED,
+          transform: isCollapsed ? "translateX(-100%)" : "translateX(0)",
+          // On large screens, no transform (sidebar visible or collapsed)
+          // We'll override transform with media query below
+        }}
       >
         <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       </div>
 
       {/* Overlay on mobile when sidebar open */}
-      {isCollapsed && (
+      {!isCollapsed && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
-          onClick={() => setIsCollapsed(false)}
+          onClick={() => setIsCollapsed(true)}
         />
       )}
 
-      {/* Main Content */}
+      {/* Main content */}
       <main
-        className={`
-          flex-grow p-6
-          transition-margin duration-300 ease-in-out
-          ml-0
-          lg:ml-64
-          ${isCollapsed ? "lg:ml-16" : ""}
-        `}
-        style={{ marginLeft: isCollapsed ? "4rem" : "16rem" }}
+        className="flex-grow p-6 transition-all duration-300 ease-in-out"
+        style={{
+          marginLeft: isCollapsed
+            ? SIDEBAR_WIDTH_COLLAPSED
+            : SIDEBAR_WIDTH_EXPANDED,
+        }}
       >
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header + Toggle View */}
