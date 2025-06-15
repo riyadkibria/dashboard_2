@@ -130,21 +130,23 @@ export default function AllOrdersPage() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
             <h1 className="text-xl font-bold text-gray-800">All Orders</h1>
 
-            <div className="flex gap-2 flex-wrap">
-              <div className="relative">
-                <Search className="w-4 h-4 absolute left-2 top-2.5 text-gray-400" />
+            <div className="flex gap-2 flex-wrap items-center">
+              {/* Modern Search Box */}
+              <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search by name, phone, product..."
-                  className="pl-8 pr-3 py-1 text-xs border border-gray-300 rounded shadow-sm w-64 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  placeholder="Search name, phone, or product..."
+                  className="w-full pl-10 pr-3 py-2 rounded-md border border-gray-300 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-gray-700"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
 
+              {/* Minimal toggle */}
               <button
                 onClick={() => setMinimal(!minimal)}
-                className="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 px-3 py-1 rounded shadow text-xs"
+                className="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 px-3 py-2 rounded-md shadow text-xs"
               >
                 {minimal ? (
                   <>
@@ -248,3 +250,4 @@ export default function AllOrdersPage() {
     </div>
   );
 }
+
