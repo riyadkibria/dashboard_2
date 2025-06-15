@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -118,9 +118,9 @@ export default function AllOrdersPage() {
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       <main
-        className={p-4 transition-all duration-300 w-full ${
+        className={`p-4 transition-all duration-300 w-full ${
           isCollapsed ? "ml-16 max-w-full" : "ml-64 max-w-[calc(100vw-16rem)]"
-        }}
+        }`}
       >
         <div className="max-w-full mx-auto space-y-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
