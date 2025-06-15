@@ -104,7 +104,7 @@ export default function AllOrdersPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 overflow-x-hidden">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
       <main
@@ -112,7 +112,7 @@ export default function AllOrdersPage() {
           isCollapsed ? "ml-16" : "ml-64"
         }`}
       >
-        <div className="max-w-7xl mx-auto space-y-4">
+        <div className="max-w-full space-y-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-800">All Orders</h1>
 
@@ -137,82 +137,91 @@ export default function AllOrdersPage() {
           {!loading && (
             <div className="bg-white shadow rounded p-4 w-full max-w-sm text-sm">
               <h2 className="font-semibold text-gray-700 mb-1">Total Orders</h2>
-              <p className="text-3xl font-bold text-indigo-600">
-                {orders.length}
-              </p>
+              <p className="text-3xl font-bold text-indigo-600">{orders.length}</p>
             </div>
           )}
 
-          <div className="bg-white rounded shadow p-4 overflow-x-auto">
+          <div className="bg-white rounded shadow p-4 w-full">
             {loading ? (
               <p className="text-center text-gray-500 text-base">Loading...</p>
             ) : orders.length === 0 ? (
               <p className="text-center text-gray-500 text-base">No orders found.</p>
             ) : (
-              <table className="text-sm text-left text-gray-700 min-w-[800px]">
-                <thead className="bg-gray-200 text-gray-700">
-                  <tr>
-                    {columns.map(({ key, label }) => (
-                      <th
-                        key={key}
-                        className="px-3 py-2 whitespace-nowrap font-semibold"
-                      >
-                        {label}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {orders.map((order, index) => (
-                    <tr key={index} className="hover:bg-gray-50 transition">
-                      {columns.map(({ key }) => {
-                        if (key === "Time") {
-                          const dateStr =
-                            order.Time?.toDate?.().toISOString().split("T")[0] ?? "N/A";
+              <div className="overflow-hidden">
+                <table className="w-full table-auto text-sm text-left text-gray-700">
+                  <thead className="bg-gray-200 text-gray-700">
+                    <tr>
+                      {columns.map(({ key, label }) => (
+                        <th
+                          key={key}
+                          className="px-3 py-2 whitespace-nowrap font-semibold"
+                        >
+                          {label}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {orders.map((order, index) => (
+                      <tr key={index} className="hover:bg-gray-50 transition">
+                        {columns.map(({ key }) => {
+                          if (key === "Time") {
+                            const dateStr =
+                              order.Time?.toDate?.().toISOString().split("T")[0] ?? "N/A";
+                            return (
+                              <td
+                                key={key}
+                                className="px-3 py-2 whitespace-nowrap break-words max-w-[150px]"
+                              >
+                                <span className="flex items-center gap-1">
+                                  {iconMap[key]}
+                                  {dateStr}
+                                </span>
+                              </td>
+                            );
+                          }
+
+                          if (key === "Product-Links") {
+                            return (
+                              <td
+                                key={key}
+                                className="px-3 py-2 whitespace-normal break-words"
+                              >
+                                <div className="flex flex-wrap gap-1 max-w-[250px]">
+                                  {order["Product-Links"]?.map((link, i) => (
+                                    <a
+                                      key={i}
+                                      href={link}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="bg-indigo-500 text-white text-[11px] px-2 py-0.5 rounded-full hover:bg-indigo-600 transition flex items-center gap-1"
+                                    >
+                                      {iconMap["Product-Links"]}
+                                      Link-{i + 1}
+                                    </a>
+                                  ))}
+                                </div>
+                              </td>
+                            );
+                          }
+
                           return (
-                            <td key={key} className="px-3 py-2 whitespace-nowrap">
-                              <span className="flex items-center gap-1">
+                            <td
+                              key={key}
+                              className="px-3 py-2 whitespace-normal break-words max-w-[180px]"
+                            >
+                              <span className="flex items-start gap-1">
                                 {iconMap[key]}
-                                {dateStr}
+                                {order[key] ?? "N/A"}
                               </span>
                             </td>
                           );
-                        }
-
-                        if (key === "Product-Links") {
-                          return (
-                            <td key={key} className="px-3 py-2 whitespace-nowrap">
-                              <div className="flex flex-wrap gap-1">
-                                {order["Product-Links"]?.map((link, i) => (
-                                  <a
-                                    key={i}
-                                    href={link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="bg-indigo-500 text-white text-[11px] px-2 py-0.5 rounded-full hover:bg-indigo-600 transition flex items-center gap-1"
-                                  >
-                                    {iconMap["Product-Links"]}
-                                    Link-{i + 1}
-                                  </a>
-                                ))}
-                              </div>
-                            </td>
-                          );
-                        }
-
-                        return (
-                          <td key={key} className="px-3 py-2 whitespace-nowrap">
-                            <span className="flex items-center gap-1">
-                              {iconMap[key]}
-                              {order[key] ?? "N/A"}
-                            </span>
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         </div>
@@ -220,3 +229,4 @@ export default function AllOrdersPage() {
     </div>
   );
 }
+
