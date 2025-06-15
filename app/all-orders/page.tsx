@@ -114,11 +114,11 @@ export default function AllOrdersPage() {
       >
         <div className="max-w-7xl mx-auto space-y-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-gray-800">All Orders</h1>
+            <h1 className="text-2xl font-bold text-gray-800">All Orders</h1>
 
             <button
               onClick={() => setMinimal(!minimal)}
-              className="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 px-3 py-1 rounded shadow text-xs"
+              className="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 px-3 py-1 rounded shadow text-sm"
             >
               {minimal ? (
                 <>
@@ -135,9 +135,9 @@ export default function AllOrdersPage() {
           </div>
 
           {!loading && (
-            <div className="bg-white shadow rounded p-4 w-full max-w-sm text-xs">
+            <div className="bg-white shadow rounded p-4 w-full max-w-sm text-sm">
               <h2 className="font-semibold text-gray-700 mb-1">Total Orders</h2>
-              <p className="text-2xl font-bold text-indigo-600">
+              <p className="text-3xl font-bold text-indigo-600">
                 {orders.length}
               </p>
             </div>
@@ -145,11 +145,11 @@ export default function AllOrdersPage() {
 
           <div className="bg-white rounded shadow p-4 overflow-x-auto">
             {loading ? (
-              <p className="text-center text-gray-500 text-sm">Loading...</p>
+              <p className="text-center text-gray-500 text-base">Loading...</p>
             ) : orders.length === 0 ? (
-              <p className="text-center text-gray-500 text-sm">No orders found.</p>
+              <p className="text-center text-gray-500 text-base">No orders found.</p>
             ) : (
-              <table className="text-xs text-left text-gray-700 min-w-[800px]">
+              <table className="text-sm text-left text-gray-700 min-w-[800px]">
                 <thead className="bg-gray-200 text-gray-700">
                   <tr>
                     {columns.map(({ key, label }) => (
@@ -189,7 +189,7 @@ export default function AllOrdersPage() {
                                     href={link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-indigo-500 text-white text-[10px] px-2 py-0.5 rounded-full hover:bg-indigo-600 transition flex items-center gap-1"
+                                    className="bg-indigo-500 text-white text-[11px] px-2 py-0.5 rounded-full hover:bg-indigo-600 transition flex items-center gap-1"
                                   >
                                     {iconMap["Product-Links"]}
                                     Link-{i + 1}
@@ -220,4 +220,3 @@ export default function AllOrdersPage() {
     </div>
   );
 }
-
