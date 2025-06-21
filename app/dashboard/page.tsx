@@ -47,7 +47,7 @@ export default function DashboardPage() {
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Latest Orders */}
-            <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6">
+            <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6 w-full">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Latest 5 Orders
               </h2>
@@ -57,43 +57,41 @@ export default function DashboardPage() {
               ) : orders.length === 0 ? (
                 <p className="text-sm text-gray-500">No recent orders.</p>
               ) : (
-                <div className="overflow-x-auto rounded-lg">
-                  <table className="min-w-full border border-gray-200 text-sm text-gray-700">
-                    <thead className="bg-gray-100 text-xs uppercase text-gray-600">
-                      <tr>
-                        <th className="px-4 py-3 text-left">Customer</th>
-                        <th className="px-4 py-3 text-left">Phone</th>
-                        <th className="px-4 py-3 text-left">Product</th>
-                        <th className="px-4 py-3 text-left">Price</th>
+                <table className="w-full border border-gray-200 text-sm text-gray-700 table-fixed">
+                  <thead className="bg-gray-100 text-xs uppercase text-gray-600">
+                    <tr>
+                      <th className="px-6 py-3 text-left w-1/4">Customer</th>
+                      <th className="px-6 py-3 text-left w-1/4">Phone</th>
+                      <th className="px-6 py-3 text-left w-1/4">Product</th>
+                      <th className="px-6 py-3 text-left w-1/4">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 bg-white">
+                    {orders.map((order, index) => (
+                      <tr
+                        key={index}
+                        className="hover:bg-gray-50 transition-colors duration-150"
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                          <FaUser className="inline-block text-indigo-500 mr-2" />
+                          {order["Customer-Name"]}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                          <FaPhone className="inline-block text-green-500 mr-2" />
+                          {order["Phone-Number"]}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                          <FaBoxOpen className="inline-block text-yellow-500 mr-2" />
+                          {order["Product-Name"]}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                          <FaDollarSign className="inline-block text-emerald-500 mr-2" />
+                          ${order["Product-Price"]}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 bg-white">
-                      {orders.map((order, index) => (
-                        <tr
-                          key={index}
-                          className="hover:bg-gray-50 transition-colors duration-150"
-                        >
-                          <td className="px-4 py-3 whitespace-nowrap text-gray-800">
-                            <FaUser className="inline-block text-indigo-500 mr-2" />
-                            {order["Customer-Name"]}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-gray-800">
-                            <FaPhone className="inline-block text-green-500 mr-2" />
-                            {order["Phone-Number"]}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-gray-800">
-                            <FaBoxOpen className="inline-block text-yellow-500 mr-2" />
-                            {order["Product-Name"]}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-gray-800">
-                            <FaDollarSign className="inline-block text-emerald-500 mr-2" />
-                            ${order["Product-Price"]}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               )}
             </div>
 
