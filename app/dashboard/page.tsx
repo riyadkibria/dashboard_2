@@ -44,69 +44,67 @@ export default function DashboardPage() {
             Admin Dashboard
           </h1>
 
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Latest Orders */}
-            <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6 w-full max-w-6xl mx-auto">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Latest 5 Orders
-              </h2>
+          {/* Total Orders */}
+          <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6 mb-6 w-full">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Total Orders</h2>
+            {loading ? (
+              <p className="text-sm text-gray-500">Loading...</p>
+            ) : (
+              <p className="text-4xl font-bold text-indigo-600">{totalOrders}</p>
+            )}
+          </div>
 
-              {loading ? (
-                <p className="text-sm text-gray-500">Loading...</p>
-              ) : orders.length === 0 ? (
-                <p className="text-sm text-gray-500">No recent orders.</p>
-              ) : (
-                <table className="w-full border border-gray-200 text-sm text-gray-700 table-fixed">
-                  <thead className="bg-gray-100 text-xs uppercase text-gray-600">
-                    <tr>
-                      <th className="px-8 py-3 text-left w-1/4">Customer</th>
-                      <th className="px-8 py-3 text-left w-1/4">Phone</th>
-                      <th className="px-8 py-3 text-left w-1/4">Product</th>
-                      <th className="px-8 py-3 text-left w-1/4">Price</th>
+          {/* Latest Orders Table */}
+          <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6 w-full mb-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              Latest 5 Orders
+            </h2>
+
+            {loading ? (
+              <p className="text-sm text-gray-500">Loading...</p>
+            ) : orders.length === 0 ? (
+              <p className="text-sm text-gray-500">No recent orders.</p>
+            ) : (
+              <table className="w-full border border-gray-200 text-sm text-gray-700 table-fixed">
+                <thead className="bg-gray-100 text-xs uppercase text-gray-600">
+                  <tr>
+                    <th className="px-6 py-3 text-left w-1/4">Customer</th>
+                    <th className="px-6 py-3 text-left w-1/4">Phone</th>
+                    <th className="px-6 py-3 text-left w-1/4">Product</th>
+                    <th className="px-6 py-3 text-left w-1/4">Price</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 bg-white">
+                  {orders.map((order, index) => (
+                    <tr
+                      key={index}
+                      className="hover:bg-gray-50 transition-colors duration-150"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                        <FaUser className="inline-block text-indigo-500 mr-2" />
+                        {order["Customer-Name"]}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                        <FaPhone className="inline-block text-green-500 mr-2" />
+                        {order["Phone-Number"]}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                        <FaBoxOpen className="inline-block text-yellow-500 mr-2" />
+                        {order["Product-Name"]}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-800">
+                        <FaDollarSign className="inline-block text-emerald-500 mr-2" />
+                        ${order["Product-Price"]}
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200 bg-white">
-                    {orders.map((order, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-gray-50 transition-colors duration-150"
-                      >
-                        <td className="px-8 py-4 whitespace-nowrap text-gray-800">
-                          <FaUser className="inline-block text-indigo-500 mr-2" />
-                          {order["Customer-Name"]}
-                        </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-gray-800">
-                          <FaPhone className="inline-block text-green-500 mr-2" />
-                          {order["Phone-Number"]}
-                        </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-gray-800">
-                          <FaBoxOpen className="inline-block text-yellow-500 mr-2" />
-                          {order["Product-Name"]}
-                        </td>
-                        <td className="px-8 py-4 whitespace-nowrap text-gray-800">
-                          <FaDollarSign className="inline-block text-emerald-500 mr-2" />
-                          ${order["Product-Price"]}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
 
-            {/* Total Orders */}
-            <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Total Orders
-              </h2>
-              {loading ? (
-                <p className="text-sm text-gray-500">Loading...</p>
-              ) : (
-                <p className="text-4xl font-bold text-indigo-600">{totalOrders}</p>
-              )}
-            </div>
-
+          {/* Total Revenue & Weekly Sales Chart */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Total Revenue */}
             <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
@@ -122,7 +120,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Weekly Sales */}
-            <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6 md:col-span-2">
+            <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6">
               <h2 className="text-lg font-semibold text-gray-800 mb-4">
                 Weekly Sales Overview
               </h2>
