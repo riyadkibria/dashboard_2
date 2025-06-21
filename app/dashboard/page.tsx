@@ -73,21 +73,21 @@ export default function DashboardPage() {
                           key={index}
                           className="hover:bg-gray-50 transition-colors duration-150"
                         >
-                          <td className="px-4 py-3 whitespace-nowrap flex items-center gap-2">
-                            <FaUser className="text-indigo-500 w-4 h-4" />
-                            <span>{order["Customer-Name"]}</span>
+                          <td className="px-4 py-3 whitespace-nowrap text-gray-800">
+                            <FaUser className="inline-block text-indigo-500 mr-2" />
+                            {order["Customer-Name"]}
                           </td>
-                          <td className="px-4 py-3 whitespace-nowrap flex items-center gap-2">
-                            <FaPhone className="text-green-500 w-4 h-4" />
-                            <span>{order["Phone-Number"]}</span>
+                          <td className="px-4 py-3 whitespace-nowrap text-gray-800">
+                            <FaPhone className="inline-block text-green-500 mr-2" />
+                            {order["Phone-Number"]}
                           </td>
-                          <td className="px-4 py-3 whitespace-nowrap flex items-center gap-2">
-                            <FaBoxOpen className="text-yellow-500 w-4 h-4" />
-                            <span>{order["Product-Name"]}</span>
+                          <td className="px-4 py-3 whitespace-nowrap text-gray-800">
+                            <FaBoxOpen className="inline-block text-yellow-500 mr-2" />
+                            {order["Product-Name"]}
                           </td>
-                          <td className="px-4 py-3 whitespace-nowrap flex items-center gap-2">
-                            <FaDollarSign className="text-emerald-500 w-4 h-4" />
-                            <span>${order["Product-Price"]}</span>
+                          <td className="px-4 py-3 whitespace-nowrap text-gray-800">
+                            <FaDollarSign className="inline-block text-emerald-500 mr-2" />
+                            ${order["Product-Price"]}
                           </td>
                         </tr>
                       ))}
@@ -136,4 +136,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
