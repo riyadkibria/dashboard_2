@@ -103,29 +103,26 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* Total Revenue & Weekly Sales Chart */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Total Revenue */}
-            <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Total Revenue
-              </h2>
-              {loading ? (
-                <p className="text-sm text-gray-500">Loading...</p>
-              ) : (
-                <p className="text-4xl font-bold text-green-600">
-                  ${totalRevenue.toFixed(2)}
-                </p>
-              )}
-            </div>
+          {/* Total Revenue */}
+          <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6 w-full mb-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              Total Revenue
+            </h2>
+            {loading ? (
+              <p className="text-sm text-gray-500">Loading...</p>
+            ) : (
+              <p className="text-4xl font-bold text-green-600">
+                ${totalRevenue.toFixed(2)}
+              </p>
+            )}
+          </div>
 
-            {/* Weekly Sales */}
-            <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Weekly Sales Overview
-              </h2>
-              <WeeklySalesChart />
-            </div>
+          {/* Weekly Sales (Full Width at Bottom) */}
+          <div className="bg-white border border-gray-200 shadow-xl rounded-xl p-6 w-full">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              Weekly Sales Overview
+            </h2>
+            <WeeklySalesChart />
           </div>
         </div>
       </main>
