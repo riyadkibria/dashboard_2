@@ -61,7 +61,10 @@ export default function DashboardPage() {
                   <table className="min-w-full border border-gray-200 text-sm text-gray-700">
                     <thead className="bg-gray-100 text-xs uppercase text-gray-600">
                       <tr>
-                        
+                        <th className="px-4 py-3 text-left">Customer</th>
+                        <th className="px-4 py-3 text-left">Phone</th>
+                        <th className="px-4 py-3 text-left">Product</th>
+                        <th className="px-4 py-3 text-left">Price</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
@@ -133,3 +136,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
