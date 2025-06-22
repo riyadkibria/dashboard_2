@@ -118,5 +118,29 @@
 .social-icon {
   @apply text-gray-400 hover:text-white text-lg transition-colors duration-200;
 }
+/* Newsletter Section */
+.newsletter-section {
+  @apply bg-white text-center px-6 py-16;
+}
+
+.newsletter-title {
+  @apply text-2xl sm:text-3xl font-bold text-gray-800 mb-2;
+}
+
+.newsletter-subtext {
+  @apply text-gray-600 text-sm sm:text-base mb-6;
+}
+
+.newsletter-form {
+  @apply flex flex-col sm:flex-row gap-4 justify-center max-w-xl mx-auto;
+}
+
+.newsletter-input {
+  @apply px-4 py-3 border border-gray-300 rounded-md w-full sm:w-2/3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition;
+}
+
+.newsletter-button {
+  @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-200;
+}
 
 }
