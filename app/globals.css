@@ -47,4 +47,25 @@
   .nav-link {
     @apply hover:text-blue-600 transition-colors duration-200;
   }
+  /* Hero Section */
+  .hero-section {
+    @apply flex flex-col items-center justify-center text-center px-4 py-20 gap-4;
+  }
+
+  .hero-title {
+    @apply text-4xl sm:text-5xl font-extrabold text-gray-900;
+  }
+
+  .hero-subtext {
+    @apply text-lg sm:text-xl text-gray-600;
+  }
+
+  .hero-button {
+    @apply mt-6 px-8 py-3 
+      bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 
+      text-white font-semibold 
+      rounded-full shadow-lg 
+      transition-all duration-300 ease-in-out 
+      hover:scale-105 hover:shadow-xl;
+  }
 }
