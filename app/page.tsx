@@ -9,6 +9,13 @@ export default function Home() {
           <li><a href="#" className="nav-link">Contact</a></li>
         </ul>
       </nav>
+
+      {/* Hero Section */}
+      <section className="hero-section">
+        <h1 className="hero-title">Welcome to MySite</h1>
+        <p className="hero-subtext">We build awesome web experiences.</p>
+        <button className="hero-button">Get Started</button>
+      </section>
     </div>
   );
 }
