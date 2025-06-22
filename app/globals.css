@@ -111,5 +111,12 @@
 .footer-link {
   @apply hover:text-white transition-colors duration-200;
 }
+.footer-social {
+  @apply flex gap-4 mt-4 sm:mt-0;
+}
+
+.social-icon {
+  @apply text-gray-400 hover:text-white text-lg transition-colors duration-200;
+}
 
 }
