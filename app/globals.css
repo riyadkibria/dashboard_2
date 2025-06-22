@@ -23,5 +23,28 @@
     transition-all duration-300 ease-in-out 
     hover:scale-105 hover:shadow-xl 
 }
+/* Page layout */
+  .page-wrapper {
+    @apply min-h-screen flex flex-col bg-white text-gray-800 font-sans;
+  }
 
+  /* Navbar container */
+  .main-navbar {
+    @apply flex justify-between items-center px-8 py-4 shadow-md bg-white;
+  }
+
+  /* Logo */
+  .site-logo {
+    @apply text-xl font-bold text-blue-600;
+  }
+
+  /* Nav link container */
+  .nav-links {
+    @apply flex gap-6 text-sm font-medium text-gray-700;
+  }
+
+  /* Individual nav link */
+  .nav-link {
+    @apply hover:text-blue-600 transition-colors duration-200;
+  }
 }
