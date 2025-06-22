@@ -34,6 +34,16 @@ export default function Home() {
         <p className="hero-subtext">We build awesome web experiences.</p>
         <button className="hero-button">Get Started</button>
       </section>
+      <footer className="footer-section">
+  <div className="footer-content">
+    <p className="footer-text">© 2025 MySite. All rights reserved.</p>
+    <ul className="footer-links">
+      <li><a href="#" className="footer-link">Privacy Policy</a></li>
+      <li><a href="#" className="footer-link">Terms of Service</a></li>
+      <li><a href="#" className="footer-link">Contact</a></li>
+    </ul>
+  </div>
+</footer>
     </div>
   );
 }
