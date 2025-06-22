@@ -38,6 +38,22 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <section className="newsletter-section">
+  <h2 className="newsletter-title">Stay Updated</h2>
+  <p className="newsletter-subtext">Subscribe to our newsletter to get the latest updates.</p>
+  <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
+    <input
+      type="email"
+      placeholder="Enter your email"
+      className="newsletter-input"
+      required
+    />
+    <button type="submit" className="newsletter-button">
+      Subscribe
+    </button>
+  </form>
+</section>
+
 
       {/* Footer Section */}
       <footer className="footer-section">
