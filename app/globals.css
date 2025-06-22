@@ -92,5 +92,24 @@
 .feature-description {
   @apply text-gray-600 text-sm;
 }
+.footer-section {
+  @apply bg-gray-900 text-gray-300 py-8 mt-auto;
+}
+
+.footer-content {
+  @apply max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between px-6;
+}
+
+.footer-text {
+  @apply mb-4 sm:mb-0 text-sm;
+}
+
+.footer-links {
+  @apply flex gap-6 text-sm;
+}
+
+.footer-link {
+  @apply hover:text-white transition-colors duration-200;
+}
 
 }
