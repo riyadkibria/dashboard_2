@@ -1,3 +1,4 @@
+"use client";
 import { FaFacebookF, FaTwitter, FaGithub } from "react-icons/fa";
 
 export default function Home() {
@@ -13,47 +14,51 @@ export default function Home() {
         </ul>
       </nav>
 
-      {/* Hero Section */}
-      <section className="hero-section">
-        <h1 className="hero-title">Welcome to MySite</h1>
-        <p className="hero-subtext">We build awesome web experiences.</p>
-        <button className="hero-button">Get Started</button>
-      </section>
+      {/* Main Content */}
+      <main>
+        {/* Hero Section */}
+        <section className="hero-section">
+          <h1 className="hero-title">Welcome to MySite</h1>
+          <p className="hero-subtext">We build awesome web experiences.</p>
+          <button className="hero-button">Get Started</button>
+        </section>
 
-      {/* Features Section */}
-      <section className="features-section">
-        <h2 className="features-title">Why Choose Us</h2>
-        <div className="features-grid">
-          <div className="feature-card">
-            <h3 className="feature-heading">Fast</h3>
-            <p className="feature-description">Quick load times and lag-free interaction.</p>
+        {/* Features Section */}
+        <section className="features-section">
+          <h2 className="features-title">Why Choose Us</h2>
+          <div className="features-grid">
+            <div className="feature-card">
+              <h3 className="feature-heading">Fast</h3>
+              <p className="feature-description">Quick load times and lag-free interaction.</p>
+            </div>
+            <div className="feature-card">
+              <h3 className="feature-heading">Responsive</h3>
+              <p className="feature-description">Looks great on all screen sizes.</p>
+            </div>
+            <div className="feature-card">
+              <h3 className="feature-heading">Modern</h3>
+              <p className="feature-description">Built with the latest technologies.</p>
+            </div>
           </div>
-          <div className="feature-card">
-            <h3 className="feature-heading">Responsive</h3>
-            <p className="feature-description">Looks great on all screen sizes.</p>
-          </div>
-          <div className="feature-card">
-            <h3 className="feature-heading">Modern</h3>
-            <p className="feature-description">Built with the latest technologies.</p>
-          </div>
-        </div>
-      </section>
-      <section className="newsletter-section">
-  <h2 className="newsletter-title">Stay Updated</h2>
-  <p className="newsletter-subtext">Subscribe to our newsletter to get the latest updates.</p>
-  <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
-    <input
-      type="email"
-      placeholder="Enter your email"
-      className="newsletter-input"
-      required
-    />
-    <button type="submit" className="newsletter-button">
-      Subscribe
-    </button>
-  </form>
-</section>
+        </section>
 
+        {/* Newsletter Section */}
+        <section className="newsletter-section">
+          <h2 className="newsletter-title">Stay Updated</h2>
+          <p className="newsletter-subtext">Subscribe to our newsletter to get the latest updates.</p>
+          <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="newsletter-input"
+              required
+            />
+            <button type="submit" className="newsletter-button">
+              Subscribe
+            </button>
+          </form>
+        </section>
+      </main>
 
       {/* Footer Section */}
       <footer className="footer-section">
@@ -65,9 +70,30 @@ export default function Home() {
             <li><a href="#" className="footer-link">Contact</a></li>
           </ul>
           <div className="footer-social">
-            <a href="https://facebook.com" className="social-icon" target="_blank"><FaFacebookF /></a>
-            <a href="https://twitter.com" className="social-icon" target="_blank"><FaTwitter /></a>
-            <a href="https://github.com" className="social-icon" target="_blank"><FaGithub /></a>
+            <a
+              href="https://facebook.com"
+              className="social-icon"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaFacebookF />
+            </a>
+            <a
+              href="https://twitter.com"
+              className="social-icon"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaTwitter />
+            </a>
+            <a
+              href="https://github.com"
+              className="social-icon"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaGithub />
+            </a>
           </div>
         </div>
       </footer>
