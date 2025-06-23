@@ -154,39 +154,39 @@
   @apply text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed;
 }
 .pricing-section {
-  @apply py-16 px-4 text-center bg-gray-50;
+  @apply py-20 px-6 bg-gradient-to-b from-gray-50 to-white text-center;
 }
 
 .pricing-title {
-  @apply text-3xl font-bold text-gray-800 mb-10;
+  @apply text-4xl sm:text-5xl font-extrabold text-gray-800 mb-14 tracking-tight;
 }
 
 .pricing-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto;
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto;
 }
 
 .pricing-card {
-  @apply bg-white p-8 rounded-xl shadow-md border border-gray-200;
+  @apply bg-white rounded-2xl border border-gray-200 shadow-md p-8 flex flex-col justify-between hover:shadow-lg transition-shadow duration-300;
 }
 
 .pricing-card.featured {
-  @apply border-2 border-indigo-500 shadow-lg;
+  @apply border-2 border-indigo-600 shadow-xl scale-105 z-10;
 }
 
 .pricing-name {
-  @apply text-xl font-semibold mb-4 text-gray-700;
+  @apply text-2xl font-semibold text-gray-800 mb-3;
 }
 
 .pricing-price {
-  @apply text-4xl font-bold text-indigo-600 mb-6;
+  @apply text-5xl font-bold text-indigo-600 mb-6;
 }
 
 .pricing-features {
-  @apply text-gray-600 mb-6 space-y-2;
+  @apply text-gray-600 mb-8 space-y-3 text-sm leading-relaxed;
 }
 
 .pricing-button {
-  @apply bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition-colors;
+  @apply mt-auto inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-6 py-3 rounded-full transition-all duration-200;
 }
 
 }
