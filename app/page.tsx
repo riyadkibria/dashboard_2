@@ -5,10 +5,11 @@ import {
   FaFacebookF,
   FaTwitter,
   FaGithub,
-  FaCheckCircle,
   FaBars,
   FaTimes,
 } from "react-icons/fa";
+
+// Optional: import PricingSection from "@/components/PricingSection";
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -33,6 +34,7 @@ export default function Home() {
         </button>
       </nav>
 
+      {/* Mobile Menu */}
       {menuOpen && (
         <ul className="md:hidden bg-white/90 backdrop-blur-md shadow-md px-6 py-4 space-y-4 text-gray-700 font-medium fixed top-[72px] left-0 right-0 z-40">
           <li><a href="#" className="block hover:text-indigo-600">Home</a></li>
@@ -101,65 +103,8 @@ export default function Home() {
           </form>
         </section>
 
-        {/* ✅ Sleek Pricing Section */}
-        <section className="bg-white px-6 py-16">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">Our Plans</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              {
-                name: "Basic",
-                price: "$19/mo",
-                features: ["1 Website", "Basic Support", "500MB Storage"],
-                badge: "",
-                gradient: "bg-white",
-              },
-              {
-                name: "Pro",
-                price: "$49/mo",
-                features: ["10 Websites", "Priority Support", "5GB Storage"],
-                badge: "Most Popular",
-                gradient: "bg-gradient-to-br from-indigo-600 to-purple-600 text-white",
-              },
-              {
-                name: "Enterprise",
-                price: "$99/mo",
-                features: ["Unlimited Sites", "24/7 Support", "50GB Storage"],
-                badge: "",
-                gradient: "bg-white",
-              },
-            ].map((plan, i) => (
-              <div
-                key={i}
-                className={`relative p-8 rounded-2xl shadow-lg transform transition hover:scale-105 ${plan.gradient}`}
-              >
-                {plan.badge && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-sm font-semibold text-black px-4 py-1 rounded-full shadow">
-                    ⭐ {plan.badge}
-                  </div>
-                )}
-                <h3 className="text-2xl font-bold mb-2 text-center">{plan.name}</h3>
-                <p className="text-center text-3xl font-bold mb-6">{plan.price}</p>
-                <ul className="space-y-3 mb-6">
-                  {plan.features.map((feature, j) => (
-                    <li key={j} className="flex items-center space-x-2">
-                      <FaCheckCircle className="text-green-400" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button
-                  className={`w-full px-4 py-2 rounded-lg font-semibold ${
-                    plan.gradient.includes("gradient")
-                      ? "bg-white text-indigo-600 hover:bg-gray-100"
-                      : "bg-indigo-600 text-white hover:bg-indigo-700"
-                  } transition`}
-                >
-                  Choose Plan
-                </button>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Pricing Section Removed */}
+        {/* <PricingSection /> */}
       </main>
 
       {/* Footer */}
