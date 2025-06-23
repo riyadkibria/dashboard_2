@@ -153,5 +153,40 @@
 .intro-paragraph {
   @apply text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed;
 }
+.pricing-section {
+  @apply py-16 px-4 text-center bg-gray-50;
+}
+
+.pricing-title {
+  @apply text-3xl font-bold text-gray-800 mb-10;
+}
+
+.pricing-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto;
+}
+
+.pricing-card {
+  @apply bg-white p-8 rounded-xl shadow-md border border-gray-200;
+}
+
+.pricing-card.featured {
+  @apply border-2 border-indigo-500 shadow-lg;
+}
+
+.pricing-name {
+  @apply text-xl font-semibold mb-4 text-gray-700;
+}
+
+.pricing-price {
+  @apply text-4xl font-bold text-indigo-600 mb-6;
+}
+
+.pricing-features {
+  @apply text-gray-600 mb-6 space-y-2;
+}
+
+.pricing-button {
+  @apply bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition-colors;
+}
 
 }
