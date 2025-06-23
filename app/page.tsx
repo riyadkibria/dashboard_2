@@ -1,5 +1,5 @@
 "use client";
-import { FaFacebookF, FaTwitter, FaGithub } from "react-icons/fa";
+import { FaFacebookF, FaTwitter, FaGithub, FaCheckCircle } from "react-icons/fa";
 
 export default function Home() {
   return (
@@ -23,7 +23,7 @@ export default function Home() {
           <button className="hero-button">Get Started</button>
         </section>
 
-        {/* 🔥 New Intro Section */}
+        {/* Intro Section */}
         <section className="intro-section">
           <h2 className="intro-title">Who We Are</h2>
           <p className="intro-paragraph">
@@ -69,48 +69,48 @@ export default function Home() {
             </button>
           </form>
         </section>
+
         {/* Pricing Section */}
-<section className="pricing-section">
-  <h2 className="pricing-title">Our Plans</h2>
-  <div className="pricing-grid">
-    {/* Basic Plan */}
-    <div className="pricing-card">
-      <h3 className="pricing-name">Basic</h3>
-      <p className="pricing-price">$19<span className="text-sm text-gray-500">/mo</span></p>
-      <ul className="pricing-features">
-        <li>1 Website</li>
-        <li>Basic Support</li>
-        <li>500MB Storage</li>
-      </ul>
-      <button className="pricing-button">Choose Plan</button>
-    </div>
+        <section className="pricing-section">
+          <h2 className="pricing-title">Our Plans</h2>
+          <div className="pricing-grid">
+            {/* Basic Plan */}
+            <div className="pricing-card">
+              <h3 className="pricing-name">Basic</h3>
+              <p className="pricing-price">$19<span className="text-sm text-gray-500">/mo</span></p>
+              <ul className="pricing-features">
+                <li><FaCheckCircle className="icon" /> 1 Website</li>
+                <li><FaCheckCircle className="icon" /> Basic Support</li>
+                <li><FaCheckCircle className="icon" /> 500MB Storage</li>
+              </ul>
+              <button className="pricing-button">Choose Plan</button>
+            </div>
 
-    {/* Pro Plan */}
-    <div className="pricing-card featured">
-      <h3 className="pricing-name">Pro</h3>
-      <p className="pricing-price">$49<span className="text-sm text-gray-500">/mo</span></p>
-      <ul className="pricing-features">
-        <li>10 Websites</li>
-        <li>Priority Support</li>
-        <li>5GB Storage</li>
-      </ul>
-      <button className="pricing-button">Choose Plan</button>
-    </div>
+            {/* Pro Plan - Featured */}
+            <div className="pricing-card featured">
+              <h3 className="pricing-name">Pro <span className="text-sm text-indigo-600 font-bold ml-1">★ Most Popular</span></h3>
+              <p className="pricing-price">$49<span className="text-sm text-gray-500">/mo</span></p>
+              <ul className="pricing-features">
+                <li><FaCheckCircle className="icon" /> 10 Websites</li>
+                <li><FaCheckCircle className="icon" /> Priority Support</li>
+                <li><FaCheckCircle className="icon" /> 5GB Storage</li>
+              </ul>
+              <button className="pricing-button">Choose Plan</button>
+            </div>
 
-    {/* Enterprise Plan */}
-    <div className="pricing-card">
-      <h3 className="pricing-name">Enterprise</h3>
-      <p className="pricing-price">$99<span className="text-sm text-gray-500">/mo</span></p>
-      <ul className="pricing-features">
-        <li>Unlimited Sites</li>
-        <li>24/7 Support</li>
-        <li>50GB Storage</li>
-      </ul>
-      <button className="pricing-button">Choose Plan</button>
-    </div>
-  </div>
-</section>
-
+            {/* Enterprise Plan */}
+            <div className="pricing-card">
+              <h3 className="pricing-name">Enterprise</h3>
+              <p className="pricing-price">$99<span className="text-sm text-gray-500">/mo</span></p>
+              <ul className="pricing-features">
+                <li><FaCheckCircle className="icon" /> Unlimited Sites</li>
+                <li><FaCheckCircle className="icon" /> 24/7 Support</li>
+                <li><FaCheckCircle className="icon" /> 50GB Storage</li>
+              </ul>
+              <button className="pricing-button">Choose Plan</button>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Footer Section */}
