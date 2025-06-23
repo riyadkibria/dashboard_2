@@ -1,25 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { FaFacebookF, FaTwitter, FaGithub, FaCheckCircle, FaBars, FaTimes } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaGithub,
+  FaCheckCircle,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
-      <nav className="bg-white shadow-md px-6 py-4 flex items-center justify-between">
+      {/* Floating Navbar */}
+      <nav className="fixed top-0 left-0 w-full z-50 bg-white/70 backdrop-blur-md shadow-sm px-6 py-4 flex items-center justify-between">
         <div className="text-2xl font-bold text-indigo-600">MySite</div>
 
-        {/* Desktop Menu */}
+        {/* Desktop Links */}
         <ul className="hidden md:flex space-x-6 text-gray-700 font-medium">
           <li><a href="#" className="hover:text-indigo-600">Home</a></li>
           <li><a href="#" className="hover:text-indigo-600">About</a></li>
           <li><a href="#" className="hover:text-indigo-600">Contact</a></li>
         </ul>
 
-        {/* Hamburger Button */}
+        {/* Hamburger Menu */}
         <button
           className="md:hidden text-2xl text-gray-700"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -28,9 +35,9 @@ export default function Home() {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Dropdown Menu */}
       {menuOpen && (
-        <ul className="md:hidden bg-white shadow-md px-6 py-4 space-y-4 text-gray-700 font-medium">
+        <ul className="md:hidden bg-white/90 backdrop-blur-md shadow-md px-6 py-4 space-y-4 text-gray-700 font-medium fixed top-[72px] left-0 right-0 z-40">
           <li><a href="#" className="block hover:text-indigo-600">Home</a></li>
           <li><a href="#" className="block hover:text-indigo-600">About</a></li>
           <li><a href="#" className="block hover:text-indigo-600">Contact</a></li>
@@ -38,7 +45,7 @@ export default function Home() {
       )}
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="pt-24 flex-1">
         {/* Hero Section */}
         <section className="text-center px-4 py-16 bg-gray-100">
           <h1 className="text-4xl font-bold text-gray-800">Welcome to MySite</h1>
