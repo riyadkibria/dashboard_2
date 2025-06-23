@@ -142,5 +142,16 @@
 .newsletter-button {
   @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-200;
 }
+.intro-section {
+  @apply py-16 px-6 bg-white text-center;
+}
+
+.intro-title {
+  @apply text-3xl font-bold text-gray-800 mb-4;
+}
+
+.intro-paragraph {
+  @apply text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed;
+}
 
 }
