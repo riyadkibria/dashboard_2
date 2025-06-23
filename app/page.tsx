@@ -23,6 +23,17 @@ export default function Home() {
           <button className="hero-button">Get Started</button>
         </section>
 
+        {/* 🔥 New Intro Section */}
+        <section className="intro-section">
+          <h2 className="intro-title">Who We Are</h2>
+          <p className="intro-paragraph">
+            At MySite, we are passionate about crafting digital experiences that are not only beautiful,
+            but also meaningful. Our team of designers and developers work together to bring your ideas
+            to life — whether it’s a personal website, a full-blown ecommerce store, or a custom app.
+            We believe in clean design, efficient code, and building with purpose.
+          </p>
+        </section>
+
         {/* Features Section */}
         <section className="features-section">
           <h2 className="features-title">Why Choose Us</h2>
