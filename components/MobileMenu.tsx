@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
 
-export default function MobileMenu() {
+interface MobileMenuProps {
+  onClose: () => void;
+}
+
+export default function MobileMenu({ onClose }: MobileMenuProps) {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
   const toggleSubmenu = (menu: string) => {
@@ -13,8 +17,17 @@ export default function MobileMenu() {
   return (
     <div
       className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-40 backdrop-blur-md flex flex-col pt-20 px-6 text-gray-100 font-medium"
-      // pt-20 to leave some space for the navbar if needed
+      // pt-20 to leave space for navbar
     >
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        aria-label="Close menu"
+        className="absolute top-6 right-6 text-3xl text-gray-100 hover:text-indigo-400 transition"
+      >
+        <FaTimes />
+      </button>
+
       <ul className="space-y-8 text-lg flex flex-col items-start">
         {/* Home */}
         <li>
