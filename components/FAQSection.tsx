@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { HiChevronDown, HiChevronUp } from "react-icons/hi";
+import { HiPlus, HiMinus } from "react-icons/hi";
 
 const faqs = [
   {
@@ -61,20 +61,21 @@ export default function FAQSection() {
                 >
                   <span>{faq.question}</span>
                   {isOpen ? (
-                    <HiChevronUp className="w-6 h-6 text-indigo-600" />
+                    <HiMinus className="w-6 h-6 text-indigo-600" />
                   ) : (
-                    <HiChevronDown className="w-6 h-6 text-indigo-600" />
+                    <HiPlus className="w-6 h-6 text-indigo-600" />
                   )}
                 </button>
                 <div
                   id={`faq-panel-${index}`}
                   role="region"
                   aria-labelledby={`faq-header-${index}`}
-                  className={`px-6 pt-0 pb-6 text-gray-700 text-sm leading-relaxed transition-[max-height] duration-300 ease-in-out overflow-hidden ${
+                  className={`px-6 pt-0 pb-6 text-gray-700 text-sm leading-relaxed overflow-hidden transition-max-height duration-300 ease-in-out ${
                     isOpen ? "max-h-96" : "max-h-0"
                   }`}
+                  style={{ maxHeight: isOpen ? "1000px" : "0" }}
                 >
-                  {faq.answer}
+                  {isOpen && faq.answer}
                 </div>
               </div>
             );
