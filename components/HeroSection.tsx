@@ -1,3 +1,4 @@
+
 export default function HeroSection() {
   return (
     <section className="relative text-center px-6 py-24 bg-gradient-to-r from-indigo-100 via-white to-indigo-100 overflow-hidden">
@@ -7,7 +8,7 @@ export default function HeroSection() {
         </h1>
         <p className="mt-6 text-lg text-gray-600 md:text-xl">
           We build blazing-fast, modern websites that engage, convert, and grow your business.
-          Whether you're launching a product or revamping your brand, we&rsquo;re your full-stack partner.
+          Whether you&apos;re launching a product or revamping your brand, we&apos;re your full-stack partner.
         </p>
         <div className="mt-8 flex justify-center gap-4 flex-wrap">
           <button className="px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-full hover:bg-indigo-700 transition">
