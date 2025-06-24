@@ -20,12 +20,12 @@ export default function HeroSection() {
           Whether you&apos;re launching a new product or redefining your digital presence, we&apos;re your full-stack partner every step of the way.
         </p>
 
-        {/* Buttons side by side on all screen sizes */}
+        {/* Responsive buttons */}
         <div className="mt-12 flex justify-center gap-6">
-          <button className="px-10 py-4 bg-indigo-600 text-white text-lg font-semibold rounded-full shadow-lg hover:bg-indigo-700 transition shadow-indigo-500/50">
+          <button className="px-6 md:px-10 py-3 md:py-4 bg-indigo-600 text-white text-base md:text-lg font-semibold rounded-full shadow-lg hover:bg-indigo-700 transition shadow-indigo-500/50">
             Get Started
           </button>
-          <button className="px-10 py-4 bg-white border-2 border-indigo-600 text-indigo-600 text-lg font-semibold rounded-full hover:bg-indigo-50 transition">
+          <button className="px-6 md:px-10 py-3 md:py-4 bg-white border-2 border-indigo-600 text-indigo-600 text-base md:text-lg font-semibold rounded-full hover:bg-indigo-50 transition">
             Learn More
           </button>
         </div>
