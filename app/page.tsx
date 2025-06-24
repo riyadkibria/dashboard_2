@@ -9,7 +9,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
-// Optional: import PricingSection from "@/components/PricingSection";
+import PricingSection from "@/components/PricingSection"; // ✅ Imported here
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -78,6 +78,9 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ✅ Pricing Section (Newly Added) */}
+        <PricingSection />
+
         {/* Newsletter Section */}
         <section className="px-6 py-12 text-center">
           <h2 className="text-2xl font-semibold text-gray-800">Stay Updated</h2>
@@ -102,9 +105,6 @@ export default function Home() {
             </button>
           </form>
         </section>
-
-        {/* Pricing Section Removed */}
-        {/* <PricingSection /> */}
       </main>
 
       {/* Footer */}
