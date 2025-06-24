@@ -7,7 +7,7 @@ export default function HeroSection() {
         </h1>
         <p className="mt-6 text-lg text-gray-600 md:text-xl">
           We build blazing-fast, modern websites that engage, convert, and grow your business.
-          Whether you're launching a product or revamping your brand, we’re your full-stack partner.
+          Whether you're launching a product or revamping your brand, we&rsquo;re your full-stack partner.
         </p>
         <div className="mt-8 flex justify-center gap-4 flex-wrap">
           <button className="px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-full hover:bg-indigo-700 transition">
