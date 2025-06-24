@@ -1,4 +1,3 @@
-
 export default function HeroSection() {
   return (
     <section className="relative text-center px-6 py-24 bg-gradient-to-r from-indigo-100 via-white to-indigo-100 overflow-hidden">
