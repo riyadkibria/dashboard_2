@@ -16,7 +16,8 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      {menuOpen && <MobileMenu />}
+
+      {menuOpen && <MobileMenu onClose={() => setMenuOpen(false)} />}
 
       <main className="pt-24 flex-1">
         <HeroSection />
