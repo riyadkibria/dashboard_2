@@ -11,45 +11,56 @@ export default function MobileMenu() {
   };
 
   return (
-    <ul className="md:hidden bg-white/90 backdrop-blur-md shadow-md px-6 py-4 space-y-4 text-gray-700 font-medium fixed top-[72px] left-0 right-0 z-40">
-      {/* Home */}
-      <li>
-        <a href="#" className="block hover:text-indigo-600">
-          Home
-        </a>
-      </li>
+    <div
+      className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-40 backdrop-blur-md flex flex-col pt-20 px-6 text-gray-100 font-medium"
+      // pt-20 to leave some space for the navbar if needed
+    >
+      <ul className="space-y-8 text-lg flex flex-col items-start">
+        {/* Home */}
+        <li>
+          <a href="#" className="block hover:text-indigo-400 transition">
+            Home
+          </a>
+        </li>
 
-      {/* About with submenu */}
-      <li>
-        <button
-          onClick={() => toggleSubmenu("about")}
-          className="flex items-center justify-between w-full hover:text-indigo-600"
-        >
-          <span>About</span>
-          {openSubmenu === "about" ? <FaChevronUp /> : <FaChevronDown />}
-        </button>
+        {/* About with submenu */}
+        <li className="w-full">
+          <button
+            onClick={() => toggleSubmenu("about")}
+            className="flex items-center justify-between w-full hover:text-indigo-400 transition"
+          >
+            <span>About</span>
+            {openSubmenu === "about" ? <FaChevronUp /> : <FaChevronDown />}
+          </button>
 
-        {openSubmenu === "about" && (
-          <ul className="pl-4 mt-2 space-y-2 text-sm text-gray-600">
-            <li>
-              <a href="#" className="block hover:text-indigo-600">Our Team</a>
-            </li>
-            <li>
-              <a href="#" className="block hover:text-indigo-600">Our Story</a>
-            </li>
-            <li>
-              <a href="#" className="block hover:text-indigo-600">Careers</a>
-            </li>
-          </ul>
-        )}
-      </li>
+          {openSubmenu === "about" && (
+            <ul className="pl-6 mt-4 space-y-4 text-base text-gray-300">
+              <li>
+                <a href="#" className="block hover:text-indigo-400 transition">
+                  Our Team
+                </a>
+              </li>
+              <li>
+                <a href="#" className="block hover:text-indigo-400 transition">
+                  Our Story
+                </a>
+              </li>
+              <li>
+                <a href="#" className="block hover:text-indigo-400 transition">
+                  Careers
+                </a>
+              </li>
+            </ul>
+          )}
+        </li>
 
-      {/* Contact */}
-      <li>
-        <a href="#" className="block hover:text-indigo-600">
-          Contact
-        </a>
-      </li>
-    </ul>
+        {/* Contact */}
+        <li>
+          <a href="#" className="block hover:text-indigo-400 transition">
+            Contact
+          </a>
+        </li>
+      </ul>
+    </div>
   );
 }
