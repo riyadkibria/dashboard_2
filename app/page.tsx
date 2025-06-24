@@ -7,6 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import IntroSection from "@/components/IntroSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import PricingSection from "@/components/PricingSection";
+import FAQSection from "@/components/FAQSection"; // ✅ Imported FAQ
 import NewsletterSection from "@/components/NewsletterSection";
 import Footer from "@/components/Footer";
 
@@ -24,6 +25,7 @@ export default function Home() {
         <IntroSection />
         <FeaturesSection />
         <PricingSection />
+        <FAQSection /> {/* ✅ Added FAQ here */}
         <NewsletterSection />
       </main>
 
