@@ -1,6 +1,3 @@
-
-
-
 import { FaCheckCircle } from "react-icons/fa";
 
 interface PricingCardProps {
