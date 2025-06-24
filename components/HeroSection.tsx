@@ -20,7 +20,8 @@ export default function HeroSection() {
           Whether you&apos;re launching a new product or redefining your digital presence, we&apos;re your full-stack partner every step of the way.
         </p>
 
-        <div className="mt-12 flex justify-center gap-6 flex-wrap">
+        {/* Buttons side by side on all screen sizes */}
+        <div className="mt-12 flex justify-center gap-6">
           <button className="px-10 py-4 bg-indigo-600 text-white text-lg font-semibold rounded-full shadow-lg hover:bg-indigo-700 transition shadow-indigo-500/50">
             Get Started
           </button>
